@@ -1,13 +1,19 @@
-#ifndef MPOST_H
-#define MPOST_H
+/*!
+ * \file mpost.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for mpost
+*/
+#ifndef MPOST_H_
+#define MPOST_H_
 
 #include <QMetaType>
 #include <QPainter>
-#include "variable.h"
-#include "memorymodel.h"
+#include "./variable.h"
+#include "./memorymodel.h"
 
-struct statement
-{
+struct statement {
     QString lhs;
     QString op;
     QString rhs;
@@ -18,9 +24,8 @@ struct statement
 
 typedef statement statement;
 
-class Mpost
-{
-public:
+class Mpost {
+  public:
     enum EditMode { Editable, ReadOnly };
 
     Mpost(QString n = "", QString op = "", int v = 0, bool enabled = false);
@@ -45,7 +50,7 @@ public:
     void setMemory(MemoryModel * m) { memory = m; }
     QList<statement> getStatements() { return statements; }
 
-private:
+  private:
     bool myEnabled;
     QString myName;
     QString myName2;
@@ -59,4 +64,4 @@ private:
 
 Q_DECLARE_METATYPE(Mpost)
 
-#endif // MPOST_H
+#endif  // MPOST_H_

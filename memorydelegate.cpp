@@ -1,17 +1,21 @@
+/*!
+ * \file memorydelegate.cpp
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Implementation of the model memory delegate
+ */
 #include <QtGui>
-
-#include "memorydelegate.h"
+#include "./memorydelegate.h"
 
 MemoryDelegate::MemoryDelegate(QObject *parent)
-    : QItemDelegate(parent)
-{
+    : QItemDelegate(parent) {
 }
 
 QWidget *MemoryDelegate::createEditor(QWidget *parent,
     const QStyleOptionViewItem &option,
-    const QModelIndex &index) const
-{
-    if(index.column() == 0)
+    const QModelIndex &index) const {
+    /*if(index.column() == 0)
     {
         QComboBox *editor = new QComboBox(parent);
         editor->insertItem(0, "int");
@@ -39,18 +43,18 @@ QWidget *MemoryDelegate::createEditor(QWidget *parent,
             return editor;
         }
     }
-    else if(index.column() == 1)
-    {
+    else */if(index.column() == 0 || index.column() == 1 ||
+            index.column() == 2) {
         QLineEdit *editor = new QLineEdit(parent);
         return editor;
+    } else {
+        return QItemDelegate::createEditor(parent, option, index);
     }
-    else return QItemDelegate::createEditor(parent, option, index);
 }
 
 void MemoryDelegate::setEditorData(QWidget *editor,
-                                    const QModelIndex &index) const
-{
-    if(index.column() == 0)
+                                    const QModelIndex &index) const {
+    /*if(index.column() == 0)
     {
         QString value = index.data().toString();
 
@@ -81,23 +85,20 @@ void MemoryDelegate::setEditorData(QWidget *editor,
             spinBox->setValue(value);
         }
     }
-    else if(index.column() == 1)
-    {
+    else */if(index.column() == 0 || index.column() == 1 ||
+            index.column() == 2) {
         QString value = index.data().toString();
 
         QLineEdit * lineEdit = static_cast<QLineEdit*>(editor);
         lineEdit->setText(value);
-    }
-    else
-    {
+    } else {
         QItemDelegate::setEditorData(editor, index);
     }
 }
 
 void MemoryDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
-                                   const QModelIndex &index) const
-{
-    if(index.column() == 0)
+                                   const QModelIndex &index) const {
+    /*if(index.column() == 0)
     {
             QComboBox *comboBox = static_cast<QComboBox*>(editor);
             QString value = comboBox->currentText();
@@ -126,21 +127,19 @@ void MemoryDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
             model->setData(index, value, Qt::EditRole);
         }
     }
-    else if(index.column() == 1)
-    {
+    else */
+    if (index.column() == 0 || index.column() == 1 ||
+            index.column() == 2) {
         QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
         QString value = lineEdit->text();
 
         model->setData(index, value, Qt::EditRole);
-    }
-    else
-    {
+    } else {
         QItemDelegate::setModelData(editor, model, index);
     }
 }
 
 void MemoryDelegate::updateEditorGeometry(QWidget *editor,
-    const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
-{
+    const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const {
     editor->setGeometry(option.rect);
 }

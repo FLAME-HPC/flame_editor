@@ -1,5 +1,12 @@
-#ifndef MPREDELEGATE_H
-#define MPREDELEGATE_H
+/*!
+ * \file mpredelegate.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for mpre delegate
+*/
+#ifndef MPREDELEGATE_H_
+#define MPREDELEGATE_H_
 
 #include <QItemDelegate>
 #include <QModelIndex>
@@ -8,14 +15,16 @@
 #include <QSpinBox>
 #include <QDoubleSpinBox>
 #include <QComboBox>
-#include "memorymodel.h"
+#include "./memorymodel.h"
+#include "./machine.h"
+#include "./communication.h"
 
-class MpreDelegate : public QItemDelegate
-{
+class MpreDelegate : public QItemDelegate {
     Q_OBJECT
 
-public:
-    MpreDelegate(MemoryModel * m, QObject *parent = 0);
+  public:
+    MpreDelegate(Machine * machine, Communication * comm = 0,
+            QObject *parent = 0);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                 const QModelIndex &index) const;
@@ -29,11 +38,13 @@ public:
     /*void updateEditorGeometry(QWidget *editor,
         const QStyleOptionViewItem &option, const QModelIndex &index) const;*/
 
-private slots:
+  private slots:
     void commitAndCloseEditor();
 
-private:
+  private:
     MemoryModel * memory;
+    Machine * machine;
+    Communication * communication;
 };
 
-#endif // MPREDELEGATE_H
+#endif  // MPREDELEGATE_H_

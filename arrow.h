@@ -1,18 +1,35 @@
-#ifndef ARROW_H
-#define ARROW_H
+/*!
+ * \file arrow.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for arrow used in stategraphs
+ */
+#ifndef ARROW_H_
+#define ARROW_H_
 
 #include <QGraphicsLineItem>
-#include "stateitem.h"
-#include "mpre.h"
-#include "mpost.h"
-#include "memorymodel.h"
+#include "./graphicsitem.h"
+#include "./mpre.h"
+#include "./mpost.h"
+#include "./memorymodel.h"
+#include "./transition.h"
 
-class Arrow : public QGraphicsLineItem
-{
-public:
-    enum { Type = UserType + 4 };
+/*!
+ * \brief Graphics arrow class
+ *
+ * This class represents an arrow in the stategraph graphics scene.
+ */
+class Arrow : public QGraphicsLineItem {
+  public:
+    /*!
+     * \brief This enum is used to hold a unique int associated with graphicsitems
+     */
+    enum {
+        Type = UserType + 4 /**< enum Type is the unique graphicsitems int. */
+    };
 
-    Arrow(StateItem *startItem, StateItem *endItem,
+    Arrow(GraphicsItem *startItem, GraphicsItem *endItem,
       QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
 
     int type() const
@@ -21,9 +38,9 @@ public:
     QPainterPath shape() const;
     void setColor(const QColor &color)
         { myColor = color; }
-    StateItem *startItem() const
+    GraphicsItem *startItem() const
         { return myStartItem; }
-    StateItem *endItem() const
+    GraphicsItem *endItem() const
         { return myEndItem; }
     QString getName() const
         { return name; }
@@ -35,24 +52,36 @@ public:
     { return mpost; }
     Mpre * getMprePointer() { return &mpre; }
     void setMpost(Mpost mp);
-    //bool passesCondition(MemoryModel * memory);
-    //void updateMemory(MemoryModel * memory);
+    void setTransition(Transition * t) { myTransition = t; }
+    void drawHead(bool b) { showHead = b; }
 
-public slots:
+    int number;             /**< \brief . */
+    int total;              /**< \brief . */
+    double offset;          /**< \brief . */
+    /*! \brief flag for local to current model or foreign. */
+    bool foreign;
+    /*! \brief flag for state transition or communication arrows. */
+    bool isCommunication;
+
+  public slots:
     void updatePosition();
 
-protected:
+  protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = 0);
 
-private:
-    QString name;
-    StateItem *myStartItem;
-    StateItem *myEndItem;
-    QColor myColor;
+  private:
+    QString name;               /**< \brief . */
+    GraphicsItem *myStartItem;  /**< \brief the tail graphics item. */
+    GraphicsItem *myEndItem;    /**< \brief the head graphics item. */
+    QColor myColor;             /**< \brief the arrow colour. */
+    /*! \brief the polygon representation of the arrow head. */
     QPolygonF arrowHead;
-    Mpre mpre;
-    Mpost mpost;
+    Mpre mpre;                  /**< \brief any associated condition. */
+    Mpost mpost;                /**< \brief . */
+    bool showHead;              /**< \brief flag to show the arrow head. */
+    /*! \brief any associated function transition. */
+    Transition * myTransition;
 };
 
-#endif // ARROW_H
+#endif  // ARROW_H_

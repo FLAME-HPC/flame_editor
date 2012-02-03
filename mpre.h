@@ -1,15 +1,22 @@
-#ifndef MPRE_H
-#define MPRE_H
+/*!
+ * \file mpre.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for mpre
+*/
+#ifndef MPRE_H_
+#define MPRE_H_
 
 #include <QMetaType>
 #include <QPainter>
 
-class Mpre
-{
-public:
+class Mpre {
+  public:
     enum EditMode { Editable, ReadOnly };
 
-    Mpre(QString n = "", QString o = "==", int v = 0, bool enabled = false, bool neg = false);
+    Mpre(QString n = "", QString o = "==", int v = 0,
+        bool enabled = false, bool neg = false);
 
     void paint(QPainter *painter, const QRect &rect,
                 const QPalette &palette, EditMode mode) const;
@@ -25,7 +32,7 @@ public:
     void setNot(bool n) { myNot = n; }
     bool isNot() const { return myNot; }
 
-private:
+  private:
     bool myEnabled;
     bool myNot;
     QString myName;
@@ -33,6 +40,6 @@ private:
     int myValue;
 };
 
- Q_DECLARE_METATYPE(Mpre)
+Q_DECLARE_METATYPE(Mpre)
 
-#endif // MPRE_H
+#endif  // MPRE_H_

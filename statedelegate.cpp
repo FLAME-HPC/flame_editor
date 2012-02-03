@@ -1,22 +1,26 @@
+/*!
+ * \file statedelegate.cpp
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Implementation of model state delegate
+ */
 #include <QtGui>
-#include "statedelegate.h"
+#include "./statedelegate.h"
 
 StateDelegate::StateDelegate(QObject *parent)
-    : QItemDelegate(parent)
-{
+    : QItemDelegate(parent) {
 }
 
 QWidget *StateDelegate::createEditor(QWidget *parent,
     const QStyleOptionViewItem &/*option*/,
-    const QModelIndex &/*index*/) const
-{
+    const QModelIndex &/*index*/) const {
     QLineEdit *editor = new QLineEdit(parent);
     return editor;
 }
 
 void StateDelegate::setEditorData(QWidget *editor,
-                                    const QModelIndex &index) const
-{
+                                    const QModelIndex &index) const {
     QString value = index.data().toString();
 
     QLineEdit * lineEdit = static_cast<QLineEdit*>(editor);
@@ -24,8 +28,7 @@ void StateDelegate::setEditorData(QWidget *editor,
 }
 
 void StateDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
-                                   const QModelIndex &index) const
-{
+                                   const QModelIndex &index) const {
     QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
     QString value = lineEdit->text();
 
@@ -33,7 +36,6 @@ void StateDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
 }
 
 void StateDelegate::updateEditorGeometry(QWidget *editor,
-    const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
-{
+    const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const {
     editor->setGeometry(option.rect);
 }

@@ -6,10 +6,8 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     machinescene.cpp \
-    stateitem.cpp \
     arrow.cpp \
     machinemodel.cpp \
-    statetableitem.cpp \
     memorydelegate.cpp \
     memorymodel.cpp \
     mpre.cpp \
@@ -26,14 +24,29 @@ SOURCES += main.cpp \
     transition.cpp \
     state.cpp \
     variable.cpp \
-    machinegraph.cpp \
-    statedelegate.cpp
+    statedelegate.cpp \
+    machinetree.cpp \
+    condition.cpp \
+    timeunit.cpp \
+    communication.cpp \
+    commdelegate.cpp \
+    commdialog.cpp \
+    messagecomm.cpp \
+    messagemodel.cpp \
+    messagesort.cpp \
+    messagedelegate.cpp \
+    sortdelegate.cpp \
+    sortdialog.cpp \
+    datatypedelegate.cpp \
+    lineeditdelegate.cpp \
+    machinetreedelegate.cpp \
+    timeunitdialog.cpp \
+    texteditdelegate.cpp \
+    graphicsitem.cpp
 HEADERS += mainwindow.h \
     machinescene.h \
-    stateitem.h \
     arrow.h \
     machinemodel.h \
-    statetableitem.h \
     memorydelegate.h \
     memorymodel.h \
     mpre.h \
@@ -50,6 +63,99 @@ HEADERS += mainwindow.h \
     transition.h \
     state.h \
     variable.h \
-    machinegraph.h \
-    statedelegate.h
-FORMS += mainwindow.ui
+    statedelegate.h \
+    machinetree.h \
+    condition.h \
+    timeunit.h \
+    communication.h \
+    commdelegate.h \
+    commdialog.h \
+    messagecomm.h \
+    messagemodel.h \
+    messagesort.h \
+    messagedelegate.h \
+    sortdelegate.h \
+    sortdialog.h \
+    datatypedelegate.h \
+    lineeditdelegate.h \
+    machinetreedelegate.h \
+    timeunitdialog.h \
+    texteditdelegate.h \
+    graphicsitem.h
+FORMS += mainwindow.ui \
+    conditiondialog.ui \
+    commdialog.ui \
+    sortdialog.ui \
+    timeunitdialog.ui
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,14 +1,18 @@
+/*!
+ * \file mpostdialog.cpp
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Implementation of mpost dialog
+ */
 #include <QtGui>
-
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-
-#include "mpostdialog.h"
+#include "./mpostdialog.h"
 
 MpostDialog::MpostDialog(MemoryModel * m, QWidget *parent)
-     : QDialog(parent)
-{
-    //qDebug() << "MpreDialog";
+     : QDialog(parent) {
+    // qDebug() << "MpreDialog";
     memory = m;
 
     lhsGroup = new QGroupBox(tr("LHS"));
@@ -34,8 +38,10 @@ MpostDialog::MpostDialog(MemoryModel * m, QWidget *parent)
 
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
 
-    connect(this, SIGNAL(setVariableComboBox(int)), variable, SLOT(setCurrentIndex(int)));
-    connect(this, SIGNAL(setVariable2ComboBox(int)), variable2, SLOT(setCurrentIndex(int)));
+    connect(this, SIGNAL(setVariableComboBox(int)),
+            variable, SLOT(setCurrentIndex(int)));
+    connect(this, SIGNAL(setVariable2ComboBox(int)),
+            variable2, SLOT(setCurrentIndex(int)));
     connect(this, SIGNAL(setOpComboBox(int)), op, SLOT(setCurrentIndex(int)));
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
@@ -46,7 +52,7 @@ MpostDialog::MpostDialog(MemoryModel * m, QWidget *parent)
     lhsGroup->setLayout(lhsLayout);
 
     QVBoxLayout *rhsLayout = new QVBoxLayout;
-    //rhsLayout->addWidget(value);
+    // rhsLayout->addWidget(value);
     rhsLayout->addWidget(variable2);
     rhsGroup->setLayout(rhsLayout);
 
@@ -65,35 +71,33 @@ MpostDialog::MpostDialog(MemoryModel * m, QWidget *parent)
     setWindowTitle(tr("Mpost Editor"));
 }
 
-void MpostDialog::setMpost(Mpost m)
-{
+void MpostDialog::setMpost(Mpost m) {
     mpost = m;
     myEnabled->setChecked(mpost.enabled());
     lhsGroup->setEnabled(mpost.enabled());
     opGroup->setEnabled(mpost.enabled());
     rhsGroup->setEnabled(mpost.enabled());
     value->setValue(mpost.value());
-    //value2->setValue(mpost.value2());
+    // value2->setValue(mpost.value2());
     int index = memory->getNames().indexOf(mpost.name());
-    if(index == -1) index = 0;
-    emit ( setVariableComboBox(index) );
+    if (index == -1) index = 0;
+    emit(setVariableComboBox(index));
 
     index = operators.indexOf(mpost.op());
-    if(index == -1) index = 0;
-    emit ( setOpComboBox(index) );
+    if (index == -1) index = 0;
+    emit(setOpComboBox(index));
 
     index = memory->getNames().indexOf(mpost.name2());
-    if(index == -1) index = 0;
-    emit ( setVariable2ComboBox(index) );
+    if (index == -1) index = 0;
+    emit(setVariable2ComboBox(index));
 }
 
-Mpost MpostDialog::getMpost()
-{
+Mpost MpostDialog::getMpost() {
     mpost.setEnabled(myEnabled->isChecked());
     mpost.setValue(value->value());
     mpost.setName(variable->currentText());
     mpost.setOp(op->currentText());
-    //mpost.setValue2(value2->value());
+    // mpost.setValue2(value2->value());
     mpost.setName2(variable2->currentText());
     return mpost;
 }

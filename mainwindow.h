@@ -1,39 +1,43 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+/*!
+ * \file mainwindow.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for main window
+*/
+#ifndef MAINWINDOW_H_
+#define MAINWINDOW_H_
 
 #include <QtCore>
 #include <QtGui>
 #include <QtGui/QMainWindow>
 #include <QTableWidgetItem>
-#include "machinemodel.h"
-#include "memorymodel.h"
-#include "simulationthread.h"
-#include "arrow.h"
-//#include "modeltree.h"
-#include "machine.h"
-#include "machinescene.h"
+#include "./machinemodel.h"
+#include "./memorymodel.h"
+#include "./simulationthread.h"
+#include "./arrow.h"
+#include "./machine.h"
+#include "./machinescene.h"
+#include "./machinetree.h"
 
-namespace Ui
-{
+namespace Ui {
     class MainWindowClass;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
-public:
-    MainWindow(QWidget *parent = 0);
+  public:
+    explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-signals:
+  signals:
     void clearSceneSelection();
     void updateScene();
     void startSimulation();
     void pauseSimulation();
 
-public slots:
-    //void transitionChanged(QModelIndex topLeft, QModelIndex bottomRight);
+  public slots:
     void startModel();
     void pauseModel();
     void stopModel();
@@ -45,23 +49,26 @@ public slots:
     void newModel();
     void openModel();
     void saveModel();
-    void changeModel();
+    void machineTreeClicked(QModelIndex);
+    void machineTreeContextMenu(QPoint);
+    void repositionView(float x, float y);
 
-private:
-    void enableUI(bool enable);
+  private slots:
+    void on_pushButton_viewModel_clicked();
+    void on_pushButtonClose_clicked();
+    void on_actionHelp_triggered();
+    void on_actionAbout_triggered();
+    void reload_scene();
 
+  private:
+    void handleNewAndOpenedModel(Machine * m);
+    void defaultGuiSettings();
     Ui::MainWindowClass *ui;
-    MachineModel * machine;
     SimulationThread * simulationThread;
     QToolBar * fileToolBar;
-    QString modelPath;
-    QString modelName;
-    int noMachines;
-    //ModelTree * modelTree;
+    MachineTree * machineTree;
     QList<Machine *> machines;
-    MemoryModel * memory;
-    MachineScene * scene;
     Machine * currentMachine;
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H_

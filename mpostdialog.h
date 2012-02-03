@@ -1,5 +1,12 @@
-#ifndef MPOSTDIALOG_H
-#define MPOSTDIALOG_H
+/*!
+ * \file mpostdialog.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for mpost dialog
+*/
+#ifndef MPOSTDIALOG_H_
+#define MPOSTDIALOG_H_
 
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -8,26 +15,25 @@
 #include <QDoubleSpinBox>
 #include <QCheckBox>
 #include <QGroupBox>
-#include "mpost.h"
-#include "memorymodel.h"
+#include "./mpost.h"
+#include "./memorymodel.h"
 
 class QDialogButtonBox;
 
-class MpostDialog : public QDialog
-{
+class MpostDialog : public QDialog {
     Q_OBJECT
 
-public:
+  public:
     MpostDialog(MemoryModel * m, QWidget *parent = 0);
     void setMpost(Mpost m);
     Mpost getMpost();
 
-signals:
+  signals:
     void setVariableComboBox(int i);
     void setVariable2ComboBox(int i);
     void setOpComboBox(int i);
 
-private:
+  private:
     QDialogButtonBox *buttonBox;
     QComboBox *variable;
     QComboBox *variable2;
@@ -43,4 +49,4 @@ private:
     QStringList operators;
 };
 
-#endif // MPOSTDIALOG_H
+#endif  // MPOSTDIALOG_H_

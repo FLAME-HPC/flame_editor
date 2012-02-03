@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>864</width>
+    <width>924</width>
     <height>567</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>FLAME Editor</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <widget class="QSplitter" name="splitter_3">
       <property name="orientation">
@@ -26,39 +26,42 @@
        </property>
        <widget class="QWidget" name="layoutWidget">
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="1" column="0">
+         <item row="2" column="0">
           <widget class="QPushButton" name="pushButtonNew">
            <property name="text">
             <string>New</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="QPushButton" name="pushButtonOpen">
            <property name="text">
             <string>Open</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
+         <item row="2" column="2">
           <widget class="QPushButton" name="pushButtonSave">
            <property name="text">
             <string>Save</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0" colspan="3">
-          <widget class="QTreeWidget" name="treeWidget">
-           <column>
-            <property name="text">
-             <string>Machine</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Location</string>
-            </property>
-           </column>
+         <item row="1" column="0" colspan="4">
+          <widget class="QTreeView" name="treeView_machines"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_models">
+           <property name="text">
+            <string>Models</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QPushButton" name="pushButtonClose">
+           <property name="text">
+            <string>Close</string>
+           </property>
           </widget>
          </item>
         </layout>
@@ -69,20 +72,27 @@
         </property>
         <widget class="QWidget" name="layoutWidget_2">
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0" colspan="2">
+          <item row="1" column="0" colspan="2">
            <widget class="QTableView" name="tableViewMemory"/>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QPushButton" name="pushButtonAddMemory">
             <property name="text">
              <string>Add Variable</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="2" column="1">
            <widget class="QPushButton" name="pushButtonDeleteMemory">
             <property name="text">
              <string>Delete Variable</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_memory">
+            <property name="text">
+             <string>Memory</string>
             </property>
            </widget>
           </item>
@@ -90,91 +100,60 @@
         </widget>
         <widget class="QWidget" name="layoutWidget_3">
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0" colspan="2">
+          <item row="1" column="0" colspan="4">
            <widget class="QGraphicsView" name="graphicsView">
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QPushButton" name="pushButtonSceneDelete">
             <property name="text">
              <string>Delete</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="pushButton_viewModel">
+            <property name="text">
+             <string>View In Window</string>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_stategraph">
+            <property name="text">
+             <string>Stategraph</string>
             </property>
-           </spacer>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="pushButton_update">
+            <property name="text">
+             <string>Replot</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
        </widget>
       </widget>
-      <widget class="QTableView" name="tableViewMachine"/>
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLabel" name="label_transitionfunctions">
+          <property name="text">
+           <string>Transition Functions</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableViewMachine"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="pushButtonStart">
-        <property name="text">
-         <string>Start</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButtonPause">
-        <property name="text">
-         <string>Pause</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButtonStop">
-        <property name="text">
-         <string>Stop</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
     </item>
    </layout>
   </widget>
@@ -183,7 +162,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>864</width>
+     <width>924</width>
      <height>22</height>
     </rect>
    </property>
@@ -191,9 +170,8 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="action_New"/>
-    <addaction name="action_Open"/>
-    <addaction name="action_Save"/>
+    <addaction name="actionAbout"/>
+    <addaction name="actionHelp"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -219,6 +197,16 @@
   <action name="action_Save">
    <property name="text">
     <string>&amp;Save</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
    </property>
   </action>
  </widget>

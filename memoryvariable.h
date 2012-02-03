@@ -1,12 +1,18 @@
-#ifndef MEMORYVARIABLE_H
-#define MEMORYVARIABLE_H
+/*!
+ * \file memoryvariable.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for memory variable
+*/
+#ifndef MEMORYVARIABLE_H_
+#define MEMORYVARIABLE_H_
 
 #include <QString>
-#include "adt.h"
+#include "./adt.h"
 
-class MemoryVariable
-{
-public:
+class MemoryVariable {
+  public:
     MemoryVariable(QString n = "", QString d = "", ADT t = ADT(), int s = 1);
 
     void setName(QString n) { myName = n; }
@@ -20,7 +26,7 @@ public:
     void setDesc(QString d) { myDesc = d; }
     QString desc() const { return myDesc; }
 
-private:
+  private:
     QString myName;
     QString myDesc;
     ADT myType;
@@ -28,4 +34,4 @@ private:
     int mySize; /* array size */
 };
 
-#endif // MEMORYVARIABLE_H
+#endif  // MEMORYVARIABLE_H_

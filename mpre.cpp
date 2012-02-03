@@ -1,9 +1,14 @@
-#include "mpre.h"
+/*!
+ * \file mpre.cpp
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Implementation of mpre
+ */
+#include <QtGui>
+#include "./mpre.h"
 
- #include <QtGui>
-
-Mpre::Mpre(QString n, QString o, int v, bool enabled, bool neg)
-{
+Mpre::Mpre(QString n, QString o, int v, bool enabled, bool neg) {
     myName = n;
     myOp = o;
     myValue = v;
@@ -11,24 +16,22 @@ Mpre::Mpre(QString n, QString o, int v, bool enabled, bool neg)
     myNot = neg;
 }
 
- void Mpre::paint(QPainter *painter, const QRect &rect,
-                        const QPalette &/*palette*/, EditMode /*mode*/) const
- {
+void Mpre::paint(QPainter *painter, const QRect &rect,
+                        const QPalette &/*palette*/, EditMode /*mode*/) const {
     painter->save();
 
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    if(myEnabled)
-    {
+    if (myEnabled) {
         QString s;
-        if(myNot) s.append("not ");
+        if (myNot) s.append("not ");
         s.append(myName);
         s.append(" ");
         s.append(myOp);
         s.append(" ");
         s.append(QString("%1").arg(myValue));
 
-        painter->drawText(rect,s);
+        painter->drawText(rect, s);
     }
 
      /*painter->setPen(Qt::NoPen);
@@ -53,4 +56,4 @@ Mpre::Mpre(QString n, QString o, int v, bool enabled, bool neg)
      }*/
 
      painter->restore();
- }
+}

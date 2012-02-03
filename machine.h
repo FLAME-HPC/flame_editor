@@ -1,48 +1,88 @@
-#ifndef MACHINE_H
-#define MACHINE_H
+/*!
+ * \file machine.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for model machine
+*/
+#ifndef MACHINE_H_
+#define MACHINE_H_
 
-#include <QTGui>
-#include <QTreeWidgetItem>
-#include <QTreeWidget>
+#include <QList>
+#include <QVariant>
 #include <QFile>
-#include "machinemodel.h"
-#include "memorymodel.h"
-#include "machinescene.h"
+#include "./machinemodel.h"
+#include "./memorymodel.h"
+#include "./machinescene.h"
+#include "./timeunit.h"
 
-class Machine : public QTreeWidgetItem
-{
-    //Q_OBJECT
+class MachineItem;
 
-public:
-    Machine(QTreeWidget *parent = 0)
-         : QTreeWidgetItem(parent)
-    {
-        location = 0;
-        memoryModel = new MemoryModel();
-        machineModel = new MachineModel(memoryModel);
-        machineScene = new MachineScene(machineModel);
-        machineScene->setSceneRect(0, 0, 500, 500);
-
-        QObject().connect(machineScene, SIGNAL(addedState(QString,bool)), machineModel, SLOT(addState(QString,bool)));
-        QObject().connect(machineScene, SIGNAL(addedTransition(QString,QString,QString)), machineModel, SLOT(addTransition(QString,QString,QString)));
-        QObject().connect(machineModel, SIGNAL(updateStateName(QString,QString)), machineScene, SLOT(updateStateName(QString,QString)));
-
-        //connect(this->machine, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(transitionChanged(QModelIndex,QModelIndex)));
-        QObject().connect(machineModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), machineModel, SLOT(transitionUpdated(QModelIndex,QModelIndex)));
-    }
+class Machine {
+  public:
+    Machine(int type, Machine *parent = 0);
     ~Machine();
+
     bool writeModelXML(QFile * file);
 
-    //void setName(QString n);
-    //QString name() const { return myName; }
+    void appendChild(Machine *child);
+
+    Machine *child(int row);
+    int childCount() const;
+    int columnCount() const;
+    QVariant data(int column) const;
+    int row() const;
+    Machine *parent();
+    void removeChild(Machine * m);
+    void insertChild(Machine * m, int index);
+    void addTransitionString(QString name, QString cs, QString ns,
+        Condition c, Mpost mpost,
+        Communication input, Communication output, QString desc);
+
+    QStringList getTimeUnits(bool b = true);
+    QStringList getAgentMemoryNames(QString name, bool b = true);
+    QStringList getMessageMemoryNames(QString name, bool b = true);
+    QStringList getMessageNames(bool b = true);
+    QStringList getDataTypes(bool b = true);
+    Machine * getMessageType(QString name, bool = true);
+    bool isEnabled() { return enabled; }
+    void setEnabled(bool b) { enabled = b; }
+    Machine * rootModel() { return myRootModel; }
+    void setRootModel(Machine * m) { myRootModel = m; }
+    void setTimeUnit(TimeUnit t) { myTimeUnit = t; }
+    TimeUnit timeUnit() const { return myTimeUnit; }
+    QString filePath();
+    void setTimeUnitName(QString s) { myTimeUnit.name = s; }
 
     MachineModel * machineModel;
     MemoryModel * memoryModel;
     MachineScene * machineScene;
 
-private:
-    //QString myName;
+    QStringList timeUnitNames;
+    QString name;
+    QString description;
+    /* -1-rootItem
+     *  0-model
+     *  1-agent
+     *  2-message
+     *  3-environment
+     *  4-timeunit
+     *  5-datatype
+     *  6-functionFiles
+     */
+    int type;
+    bool isSubModel;
+    QString fileDirectory;
+    QString fileName;
+    QList<Machine*> childItems;
+
+  private:
+    QList<QVariant> itemData;
+    Machine *parentItem;
     QFile * location;
+    bool enabled;
+    Machine * myRootModel;
+    TimeUnit myTimeUnit;
 };
 
-#endif // MACHINE_H
+#endif  // MACHINE_H_

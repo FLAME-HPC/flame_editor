@@ -1,5 +1,12 @@
-#ifndef MEMORYDELEGATE_H
-#define MEMORYDELEGATE_H
+/*!
+ * \file memorydelegate.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for the memory table delegate
+*/
+#ifndef MEMORYDELEGATE_H_
+#define MEMORYDELEGATE_H_
 
 #include <QItemDelegate>
 #include <QModelIndex>
@@ -10,12 +17,11 @@
 #include <QComboBox>
 #include <QLineEdit>
 
-class MemoryDelegate : public QItemDelegate
-{
+class MemoryDelegate : public QItemDelegate {
     Q_OBJECT
 
-public:
-    MemoryDelegate(QObject *parent = 0);
+  public:
+    explicit MemoryDelegate(QObject *parent = 0);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;
@@ -28,4 +34,4 @@ public:
         const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-#endif // MEMORYDELEGATE_H
+#endif  // MEMORYDELEGATE_H_

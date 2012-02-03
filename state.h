@@ -1,23 +1,25 @@
-#ifndef STATE_H
-#define STATE_H
+/*!
+ * \file state.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for machine state
+*/
+#ifndef STATE_H_
+#define STATE_H_
 
 #include <QString>
 
-class State
-{
-public:
-    State() { myName = ""; start = false; }
-    State(QString n) { myName = n; start = false; }
-    State(QString n, bool s) { myName = n; start = s; }
+class State {
+  public:
+    State() { myName = ""; }
+    explicit State(QString n) { myName = n; }
 
     QString name() const { return myName; }
     void setName(QString n) { myName = n; }
-    bool startState() const { return start; }
-    void setStartState(bool s) { start = s; }
 
-private:
+  private:
     QString myName;
-    bool start;
 };
 
-#endif // STATE_H
+#endif  // STATE_H_

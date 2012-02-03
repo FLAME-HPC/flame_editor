@@ -1,23 +1,31 @@
-#ifndef ADT_H
-#define ADT_H
+/*!
+ * \file adt.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for model datatypes
+ */
+#ifndef ADT_H_
+#define ADT_H_
 
 #include <QString>
 #include <QList>
-#include "variable.h"
+#include "./variable.h"
 
-class ADT
-{
-public:
-    ADT(QString n = "", QString d = "");
+/*!
+ * \brief Model data type class
+ *
+ * This class holds the information about a user defined abstract data type.
+ */
+class ADT {
+  public:
+    ADT(QString = "", QString = "");
 
-    //void addVariable(QString n, ADT t);
-    //void addFundamentalVariable(QString n, int s);
-
-private:
-    QString name;
-    QString desc;
-    //void * data;
+  private:
+    QString name;   /*!< \brief The name of the data type */
+    QString desc;   /*!< \brief The description of the data type */
+    /*! \brief The list of variables of the data type */
     QList<Variable> variables;
 };
 
-#endif // ADT_H
+#endif  // ADT_H_

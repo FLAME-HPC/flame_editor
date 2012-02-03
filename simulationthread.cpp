@@ -1,15 +1,19 @@
+/*!
+ * \file simulationthread.cpp
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Implementation of simulation thread
+ */
 #include <QtGui>
-
-#include "simulationthread.h"
+#include "./simulationthread.h"
 
 SimulationThread::SimulationThread(QObject *parent)
-     : QThread(parent)
-{
+     : QThread(parent) {
     machine = 0;
 }
 
-SimulationThread::~SimulationThread()
-{
+SimulationThread::~SimulationThread() {
     mutex.lock();
     m_abort = -1;
     mutex.unlock();
@@ -17,8 +21,7 @@ SimulationThread::~SimulationThread()
     wait();
 }
 
-void SimulationThread::startSim()
-{
+void SimulationThread::startSim() {
     m_abort = 1;
     /*if(machine->machineModel->getStartState() != 0)
     {
@@ -28,56 +31,54 @@ void SimulationThread::startSim()
     }
     else item = 0;*/
 
-    currentState = machine->machineModel->getStartState();
+    currentState = 0;  // machine->machineModel->getStartState();
     currentTransition = 0;
 
     start();
 }
 
-void SimulationThread::stopSim()
-{
+void SimulationThread::stopSim() {
     mutex.lock();
     m_abort = -1;
     mutex.unlock();
 }
 
-void SimulationThread::pauseSim()
-{
+void SimulationThread::pauseSim() {
     mutex.lock();
-    if(m_abort == 1) m_abort = 0;
-    else if(m_abort == 0) m_abort = 1;
+    if (m_abort == 1) m_abort = 0;
+    else if (m_abort == 0) m_abort = 1;
     mutex.unlock();
 }
 
-void SimulationThread::run()
-{
-    //qDebug() << "SimulationThread machine: " << machine->text(0);
-    //int rc;
+void SimulationThread::run() {
+    // qDebug() << "SimulationThread machine: " << machine->text(0);
+    // int rc;
 
-    while(currentState != 0 || currentTransition != 0)
-    {
+    while (currentState != 0 || currentTransition != 0) {
         if (m_abort == -1) return;
-        while(m_abort == 0) msleep(10);
+        while (m_abort == 0) msleep(10);
         msleep(100);
 
-        if(currentState != 0)
-        {
-            //qDebug() << "current State: " << currentState->name();
-            emit( selectState(currentState->name()) );
+        if (currentState != 0) {
+            // qDebug() << "current State: " << currentState->name();
+            emit(selectState(currentState->name()));
 
-            for(int i = 0; i < machine->machineModel->getTransitions().size(); i++)
-            {
-                if(machine->machineModel->getTransitions().at(i)->currentState() == currentState &&
-                   machine->machineModel->getTransitions().at(i)->passesCondition(machine->memoryModel))
-                    currentTransition = machine->machineModel->getTransitions().at(i);
+            for (int i = 0; i < machine->machineModel->getTransitions().size();
+                    i++) {
+                if (machine->machineModel->
+                        getTransitions().at(i)->
+                        currentState() == currentState &&
+                   machine->machineModel->
+                   getTransitions().at(i)->
+                   passesCondition(machine->memoryModel))
+                    currentTransition =
+                            machine->machineModel->getTransitions().at(i);
             }
 
             currentState = 0;
-        }
-        else
-        {
-            //qDebug() << "current Transition: " << currentTransition->name();
-            emit( this->selectTransition(currentTransition->name()) );
+        } else {
+            // qDebug() << "current Transition: " << currentTransition->name();
+            emit(this->selectTransition(currentTransition->name()));
 
             currentTransition->updateMemory(machine->memoryModel);
             currentState = currentTransition->nextState();
@@ -85,7 +86,6 @@ void SimulationThread::run()
             currentTransition = 0;
         }
     }
-
 
     /*QList<Arrow *> transitions = machine->getTransitions();
     QGraphicsItem * newItem;
@@ -130,5 +130,4 @@ void SimulationThread::run()
         while(m_abort == 0) msleep(10);
         msleep(10);
     }*/
-
 }

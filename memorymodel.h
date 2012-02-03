@@ -1,18 +1,24 @@
-#ifndef MEMORYMODEL_H
-#define MEMORYMODEL_H
+/*!
+ * \file memorymodel.h
+ * \author Simon Coakley
+ * \date 2012
+ * \copyright Copyright (c) 2012 University of Sheffield
+ * \brief Header file for the memory table
+*/
+#ifndef MEMORYMODEL_H_
+#define MEMORYMODEL_H_
 
 #include <QtGui>
 #include <QAbstractTableModel>
 #include <QStringList>
-#include "variable.h"
+#include "./variable.h"
 
-class MemoryModel : public QAbstractTableModel
-{
+class MemoryModel : public QAbstractTableModel {
     Q_OBJECT
 
-public:
-    MemoryModel(QObject *parent = 0)
-            : QAbstractTableModel(parent) { } //count = 0; }
+  public:
+    explicit MemoryModel(QObject *parent = 0)
+            : QAbstractTableModel(parent) { myIsModel = false; }
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -24,29 +30,23 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value,
                   int role = Qt::EditRole);
     /* Adding and removing rows */
-    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
-    bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
+    bool insertRows(int position, int rows,
+        const QModelIndex &index = QModelIndex());
+    bool removeRows(int position, int rows,
+        const QModelIndex &index = QModelIndex());
     QList<Variable> getVariables() { return variables; }
-    QStringList getNames(); // { return stringListName; }
-    //QList<int> getintValues() { return intListValue; }
-    //QList<double> getdoubleValues() { return doubleListValue; }
-    //QStringList getTypes() { return stringListType; }
-    //void replaceIntValue(int index, int value);
-    //void replaceDoubleValue(int index, double value);
-
+    QStringList getNames();
     void replaceValue(int index, double value);
-    void addVariable(QString type, QString name, double i);
+    void replaceValue(QString type, QString value);
+    void addVariable(QString type, QString name,
+        QString desc, bool constant = false, double i = 0.0);
+    void setIsModel(bool b) { myIsModel = b; }
+    bool isModel() { return myIsModel; }
 
     QList<Variable> variables;
 
-private:
-    //QStringList stringListAllTypes;
-    //QStringList stringListType;
-    //QStringList stringListName;
-    //QList<int> intListValue;
-    //QList<double> doubleListValue;
-
-    //int count;
+  private:
+    bool myIsModel;  /*!< Flag to show if the memory is for model descriptors */
 };
 
-#endif // MEMORYMODEL_H
+#endif  // MEMORYMODEL_H_
