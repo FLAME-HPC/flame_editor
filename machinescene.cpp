@@ -166,7 +166,7 @@ void MachineScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     selectedFunction = 0;
     emit(functionSelected(false));
-    qDebug() << "selectedFunction = 0";
+    // qDebug() << "selectedFunction = 0";
 
     QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
 
@@ -184,7 +184,7 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                 if (sitem->mytype == 1 && !sitem->foreign) {
                     selectedFunction = sitem;
                     emit(functionSelected(true));
-                    qDebug() << "selectedFunction = " << sitem->getName();
+                    // qDebug() << "selectedFunction = " << sitem->getName();
                 }
             }
         }
@@ -1074,7 +1074,7 @@ void MachineScene::removeTransitionFunction(GraphicsItem *t) {
 
 void MachineScene::deleteSelectedFunction() {
     if(selectedFunction == 0) {
-        qDebug() << "selectedFunction == 0";
+        // qDebug() << "selectedFunction == 0";
     } else {
         // Remove function from transition table
         machineModel->deleteTransition(selectedFunction->transition);
