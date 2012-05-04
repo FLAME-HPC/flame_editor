@@ -18,6 +18,7 @@ Variable::Variable(QString n, QString t) {
     ivalue = 0;
     dvalue = 0.0;
     description = "";
+    constant = false;
 }
 
 double Variable::getValue() {
