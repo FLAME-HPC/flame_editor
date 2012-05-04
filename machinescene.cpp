@@ -1077,4 +1077,7 @@ void MachineScene::deleteSelectedFunction() {
     machineModel->deleteTransition(selectedFunction->transition);
     // Remove function from scene
     removeTransitionFunction(selectedFunction);
+    // Reset selected function variable
+    selectedFunction = 0;
+    emit(functionSelected(false));
 }
