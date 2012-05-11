@@ -18,6 +18,9 @@ GraphicsItem::GraphicsItem(QGraphicsItem *parent, QGraphicsScene *scene)
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     /* Set font used for name */
     sansFont = new QFont("Helvetica", 12);
+
+    diamond = false;
+    color = (QColor)Qt::black;
 }
 
 QString GraphicsItem::getName() {
@@ -44,7 +47,25 @@ void GraphicsItem::setName(QString n) {
         myPath.lineTo(myNameRect.topRight());
         myPath.lineTo(myNameRect.topLeft().x()+10, myNameRect.topLeft().y());
         myPath.lineTo(myNameRect.bottomLeft());
-    } else {
+    }
+    else
+    if (mytype == 3) {  // diamond
+        float mx = 20.0;
+        float my = 20.0;
+        myNameRect = QRectF(-(nameWidth/2.0) - mx, static_cast<float>(-nameHeight - my),
+                static_cast<float>(nameWidth + mx * 2.0), nameHeight*2.0 + my * 2.0);
+        /* For diamond type calculate the parallelogram shape line path */
+        float mdx = myNameRect.width() / 2.0;
+        float mdy = myNameRect.height() / 2.0;
+        myPath = QPainterPath();
+        myPath.moveTo(myNameRect.x(), myNameRect.y() + mdy);
+        myPath.lineTo(myNameRect.x() + mdx, myNameRect.y());
+        myPath.lineTo(myNameRect.topRight().x(), myNameRect.y() + mdy);
+        myPath.lineTo(myNameRect.x() + mdx, myNameRect.bottomRight().y());
+        myPath.lineTo(myNameRect.x(), myNameRect.y() + mdy);
+    }
+    else
+    {
         myNameRect = QRectF(-nameWidth/2.0, static_cast<float>(-nameHeight),
                 static_cast<float>(nameWidth), nameHeight*2.0);
     }
@@ -64,6 +85,12 @@ void GraphicsItem::setTransition(QString name) {
 
 void GraphicsItem::setMessage(QString name) {
     mytype = 2;
+    setName(name);
+}
+
+void GraphicsItem::setDiamond(QString name)
+{
+    mytype = 3;
     setName(name);
 }
 
@@ -90,6 +117,7 @@ QPainterPath GraphicsItem::shape() const {
     if (mytype == 0) path.addEllipse(myNameRect);
     if (mytype == 1) path.addRect(myNameRect);
     if (mytype == 2) return myPath;
+    if (mytype == 3) return myPath;
     return path;
 }
 
@@ -102,11 +130,12 @@ void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     /* Set paint options */
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setBrush(Qt::white);
-    painter->setPen(isSelected() ? Qt::red : Qt::black);
+    painter->setPen(isSelected() ? Qt::red : color);
     /* Draw shape */
     if (mytype == 0) painter->drawEllipse(myNameRect);
     if (mytype == 1) painter->drawRect(myNameRect);
     if (mytype == 2) painter->drawPath(myPath);
+    if (mytype == 3) painter->drawPath(myPath);
     /* Draw text */
     painter->setFont(*sansFont);
     painter->drawText(-(nameWidth/2)+5, (nameHeight/2)-2, getName());

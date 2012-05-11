@@ -34,8 +34,29 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     void setState(QString name);
     void setTransition(QString name);
     void setMessage(QString name);
+    void setDiamond(QString name);
     int width();
-    int mytype;  /* 0-state, 1-transition, 2-message */
+    int mytype;  /* 0-state, 1-transition, 2-message, 3-diamond */
+
+    void setColor(QColor c) {color = c;}
+
+    void addGraphicsItem(QGraphicsItem *g)
+      {graphicsItemList.append(g);}
+    void removeGraphicsItem(QGraphicsItem *g)
+      {graphicsItemList.removeOne(g);}
+    int countGraphicsItem()
+      {return graphicsItemList.count();}
+    QGraphicsItem* getGraphicsItem()
+      {return graphicsItemList.last();}
+
+    bool isToDiamond() const {return diamond;}
+    void setToDiamond() { diamond = true;}
+
+    GraphicsItem* getGraphicsItemParent() const
+      {return graphicsItemParent;}
+
+    void setGraphicsItemParent(GraphicsItem * p)
+      {graphicsItemParent = p;}
 
   private:
     void setBoundingRect();
@@ -50,6 +71,10 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     int condWidth;
     int condHeight;
     QPainterPath myPath;
+    QList<QGraphicsItem*> graphicsItemList;
+    bool diamond;
+    QColor color;
+    GraphicsItem* graphicsItemParent;
 };
 
 #endif  // GRAPHICSITEM_H_

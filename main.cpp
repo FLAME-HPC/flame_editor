@@ -1,11 +1,13 @@
 #include <QtGui/QApplication>
-#include "mainwindow.h"
-
+#include <QWidget>
+#include "codedialog.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+
+    CodeDialog cd;
+    cd.exec();
+
     
-    return a.exec();
+    return 0;
 }

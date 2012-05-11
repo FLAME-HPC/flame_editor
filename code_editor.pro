@@ -10,15 +10,21 @@ TARGET = code_editor
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
+SOURCES += \
+    main.cpp \
     machinescene.cpp \
     graphicsitem.cpp \
-    arrow.cpp
+    arrow.cpp \
+    codedialog.cpp \
+    assignmentdialog.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     machinescene.h \
     graphicsitem.h \
-    arrow.h
+    arrow.h \
+    codedialog.h \
+    assignmentdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
+
+RESOURCES +=

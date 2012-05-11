@@ -29,7 +29,7 @@ class Arrow : public QGraphicsLineItem {
         Type = UserType + 4 /**< enum Type is the unique graphicsitems int. */
     };
 
-    Arrow(GraphicsItem *startItem, GraphicsItem *endItem,
+    Arrow(GraphicsItem *getStartItem, GraphicsItem *getEndItem,
       QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
 
     int type() const
@@ -38,11 +38,14 @@ class Arrow : public QGraphicsLineItem {
     QPainterPath shape() const;
     void setColor(const QColor &color)
         { myColor = color; }
-    GraphicsItem *startItem() const
+    GraphicsItem *getStartItem() const
         { return myStartItem; }
-    GraphicsItem *endItem() const
+    GraphicsItem *getEndItem() const
         { return myEndItem; }
     void drawHead(bool b) { showHead = b; }
+
+    void setStartItem(GraphicsItem *g) {myStartItem = g;}
+    void setEndItem(GraphicsItem *g) {myEndItem = g;}
 
   public slots:
     void updatePosition();

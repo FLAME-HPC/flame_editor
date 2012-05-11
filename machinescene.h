@@ -27,9 +27,17 @@ class MachineScene : public QGraphicsScene {
     /* Used to help add items to the graphics scene */
     void addState(GraphicsItem * s);
     void addTransition(GraphicsItem * s);
+    void addDiamond(GraphicsItem * s);
     void addArrow(Arrow * t);
+
+    QObject *codeDialog;
+
     /* Used to draw line when moving mouse */
     QGraphicsLineItem *line;
+    GraphicsItem *itemToMove;
+    GraphicsItem *itemToColaps;
+
+    GraphicsItem *itemSelect;
     /* Used to increment numbers for names */
     int num_states;
     int num_transitions;
