@@ -1,8 +1,17 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-05-22T10:29:59
 # -------------------------------------------------
-TARGET = flame_editor
+
 TEMPLATE = app
+
+macx {
+    TARGET = "FLAME Editor"
+} else {
+    TARGET = flame_editor
+}
+macx:ICON = flame_icon_e.icns
+win32:RC_FILE = flame-e.rc
+
 SOURCES += main.cpp \
     mainwindow.cpp \
     machinescene.cpp \
