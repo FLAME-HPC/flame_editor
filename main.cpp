@@ -12,6 +12,8 @@
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     MainWindow w;
+    /* Pass command line arguments */
+    w.handleArguments(a.arguments());
     w.show();
     return a.exec();
 }

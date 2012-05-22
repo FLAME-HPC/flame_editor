@@ -23,6 +23,13 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindowClass) {
     ui->setupUi(this);
 
+    /* Set the application icon (for linux) as mac and win
+     * have platform-dependent techniques (see .pro file).
+     */
+    #ifdef Q_WS_X11
+    setWindowIcon(QIcon("flame-e.png"));
+    #endif
+
     currentMachine = 0;
 
     QAction * newAction = new QAction(tr("&New"), this);
@@ -80,6 +87,15 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
     delete ui;
+}
+
+void MainWindow::handleArguments(QStringList args) {
+    if (args.count() > 1) {
+        if(args[1] == "-test") {
+            /* Close application */
+            QMetaObject::invokeMethod(this, "close", Qt::QueuedConnection);
+        }
+    }
 }
 
 /*void MainWindow::transitionChanged(QModelIndex topLeft, QModelIndex)
