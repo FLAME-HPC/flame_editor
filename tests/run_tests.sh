@@ -16,13 +16,14 @@ test_func () {
 	echo "make ..."
 	make > /dev/null
 	echo "run ..."
-	open FLAME\ Editor.app/ --args -test
+	#open FLAME\ Editor.app/ --args -test
+	FLAME\ Editor.app/Contents/MacOS/FLAME\ Editor -test
 	#echo rv: $?
 	if [ $? -ne 0 ]
 	then
 		echo "Error: Cannot open FLAME Editor app."
-	else
-		echo "FLAME Editor app run successfully."
+	#else
+		#echo "FLAME Editor app run successfully."
 	fi
 	#|| {
 	#   echo "Error: Cannot open FLAME Editor app."
@@ -38,6 +39,7 @@ cd ..
 
 #test_func "Test Qt 4.6.4" $QT_464
 test_func "Test Qt 4.7.4" $QT_474
+test_func "Test Qt 4.8.1" $QT_481
 
 # Change to tests directory
 cd tests
