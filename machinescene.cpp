@@ -1073,7 +1073,7 @@ void MachineScene::removeTransitionFunction(GraphicsItem *t) {
 }
 
 void MachineScene::deleteSelectedFunction() {
-    if(selectedFunction == 0) {
+    if (selectedFunction == 0) {
         // qDebug() << "selectedFunction == 0";
     } else {
         // Remove function from transition table

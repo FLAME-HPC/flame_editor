@@ -48,6 +48,7 @@ class MainWindow : public QMainWindow {
     void deleteMemory();
     void newModel();
     void openModel();
+    int openModel_internal(QString fileName, bool test);
     void saveModel();
     void machineTreeClicked(QModelIndex);
     void machineTreeContextMenu(QPoint);

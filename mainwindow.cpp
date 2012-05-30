@@ -215,6 +215,42 @@ void MainWindow::newModel() {
     handleNewAndOpenedModel(m);
 }
 
+int MainWindow::openModel_internal(QString fileName, bool test) {
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QString error =
+                tr("Cannot read file %1:\n%2.")
+                .arg(fileName)
+                .arg(file.errorString());
+        if (!test) QMessageBox::warning(this, tr("x-editor"), error);
+        // else qDebug() << error;
+        return 1;
+    }
+
+    // Add a new machine to the machine tree
+    Machine * m = machineTree->addMachine();
+    // Read the model into the machine
+    modelXMLReader reader(m);
+    // If the read fails
+    if (!reader.read(&file)) {
+        QString error =
+            tr("Cannot parse model in file %1 at line %2, column %3:\n%4").arg(
+            fileName).arg(reader.lineNumber()).arg(
+            reader.columnNumber()).arg(reader.errorString());
+        if (!test) QMessageBox::warning(this, "FLAME Editor", error);
+        // else qDebug() << error;
+        // Delete model from tree
+        machineTree->removeMachine(m);
+        defaultGuiSettings();
+        return 2;
+    } else {  // If the read is successful
+        // Organise the tree view in the gui
+        handleNewAndOpenedModel(m);
+        statusBar()->showMessage(tr("File loaded"), 2000);
+        return 0;
+    }
+}
+
 void MainWindow::openModel() {
     QString fileName =
              QFileDialog::getOpenFileName(this, tr("Open model"),
@@ -223,34 +259,7 @@ void MainWindow::openModel() {
      if (fileName.isEmpty())
          return;
 
-     QFile file(fileName);
-     if (!file.open(QFile::ReadOnly | QFile::Text)) {
-         QMessageBox::warning(this, tr("x-editor"),
-                              tr("Cannot read file %1:\n%2.")
-                              .arg(fileName)
-                              .arg(file.errorString()));
-         return;
-     }
-
-     // Add a new machine to the machine tree
-     Machine * m = machineTree->addMachine();
-     // Read the model into the machine
-     modelXMLReader reader(m);
-     // If the read fails
-     if (!reader.read(&file)) {
-         QMessageBox::warning(this, "FLAME Editor",
-             tr("Cannot parse model in file %1 at line %2, column %3:\n%4").arg(
-             fileName).arg(reader.lineNumber()).arg(
-             reader.columnNumber()).arg(reader.errorString()));
-         // Delete model from tree
-         machineTree->removeMachine(m);
-         defaultGuiSettings();
-     } else {  // If the read is successful
-         // Organise the tree view in the gui
-         handleNewAndOpenedModel(m);
-
-         statusBar()->showMessage(tr("File loaded"), 2000);
-     }
+     openModel_internal(fileName, false);
 }
 
 void MainWindow::handleNewAndOpenedModel(Machine *m) {
