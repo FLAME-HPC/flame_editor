@@ -12,8 +12,6 @@ macx {
 macx:ICON = flame_icon_e.icns
 win32:RC_FILE = flame-e.rc
 
-QT += testlib
-
 SOURCES += main.cpp \
     mainwindow.cpp \
     machinescene.cpp \
@@ -53,8 +51,7 @@ SOURCES += main.cpp \
     machinetreedelegate.cpp \
     timeunitdialog.cpp \
     texteditdelegate.cpp \
-    graphicsitem.cpp \
-    test.cpp
+    graphicsitem.cpp
 HEADERS += mainwindow.h \
     machinescene.h \
     arrow.h \
@@ -93,8 +90,7 @@ HEADERS += mainwindow.h \
     machinetreedelegate.h \
     timeunitdialog.h \
     texteditdelegate.h \
-    graphicsitem.h \
-    test.h
+    graphicsitem.h
 FORMS += mainwindow.ui \
     conditiondialog.ui \
     commdialog.ui \

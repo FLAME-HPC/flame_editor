@@ -18,7 +18,6 @@
 #include "./texteditdelegate.h"
 #include "./machinetreedelegate.h"
 #include "./modelxmlreader.h"
-#include "./test.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindowClass) {
@@ -88,20 +87,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
     delete ui;
-}
-
-void MainWindow::handleArguments(QStringList args) {
-    if (args.count() > 1) {
-        if(args[1] == "-test") {
-            Test testObject;
-            /* Remove -test argument */
-            args.removeAt(1);
-            /* Pass rest of arguments to qtest */
-            QTest::qExec(&testObject, args);
-            /* Close application */
-            QMetaObject::invokeMethod(this, "close", Qt::QueuedConnection);
-        }
-    }
 }
 
 /*void MainWindow::transitionChanged(QModelIndex topLeft, QModelIndex)
