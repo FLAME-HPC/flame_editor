@@ -30,6 +30,11 @@ class MainWindow : public QMainWindow {
   public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    QTreeView * getMachineTreeWidget();
+    QTableView * getMemoryTableWidget();
+    QGraphicsView * getGraphicsViewWidget();
+    int openModel_internal(QString fileName, bool test);
+    int closeModel_internal();
 
   signals:
     void clearSceneSelection();
@@ -48,7 +53,6 @@ class MainWindow : public QMainWindow {
     void deleteMemory();
     void newModel();
     void openModel();
-    int openModel_internal(QString fileName, bool test);
     void saveModel();
     void machineTreeClicked(QModelIndex);
     void machineTreeContextMenu(QPoint);
@@ -62,9 +66,9 @@ class MainWindow : public QMainWindow {
     void reload_scene();
 
   private:
+    Ui::MainWindowClass *ui;
     void handleNewAndOpenedModel(Machine * m);
     void defaultGuiSettings();
-    Ui::MainWindowClass *ui;
     SimulationThread * simulationThread;
     QToolBar * fileToolBar;
     MachineTree * machineTree;

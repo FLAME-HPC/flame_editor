@@ -89,6 +89,18 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
+QTreeView * MainWindow::getMachineTreeWidget() {
+    return ui->treeView_machines;
+}
+
+QTableView * MainWindow::getMemoryTableWidget() {
+    return ui->tableViewMemory;
+}
+
+QGraphicsView * MainWindow::getGraphicsViewWidget() {
+    return ui->graphicsView;
+}
+
 /*void MainWindow::transitionChanged(QModelIndex topLeft, QModelIndex)
 {
     //ui->label->setText(QString("transitionChanged r: %1 c: %2").arg(topLeft.row(), topLeft.column()));
@@ -615,9 +627,15 @@ void MainWindow::on_pushButton_viewModel_clicked() {
         Qt::KeepAspectRatioByExpanding);
 }
 
-void MainWindow::on_pushButtonClose_clicked() {
+int MainWindow::closeModel_internal() {
+    if (currentMachine == 0) return 1;
     machineTree->removeMachine(currentMachine);
     defaultGuiSettings();
+    return 0;
+}
+
+void MainWindow::on_pushButtonClose_clicked() {
+    closeModel_internal();
 }
 
 void MainWindow::defaultGuiSettings() {

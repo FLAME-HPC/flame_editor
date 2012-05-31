@@ -105,7 +105,8 @@ lint:
 clean:
 	cd qtest; \
 	echo "clean up ..."; \
-	make distclean > /dev/null
+	make distclean > /dev/null; \
+	rm *.png
 
 # dsymutil - only relevent on Mac OS X
 memtest: 4.8
