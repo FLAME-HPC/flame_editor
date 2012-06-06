@@ -108,9 +108,7 @@ clean:
 	make distclean > /dev/null; \
 	rm *.png
 
-# dsymutil - only relevent on Mac OS X
 memtest: 4.8
 	cd qtest; \
-	valgrind --dsymutil=yes --leak-check=full ./$(EXECUTABLE); \
-	rm -fr $(EXECUTABLE).dSYM
+	valgrind --leak-check=full ./$(EXECUTABLE)
 	
