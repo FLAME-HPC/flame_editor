@@ -784,6 +784,9 @@ GraphicsItem * MachineScene::addTransitionString(QString agentName,
         addState(state);
         if (flag == 1) state->foreign = true;
         if (isEditable == 0) state->editable = false;
+    } else {
+        if (flag == 0) cs->foreign = false;
+        if (isEditable == 1) cs->editable = true;
     }
     if (ns == 0) {
         GraphicsItem *state = new GraphicsItem;
@@ -793,6 +796,9 @@ GraphicsItem * MachineScene::addTransitionString(QString agentName,
         addState(state);
         if (flag == 1) state->foreign = true;
         if (isEditable == 0) state->editable = false;
+    } else {
+        if (flag == 0) ns->foreign = false;
+        if (isEditable == 1) ns->editable = true;
     }
 
     if (func == 0) {
@@ -1077,4 +1083,13 @@ void MachineScene::deleteSelectedFunction() {
         selectedFunction = 0;
         emit(functionSelected(false));
     }
+}
+
+void MachineScene::clearAll() {
+    /* Clear all lists */
+    agentNames.clear();
+    statesAndTransitions.clear();
+    messages.clear();
+    /* Clear all items */
+    clear();
 }

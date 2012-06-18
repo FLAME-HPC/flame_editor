@@ -30,6 +30,7 @@ class MachineScene : public QGraphicsScene {
     void addTransitionTransition(QString agentName,
         Transition * t, int isForeign = 0, int isEditable = 1);
     void setGraphicsView(QGraphicsView * g) { myGraphicsView = g; }
+    void clearAll();
 
   signals:
     void functionSelected(bool b);

@@ -307,30 +307,45 @@ void MainWindow::saveModel() {
         statusBar()->showMessage(tr("File saved"), 2000);
 }
 
-void addRestOfModel(Machine * m, Machine * agent, int foreign, int editable) {
-    if (m->type == 0) {  // model
+void addRestOfModel(Machine * m, Machine * selected) {//, int foreign, int editable) {
+        // For each child
         for (int i = 0; i < m->childCount(); i++) {
-            if (m->child(i)->type == 1) {  // if agent
-                if ((agent->type == 1 && m->child(i)->name == agent->name &&
-                        m->child(i) != agent) || agent->type == 0) {
-                    QList<Transition*> transitions =
-                            m->child(i)->machineModel->getTransitions();
+            // If child is agent
+            if (m->child(i)->type == 1) {
+                QList<Transition*> transitions =
+                        m->child(i)->machineModel->getTransitions();
 
+                /* Add agent transitions as local and editable */
+                int foreign = 1;
+                int editable = 0;
+                bool included = true;
+                /* If child is selected agent */
+                if(selected == m->child(i)) {
+                    foreign = 0;
+                    editable = 1;
+                }
+                /* If machine is selected model */
+                if (selected == m) {
+                    foreign = 0;
+                    editable = 0;
+                }
+                /* If selected is agent and child is not called the same */
+                if (selected->type == 1 && selected->name != m->child(i)->name)
+                    included = false;
+
+                if (included) {
                     for (int j = 0; j < transitions.count(); j++) {
                         Transition * t = transitions.at(j);
-                        agent->machineScene->addTransitionTransition(
+                        selected->machineScene->addTransitionTransition(
                                 m->child(i)->name, t, foreign, editable);
                     }
                 }
             }
-            if (foreign == 1) {
-                if (m->child(i)->type == 0) {  // model
-                    if (m->child(i) != agent)
-                        addRestOfModel(m->child(i), agent, foreign, editable);
-                }
+            // If child is model
+            if (m->child(i)->type == 0) {
+                addRestOfModel(m->child(i), selected);
             }
         }
-    }
 }
 
 void MainWindow::machineTreeClicked(QModelIndex index) {
@@ -450,9 +465,10 @@ void MainWindow::machineTreeClicked(QModelIndex index) {
     // Set up graphics scene for
     // models, agents
     if (m->type == 0 || m->type == 1) {
-        // Load other states and transitions from the rest of the other model
-        addRestOfModel(m, m, 0, m->type);  // Add local agent functions
-        addRestOfModel(m->rootModel(), m, 1, m->type);  // Add global agent functions
+        /* Clear a scene of all items */
+        m->machineScene->clearAll();
+        /* Populate scene */
+        addRestOfModel(m->rootModel(), m);
 
         // Set up graphics view
         ui->graphicsView->setScene(m->machineScene);
