@@ -51,6 +51,7 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     int layer;
     int layered;
     bool foreign;
+    bool editable;
     int aveX;
     int mytype;  // 0-state, 1-transition, 2-message
     QString agentName;

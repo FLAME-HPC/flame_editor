@@ -83,6 +83,9 @@ MainWindow::MainWindow(QWidget *parent)
             this, SLOT(machineTreeContextMenu(QPoint)));
     connect(ui->pushButton_update, SIGNAL(clicked()),
             this, SLOT(reload_scene()));
+
+    /* For testing */
+    openModel_internal("/Users/stc/workspace/temp/temp.xml", false);
 }
 
 MainWindow::~MainWindow() {
@@ -304,7 +307,7 @@ void MainWindow::saveModel() {
         statusBar()->showMessage(tr("File saved"), 2000);
 }
 
-void addRestOfModel(Machine * m, Machine * agent, int foreign) {
+void addRestOfModel(Machine * m, Machine * agent, int foreign, int editable) {
     if (m->type == 0) {  // model
         for (int i = 0; i < m->childCount(); i++) {
             if (m->child(i)->type == 1) {  // if agent
@@ -316,14 +319,14 @@ void addRestOfModel(Machine * m, Machine * agent, int foreign) {
                     for (int j = 0; j < transitions.count(); j++) {
                         Transition * t = transitions.at(j);
                         agent->machineScene->addTransitionTransition(
-                                m->child(i)->name, t, foreign);
+                                m->child(i)->name, t, foreign, editable);
                     }
                 }
             }
             if (foreign == 1) {
                 if (m->child(i)->type == 0) {  // model
                     if (m->child(i) != agent)
-                        addRestOfModel(m->child(i), agent, foreign);
+                        addRestOfModel(m->child(i), agent, foreign, editable);
                 }
             }
         }
@@ -448,8 +451,8 @@ void MainWindow::machineTreeClicked(QModelIndex index) {
     // models, agents
     if (m->type == 0 || m->type == 1) {
         // Load other states and transitions from the rest of the other model
-        addRestOfModel(m, m, 0);  // Add local agent functions
-        addRestOfModel(m->rootModel(), m, 1);  // Add global agent functions
+        addRestOfModel(m, m, 0, m->type);  // Add local agent functions
+        addRestOfModel(m->rootModel(), m, 1, m->type);  // Add global agent functions
 
         // Set up graphics view
         ui->graphicsView->setScene(m->machineScene);

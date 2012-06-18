@@ -28,9 +28,8 @@ class MachineScene : public QGraphicsScene {
     void selectTransition(QString n);
     void selectState(QString n);
     void addTransitionTransition(QString agentName,
-        Transition * t, int isForeign = 0);
+        Transition * t, int isForeign = 0, int isEditable = 1);
     void setGraphicsView(QGraphicsView * g) { myGraphicsView = g; }
-
 
   signals:
     void functionSelected(bool b);
@@ -52,7 +51,7 @@ class MachineScene : public QGraphicsScene {
 
   private:
     GraphicsItem * addTransitionString(QString agentName,
-        Transition * t, int flag);
+        Transition * t, int flag, int isEditable);
     void addMessageCommunication(GraphicsItem *t,
         MessageComm * m, bool isInput);
     void removeTransitionFunction(GraphicsItem * t);
@@ -76,6 +75,7 @@ class MachineScene : public QGraphicsScene {
     QList<GraphicsItem *> statesAndTransitions;
     QList<GraphicsItem *> messages;
     GraphicsItem * selectedFunction;
+    GraphicsItem * selectedState;
 };
 
 #endif  // MACHINESCENE_H_

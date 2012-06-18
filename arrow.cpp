@@ -35,6 +35,7 @@ Arrow::Arrow(GraphicsItem *startItem, GraphicsItem *endItem,
     showHead = true;
     isCommunication = false;
     myTransition = 0;
+    editable = true;
 }
 
 /*!
@@ -94,9 +95,9 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
 
     if (foreign) painter->setPen(Qt::gray);
     else
-        painter->setPen(isSelected() ? Qt::red : Qt::black);
+        painter->setPen(isSelected()&&editable ? Qt::red : Qt::black);
     if (isCommunication)
-        painter->setPen(isSelected() ? Qt::darkGreen : Qt::green);
+        painter->setPen(isSelected()&&editable ? Qt::darkGreen : Qt::green);
     painter->setRenderHint(QPainter::Antialiasing);
 
     // new
@@ -174,9 +175,9 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         painter->drawPath(path);
         if (foreign) painter->setBrush(Qt::gray);
         else
-            painter->setBrush(isSelected() ? Qt::red : Qt::black);
+            painter->setBrush(isSelected()&&editable ? Qt::red : Qt::black);
         if (isCommunication)
-            painter->setBrush(isSelected() ? Qt::darkGreen : Qt::green);
+            painter->setBrush(isSelected()&&editable ? Qt::darkGreen : Qt::green);
         painter->drawPolygon(arrowHead);
 
         /*if(myTransition != 0)

@@ -22,6 +22,7 @@ MachineScene::MachineScene(Machine * m, QObject *parent)
     myGraphicsView = 0;
     scaleFactor = 1.15;  // How fast we zoom
     selectedFunction = 0;
+    selectedState = 0;
 }
 
 void MachineScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
@@ -148,109 +149,96 @@ void MachineScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 
 void MachineScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     if (line != 0) {
+        /* If line exists then update line */
         QLineF newLine(line->line().p1(), mouseEvent->scenePos());
         line->setLine(newLine);
 
-        /*QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
+        /* If a state is selected */
+        if (selectedState != 0) {
+            /* Find item at mouse location */
+            QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
+            /* If there is a qgraphics item at the location */
+            if (qitem != 0) {
+                /* Try and cast qgraphics item to graphics item */
+                if (qgraphicsitem_cast<GraphicsItem *>(qitem)) {
+                    /* Cast qgraphics item qitem to graphics item sitem */
+                    GraphicsItem * sitem = qgraphicsitem_cast<GraphicsItem *>(qitem);
+                    /* If item is another state then highlight it */
+                    if (sitem->mytype == 0) {
+                        if (sitem != selectedState) {
+                            qitem->setSelected(true);
+                        }
+                    }
+                }
+            }
+        }
+    } /*else  {
+        QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
         if (qitem == 0)
         {
             GraphicsItem * state = qgraphicsitem_cast<GraphicsItem *>(qitem);
             state->setSelected(true);
             state->update();
-        }*/
+        }
     } else {
         QGraphicsScene::mouseMoveEvent(mouseEvent);
-    }
+    }*/
+
+    QGraphicsScene::mouseMoveEvent(mouseEvent);
 }
 
 void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
+    /* Pointer to possible graphics item */
+    GraphicsItem * sitem;
+    /* Reset selection variables */
     selectedFunction = 0;
+    selectedState = 0;
+    /* Clear any selected graphics items */
+    clearSelection();
+    /* Emit signal to say no function is selected */
     emit(functionSelected(false));
-    // qDebug() << "selectedFunction = 0";
 
-    QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
-
-    /* If left mouse click proceed with event,
-     * which is passed to scene items to select/move them */
-    if (mouseEvent->button() == Qt::LeftButton) {
+    /* If the machine for this graph is an agent (not a model) */
+    if (rootMachine->type == 1) {
+        /* Find item at mouse location */
+        QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
+        /* If there is a qgraphics item at the location */
         if (qitem != 0) {
-            clearSelection();
+            /* Set qgraphics item to be selected */
             qitem->setSelected(true);
-
+            /* Try and cast qgraphics item to graphics item */
             if (qgraphicsitem_cast<GraphicsItem *>(qitem)) {
-                GraphicsItem * sitem =
-                        qgraphicsitem_cast<GraphicsItem *>(qitem);
-                // if function and not foreign
-                if (sitem->mytype == 1 && !sitem->foreign) {
-                    selectedFunction = sitem;
-                    emit(functionSelected(true));
-                    // qDebug() << "selectedFunction = " << sitem->getName();
+                /* Cast qgraphics item qitem to graphics item sitem */
+                sitem = qgraphicsitem_cast<GraphicsItem *>(qitem);
+
+                /* If left mouse click proceed with event,
+                 * which is passed to scene items to select/move them */
+                if (mouseEvent->button() == Qt::LeftButton) {
+                    /* If function and not foreign then set selectedFunction and
+                       emit signal */
+                    if (sitem->mytype == 1 && !sitem->foreign) {
+                        selectedFunction = sitem;
+                        emit(functionSelected(true));
+                    }
+                    /* If state then set selectedState */
+                    if (sitem->mytype == 0) selectedState = sitem;
+                }
+
+                /* If right mouse button start line */
+                if (mouseEvent->button() == Qt::RightButton) {
+                    /* Start drawing line */
+                    line = new QGraphicsLineItem(
+                            QLineF(mouseEvent->scenePos(),
+                                    mouseEvent->scenePos()));
+                    line->setPen(QPen(Qt::black, 1));
+                    addItem(line);
                 }
             }
         }
-
-        QGraphicsScene::mousePressEvent(mouseEvent);
     }
 
-    /* If right mouse button add state or start line */
-    if (mouseEvent->button() == Qt::RightButton) {
-        if (rootMachine->type == 1) {  // agent
-            // qitem = itemAt(mouseEvent->scenePos());
-            /* If there is no item at mouse position */
-            if (qitem == 0) {
-                /* Create new state, add to scene, and set position */
-    /*            GraphicsItem *state = new GraphicsItem;
-                QString s;
-
-                s.append("state_");
-                s.append(QString("%1").arg(num_states));
-                num_states++;
-                state->setName(s);
-                addItem(state);
-                state->setPos(mouseEvent->scenePos());
-                //machine->addState(state);
-                emit( this->addedState(s, state->getStartState()) );
-    */
-            } else {
-                // GraphicsItem * state = qgraphicsitem_cast<GraphicsItem *>
-                // (qitem);
-                // state->setSelected(true);
-                // state->update();
-
-                /* If graphics item is a state */
-                if (qgraphicsitem_cast<GraphicsItem *>(qitem)) {
-                    GraphicsItem * sitem =
-                            qgraphicsitem_cast<GraphicsItem *>(qitem);
-
-                    // if item is a state
-                    // if(sitem->mytype==0)
-                    // {
-                        int count = 0;
-                        for (int i = 0; i < sitem->
-                        getTransitionArrows().size(); i ++) {
-                            Arrow * a = sitem->getTransitionArrows().at(i);
-                            if (a->startItem() == sitem) count++;
-                        }
-
-                        // if(count < 2)
-                        // {
-                            line = new QGraphicsLineItem(
-                                    QLineF(mouseEvent->scenePos(),
-                                            mouseEvent->scenePos()));
-                            line->setPen(QPen(Qt::black, 1));
-                            addItem(line);
-                        // }
-                        // else
-                        // {
-                        //    emit( updateStatus(
-            //    "States cannot have more than 2 outgoing transitions") );
-                        // }
-                    // }
-                }
-                // else qDebug() << "arrow clicked";
-            }
-        }
-    }
+    /* Allow QGraphicsScene to continue processing mouse event */
+    QGraphicsScene::mousePressEvent(mouseEvent);
 }
 
 void MachineScene::wheelEvent(QGraphicsSceneWheelEvent *event) {
@@ -741,8 +729,8 @@ void MachineScene::addMessageCommunication(GraphicsItem *t, MessageComm * m,
 }
 
 void MachineScene::addTransitionTransition(QString agentName,
-        Transition * t, int isForeign) {
-    GraphicsItem * func = addTransitionString(agentName, t, isForeign);
+        Transition * t, int isForeign, int isEditable) {
+    GraphicsItem * func = addTransitionString(agentName, t, isForeign, isEditable);
 
     if (!isForeign) {
         Q_ASSERT(func != 0);
@@ -761,7 +749,7 @@ void MachineScene::addTransitionTransition(QString agentName,
 }
 
 GraphicsItem * MachineScene::addTransitionString(QString agentName,
-        Transition * t, int flag) {
+        Transition * t, int flag, int isEditable) {
     QString csn = t->currentState()->name();
     QString n = t->name();
     QString nsn = t->nextState()->name();
@@ -795,6 +783,7 @@ GraphicsItem * MachineScene::addTransitionString(QString agentName,
         cs = state;
         addState(state);
         if (flag == 1) state->foreign = true;
+        if (isEditable == 0) state->editable = false;
     }
     if (ns == 0) {
         GraphicsItem *state = new GraphicsItem;
@@ -803,6 +792,7 @@ GraphicsItem * MachineScene::addTransitionString(QString agentName,
         ns = state;
         addState(state);
         if (flag == 1) state->foreign = true;
+        if (isEditable == 0) state->editable = false;
     }
 
     if (func == 0) {
@@ -810,12 +800,14 @@ GraphicsItem * MachineScene::addTransitionString(QString agentName,
         func->setTransition(t);
         func->agentName = agentName;
         if (flag == 1) func->foreign = true;
+        if (isEditable == 0) func->editable = false;
         addTransition(func);
 
         arrow = new Arrow(cs, func);
         cs->addTransitionArrow(arrow);
         func->addTransitionArrow(arrow);
         if (flag == 1) arrow->foreign = true;
+        if (isEditable == 0) arrow->editable = false;
         arrow->drawHead(false);
         addArrow(arrow);
 
@@ -823,6 +815,7 @@ GraphicsItem * MachineScene::addTransitionString(QString agentName,
         func->addTransitionArrow(arrow);
         ns->addTransitionArrow(arrow);
         if (flag == 1) arrow->foreign = true;
+        if (isEditable == 0) arrow->editable = false;
         addArrow(arrow);
     }
 

@@ -62,6 +62,8 @@ class Arrow : public QGraphicsLineItem {
     bool foreign;
     /*! \brief flag for state transition or communication arrows. */
     bool isCommunication;
+    /*! \brief flag for being editable. */
+    bool editable;
 
   public slots:
     void updatePosition();
