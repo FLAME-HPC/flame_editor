@@ -177,7 +177,8 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         else
             painter->setBrush(isSelected()&&editable ? Qt::red : Qt::black);
         if (isCommunication)
-            painter->setBrush(isSelected()&&editable ? Qt::darkGreen : Qt::green);
+            painter->setBrush(
+                        isSelected()&&editable ? Qt::darkGreen : Qt::green);
         painter->drawPolygon(arrowHead);
 
         /*if(myTransition != 0)

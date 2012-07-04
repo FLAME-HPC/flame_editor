@@ -1,0 +1,208 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }  
+         
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>mac_test_editor.sikuli</h2> <a href="mac_test_editor.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">from</span> sikuli.Sikuli <span class="kw">import</span> *
+<span class="kw">import</span> unittest
+<span class="kw">import</span> sys
+<span class="kw">import</span> os
+<span class="kw">import</span> platform
+<span class="cmt"># Add HTMLTestRunner to PATH and import
+</span>sys.path.append(<span class="str">"/Users/stc/workspace/flame/flame_editor/branches/stc/tests/scripts/HTMLTestRunner"</span>)
+sys.path.append(str(getBundlePath()) + <span class="str">"/../"</span> + <span class="str">"HTMLTestRunner"</span>)
+<span class="kw">import</span> HTMLTestRunner
+
+myOS = str(Env.getOS())
+myVer = str(Env.getOSVersion())
+
+<span class="kw">if</span> myOS == <span class="str">"MAC"</span> <span class="kw">and</span> myVer.startswith(<span class="str">"10.7"</span>):
+    os = <span class="str">"mac_lion"</span>
+<span class="kw">elif</span> myOS == <span class="str">"LINUX"</span>:
+    p = os.popen(<span class="str">"uname -a"</span>)
+    uname = p.readline()
+    p.close()
+    <span class="kw">if</span> <span class="str">'Ubuntu'</span> <span class="kw">in</span> uname:
+        p = os.popen(<span class="str">"lsb_release -r"</span>)
+        ver = p.readline()
+        p.close()
+        <span class="kw">if</span> <span class="str">'11.04'</span> <span class="kw">in</span> ver:
+            os = <span class="str">"ubuntu_11.04"</span>
+        <span class="kw">else</span>:
+            <span class="kw">print</span> <span class="str">"Error: no script for Ubuntu ver "</span> + ver
+            exit(<span class="dig">1</span>)
+    <span class="kw">else</span>:
+        <span class="kw">print</span> <span class="str">"Error: no script for Linux dist "</span> + uname
+        exit(<span class="dig">1</span>)
+<span class="kw">else</span>:
+    <span class="kw">print</span> <span class="str">"Error: no script for OS "</span> + myOS + <span class="str">" "</span> + myVer
+    exit(<span class="dig">1</span>)
+
+<span class="kw">print</span> <span class="str">"Using script for OS "</span> + os
+<span class="cmt"># Add image path for current OS
+</span>addImagePath(str(getBundlePath()) + <span class="str">"/"</span> + os)
+
+<span class="cmt"># If run from the test script set parameters from arguments
+</span><span class="kw">if</span> len(sys.argv) &gt; <span class="dig">1</span>:
+    app = sys.argv[<span class="dig">1</span>]
+    outfile = open(sys.argv[<span class="dig">2</span>], <span class="str">"w"</span>)
+<span class="cmt"># If run from Sikuli GUI set parameters internally
+</span><span class="kw">else</span>:
+    <span class="cmt">#app = "/home/stc/workspace/flame_editor/stc/flame_editor"
+</span>    app = <span class="str">"/Users/stc/workspace/flame/flame_editor/branches/flame_editor-build-desktop/FLAME Editor.app"</span>
+    <span class="cmt">#app = "/Users/stc/workspace/flame/flame_editor/tags/flame_editor-build-desktop/flame_editor.app"
+</span>    <span class="cmt">#app = "flame_editor"
+</span>    outfile = open(getBundlePath() + <span class="str">"/../"</span> + <span class="str">"flame_editor_test_report.html"</span>, <span class="str">"w"</span>)
+
+<span class="cmt"># set default wait time out to 10s instead of default 3s
+</span>setAutoWaitTimeout(<span class="dig">10</span>)
+
+<span class="cmt">#setShowActions(True)
+</span>
+<span class="cmt"># Test suite classes
+</span><span class="kw">class</span> Create_new_model(unittest.TestCase):
+    <span class="kw">def</span> setUp(self):
+        openApp(app)
+        <span class="skw">wait</span>(<img src="FLAME_Editor_window_title.png" />)
+
+    <span class="kw">def</span> tearDown(self):
+        closeApp(<span class="str">"flame_editor"</span>)
+        waitVanish(<img src="FLAME_Editor_window_title.png" />)
+
+    <span class="kw">def</span> _create_new_model(self):
+        <span class="skw">click</span>(<img src="New_button.png" />)
+        <span class="skw">wait</span>(<img src="text_line_highlighted.png" />)
+        <span class="skw">type</span>(<span class="str">"testmodel.xml"</span>)
+        <span class="skw">wait</span>(<img src="file_dialog_Save_button.png" />)
+        <span class="skw">click</span>(<img src="file_dialog_Save_button.png" />)
+
+    <span class="kw">def</span> _cancel_new_model(self):
+        <span class="skw">click</span>(<img src="New_button.png" />)
+        <span class="skw">wait</span>(<img src="Cancel_button.png" />)
+        <span class="skw">click</span>(<img src="Cancel_button.png" />)
+
+    <span class="kw">def</span> test_cancel_new_model(self):
+        self._cancel_new_model()
+        self._create_new_model()
+        <span class="kw">assert</span> exists(<img src="one_model_in_models_tree.png" />)
+
+    <span class="kw">def</span> test_create_new_model(self):
+        self._create_new_model()
+        <span class="kw">assert</span> exists(<img src="one_model_in_models_tree.png" />)
+
+<span class="kw">class</span> Open_a_model(unittest.TestCase):
+    editor = App(app);
+
+    <span class="kw">def</span> setUp(self):
+        self.editor.open()
+        openApp(app)
+        <span class="skw">wait</span>(<img src="FLAME_Editor_window_title.png" />)
+
+    <span class="kw">def</span> tearDown(self):
+        <span class="cmt">#print "editor.close start"
+</span>        <span class="cmt">#self.editor.close()
+</span>        <span class="cmt">#print "editor.close finish"
+</span>        closeApp(<span class="str">"flame_editor"</span>)
+        waitVanish(<img src="FLAME_Editor_window_title.png" />)
+
+    <span class="kw">def</span> _open_test_model_folder(self):
+        <span class="skw">click</span>(<img src="Open_button.png" />)
+        <span class="skw">wait</span>(<img src="Documents.png" />)
+        <span class="skw">click</span>(<img src="Documents.png" />)
+        <span class="skw">click</span>(<img src="workspace_folder.png" />)
+        <span class="skw">click</span>(<img src="a_test_models_folder.png" />)
+        <span class="skw">click</span>(<img src="conditions.xml_file.png" />)
+        <span class="skw">click</span>(<img src="file_dialog_Open_button.png" />)
+        <span class="skw">wait</span>(<img src="FLAME_Editor_window_title.png" />)
+        <span class="kw">assert</span> exists(<img src="one_model_in_models_tree.png" />)
+
+    <span class="kw">def</span> test_open_a_valid_model(self):
+        self._open_test_model_folder()
+        <span class="cmt">#click("conditions.xml_file.png")
+</span>        <span class="cmt">#wait("file_dialog_Open_button.png")
+</span>        <span class="cmt">#click("file_dialog_Open_button.png")
+</span>        <span class="cmt">#assert exists("one_model_in_models_tree.png")
+</span>
+<span class="cmt"># End test suite classes
+</span>
+<span class="cmt"># Define the root test suite
+</span>suite = unittest.TestSuite()
+<span class="cmt"># Add test classes
+</span><span class="cmt">#suite.addTest(unittest.makeSuite(TestNewModel))
+</span><span class="cmt">#suite.addTest(unittest.makeSuite(EditorTests))
+</span><span class="cmt"># Add single test (for development)
+</span>suite.addTest(Open_a_model(<span class="str">"test_open_a_valid_model"</span>))
+<span class="cmt"># Initialise HTMLTestRunner and execute
+</span>runner = HTMLTestRunner.HTMLTestRunner(stream=outfile, title=<span class="str">'FLAME Editor Test Report'</span>, description=<span class="str">''</span> )
+runner.run(suite)
+<span class="kw">print</span> <span class="str">"Output written to "</span> + outfile.name
+</pre>
+</body>
+</html>

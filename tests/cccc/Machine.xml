@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Detailed report on module Machine-->
+<CCCC_Project>
+<module_summary>
+<lines_of_code value="523" level="1" />
+<lines_of_code_per_member_function value="******" level="0" />
+<McCabes_cyclomatic_complexity value="148" level="0" />
+<McCabes_cyclomatic_complexity_per_member_function value="******" level="2" />
+<lines_of_code value="169" level="0" />
+<lines_of_code_per_member_function value="********" level="2" />
+<lines_of_code_per_line_of_comment value="3.095" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.876" level="0" />
+<weighted_methods_per_class_unity value="27" level="0" />
+<weighted_methods_per_class_visibility value="27" level="0" />
+<depth_of_inheritance_tree value="0" level="0" />
+<number_of_children value="0" level="0" />
+<coupling_between_objects value="24" level="0" />
+<IF4 value="20736" level="2" />
+<IF4_per_member_function value="********" level="2" />
+<IF4_visible value="20736" level="2" />
+<IF4_visible_per_member_function value="********" level="2" />
+<IF4_concrete value="0" level="0" />
+<IF4_concrete_per_member_function value="********" level="0" />
+</module_summary>
+<module_detail>
+<description>declaration</description>
+<source_reference file="../machinescene.h" line="16" />
+<lines_of_code value="1" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+<description>definition</description>
+<source_reference file="../machine.h" line="21" />
+<lines_of_code value="21" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="9" level="0" />
+<lines_of_code_per_line_of_comment value="2.333" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</module_detail>
+<procedural_detail>
+<member_function>
+<name>Machine(int,Machine *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="11" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="23" />
+</extent>
+<lines_of_code value="34" level="1" />
+<McCabes_cyclomatic_complexity value="2" level="0" />
+<lines_of_comment value="9" level="0" />
+<lines_of_code_per_line_of_comment value="3.778" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>addTransitionString(QString,QString,QString,Condition,Mpost,Communication,Communication,QString)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="75" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="38" />
+</extent>
+<lines_of_code value="11" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>appendChild(Machine *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="85" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="28" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>child(int)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="89" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="30" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>childCount()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="93" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="31" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>columnCount()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="97" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="32" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>data(int)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="101" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="33" />
+</extent>
+<lines_of_code value="29" level="0" />
+<McCabes_cyclomatic_complexity value="42" level="2" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="29.000" level="1" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="42.000" level="2" />
+</member_function>
+<member_function>
+<name>filePath()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="287" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="54" />
+</extent>
+<lines_of_code value="8" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>getAgentMemoryNames(QString,bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="189" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="43" />
+</extent>
+<lines_of_code value="17" level="0" />
+<McCabes_cyclomatic_complexity value="6" level="0" />
+<lines_of_comment value="3" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="2.000" level="0" />
+</member_function>
+<member_function>
+<name>getDataTypes(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="231" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="46" />
+</extent>
+<lines_of_code value="30" level="0" />
+<McCabes_cyclomatic_complexity value="11" level="1" />
+<lines_of_comment value="7" level="0" />
+<lines_of_code_per_line_of_comment value="4.286" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="1.571" level="0" />
+</member_function>
+<member_function>
+<name>getMessageMemoryNames(QString,bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="210" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="44" />
+</extent>
+<lines_of_code value="17" level="0" />
+<McCabes_cyclomatic_complexity value="6" level="0" />
+<lines_of_comment value="3" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="2.000" level="0" />
+</member_function>
+<member_function>
+<name>getMessageNames(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="168" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="45" />
+</extent>
+<lines_of_code value="18" level="0" />
+<McCabes_cyclomatic_complexity value="6" level="0" />
+<lines_of_comment value="4" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="1.500" level="0" />
+</member_function>
+<member_function>
+<name>getMessageType(QString,bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="266" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="47" />
+</extent>
+<lines_of_code value="18" level="0" />
+<McCabes_cyclomatic_complexity value="9" level="0" />
+<lines_of_comment value="2" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="4.500" level="0" />
+</member_function>
+<member_function>
+<name>getTimeUnits(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="142" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="42" />
+</extent>
+<lines_of_code value="22" level="0" />
+<McCabes_cyclomatic_complexity value="9" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="3.667" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="1.500" level="0" />
+</member_function>
+<member_function>
+<name>insertChild(Machine *,int)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="65" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="37" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>isEnabled()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.h" line="48" />
+</extent>
+<lines_of_code value="1" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>parent()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="131" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="35" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>removeChild(Machine *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="61" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="36" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>rootModel()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.h" line="50" />
+</extent>
+<lines_of_code value="1" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>row()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="135" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="34" />
+</extent>
+<lines_of_code value="6" level="0" />
+<McCabes_cyclomatic_complexity value="3" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>setEnabled(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.h" line="49" />
+</extent>
+<lines_of_code value="1" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>setRootModel(Machine *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.h" line="51" />
+</extent>
+<lines_of_code value="1" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>setTimeUnit(TimeUnit)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.h" line="52" />
+</extent>
+<lines_of_code value="1" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>setTimeUnitName(QString)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.h" line="55" />
+</extent>
+<lines_of_code value="1" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>timeUnit()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.h" line="53" />
+</extent>
+<lines_of_code value="1" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>writeModelXML(QFile *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../modelxmlwriter.cpp" line="3" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="26" />
+</extent>
+<lines_of_code value="246" level="2" />
+<McCabes_cyclomatic_complexity value="43" level="2" />
+<lines_of_comment value="111" level="0" />
+<lines_of_code_per_line_of_comment value="2.216" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.387" level="0" />
+</member_function>
+<member_function>
+<name>~Machine()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machine.cpp" line="49" />
+</extent>
+<extent>
+<description>declaration</description>
+<source_reference file="../machine.h" line="24" />
+</extent>
+<lines_of_code value="10" level="0" />
+<McCabes_cyclomatic_complexity value="3" level="0" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+</procedural_detail>
+<structural_detail>
+<module>
+<name>Machine</name>
+<client_module>
+<name>CommDelegate</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../commdelegate.cpp" line="14" />
+</extent>
+<name>CommDialog</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../commdialog.cpp" line="14" />
+</extent>
+<name>DataTypeDelegate</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../datatypedelegate.cpp" line="10" />
+</extent>
+<name>MachineScene</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="12" />
+</extent>
+<name>MachineTree</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinetree.cpp" line="146" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinetree.cpp" line="198" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinetree.cpp" line="205" />
+</extent>
+<name>MainWindow</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../mainwindow.cpp" line="280" />
+</extent>
+<name>MpreDelegate</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../mpredelegate.cpp" line="14" />
+</extent>
+<name>MpreDialog</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../mpredialog.cpp" line="13" />
+</extent>
+<name>SortDelegate</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../sortdelegate.cpp" line="13" />
+</extent>
+<name>SortDialog</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../sortdialog.cpp" line="11" />
+</extent>
+<name>TimeUnitDialog</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../timeunitdialog.cpp" line="12" />
+</extent>
+<name>modelXMLReader</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="12" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="252" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="268" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="307" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="323" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="501" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="529" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="545" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="569" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.cpp" line="585" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="23" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="34" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="35" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="36" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="37" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="43" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="44" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="45" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="46" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlreader.h" line="52" />
+</extent>
+<extent>
+<description>has by reference</description>
+<source_reference file="../modelxmlreader.h" line="54" />
+</extent>
+</client_module>
+<supplier_module>
+<name>Communication</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="76" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="76" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="40" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="40" />
+</extent>
+<name>Condition</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="76" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="39" />
+</extent>
+<name>MachineModel</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>has by reference</description>
+<source_reference file="../machine.h" line="57" />
+</extent>
+<name>MachineScene</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>has by reference</description>
+<source_reference file="../machine.h" line="59" />
+</extent>
+<name>MemoryModel</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>has by reference</description>
+<source_reference file="../machine.h" line="58" />
+</extent>
+<name>Mpost</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="76" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="39" />
+</extent>
+<name>QFile</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../modelxmlwriter.cpp" line="3" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machine.h" line="26" />
+</extent>
+<extent>
+<description>has by reference</description>
+<source_reference file="../machine.h" line="82" />
+</extent>
+<name>QList</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="77" />
+</extent>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="80" />
+</extent>
+<name>QString</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="75" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="75" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="75" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="77" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="189" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="210" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="266" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="38" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="38" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="38" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="40" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="43" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="44" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="47" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="55" />
+</extent>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="62" />
+</extent>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="63" />
+</extent>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="75" />
+</extent>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="76" />
+</extent>
+<name>QStringList</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="61" />
+</extent>
+<name>TimeUnit</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="52" />
+</extent>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="85" />
+</extent>
+<name>bool</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="142" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="168" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="189" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="210" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="231" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.cpp" line="266" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="42" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="43" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="44" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="45" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="46" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="47" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machine.h" line="49" />
+</extent>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="74" />
+</extent>
+<extent>
+<description>has by value</description>
+<source_reference file="../machine.h" line="83" />
+</extent>
+</supplier_module>
+</module>
+</structural_detail>
+</CCCC_Project>

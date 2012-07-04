@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Detailed report on module MpreDialog-->
+<CCCC_Project>
+<module_summary>
+<lines_of_code value="411" level="0" />
+<lines_of_code_per_member_function value="******" level="0" />
+<McCabes_cyclomatic_complexity value="50" level="0" />
+<McCabes_cyclomatic_complexity_per_member_function value="******" level="2" />
+<lines_of_code value="70" level="0" />
+<lines_of_code_per_member_function value="********" level="2" />
+<lines_of_code_per_line_of_comment value="5.871" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.714" level="0" />
+<weighted_methods_per_class_unity value="20" level="0" />
+<weighted_methods_per_class_visibility value="0" level="0" />
+<depth_of_inheritance_tree value="1" level="0" />
+<number_of_children value="0" level="0" />
+<coupling_between_objects value="7" level="0" />
+<IF4 value="0" level="0" />
+<IF4_per_member_function value="********" level="0" />
+<IF4_visible value="0" level="0" />
+<IF4_visible_per_member_function value="********" level="0" />
+<IF4_concrete value="0" level="0" />
+<IF4_concrete_per_member_function value="********" level="0" />
+</module_summary>
+<module_detail>
+<description>definition</description>
+<source_reference file="../mpredialog.h" line="26" />
+<lines_of_code value="41" level="1" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="******" level="2" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</module_detail>
+<procedural_detail>
+<member_function>
+<name>MpreDialog(Machine *,QString *,QWidget *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="13" />
+</extent>
+<lines_of_code value="53" level="1" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="10" level="0" />
+<lines_of_code_per_line_of_comment value="5.300" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>checkedLhsAgentVariable(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="388" />
+</extent>
+<lines_of_code value="8" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>checkedLhsMessageVariable(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="398" />
+</extent>
+<lines_of_code value="7" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>checkedLhsValue(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="407" />
+</extent>
+<lines_of_code value="8" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>checkedRhsAgentVariable(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="417" />
+</extent>
+<lines_of_code value="8" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>checkedRhsMessageVariable(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="427" />
+</extent>
+<lines_of_code value="7" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>checkedRhsValue(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="436" />
+</extent>
+<lines_of_code value="8" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>disableTimePhaseValue(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="452" />
+</extent>
+<lines_of_code value="5" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>disableTimePhaseVariable(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="446" />
+</extent>
+<lines_of_code value="5" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>editLhsClicked()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="464" />
+</extent>
+<lines_of_code value="10" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>editRhsClicked()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="481" />
+</extent>
+<lines_of_code value="10" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>enableCondition(bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="330" />
+</extent>
+<lines_of_code value="22" level="0" />
+<McCabes_cyclomatic_complexity value="4" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="3.667" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>getCondition()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="318" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>getCurrentCondition()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="269" />
+</extent>
+<lines_of_code value="37" level="1" />
+<McCabes_cyclomatic_complexity value="7" level="0" />
+<lines_of_comment value="5" level="0" />
+<lines_of_code_per_line_of_comment value="7.400" level="1" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="1.400" level="0" />
+</member_function>
+<member_function>
+<name>levelUpClicked()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="492" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>nestedClicked()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="382" />
+</extent>
+<lines_of_code value="5" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="5" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>setCondition(Condition)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="258" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>setCurrentCondition(Condition *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="78" />
+</extent>
+<lines_of_code value="155" level="2" />
+<McCabes_cyclomatic_complexity value="31" level="2" />
+<lines_of_comment value="10" level="0" />
+<lines_of_code_per_line_of_comment value="15.500" level="1" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="3.100" level="0" />
+</member_function>
+<member_function>
+<name>timeClicked()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="371" />
+</extent>
+<lines_of_code value="5" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="5" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>valueClicked()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../mpredialog.cpp" line="360" />
+</extent>
+<lines_of_code value="5" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="5" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+</procedural_detail>
+<structural_detail>
+<module>
+<name>MpreDialog</name>
+<client_module>
+</client_module>
+<supplier_module>
+<name>Condition</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../mpredialog.cpp" line="78" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="258" />
+</extent>
+<name>ConditionDialog</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>inheritance</description>
+<source_reference file="../mpredialog.h" line="26" />
+</extent>
+<name>Machine</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../mpredialog.cpp" line="13" />
+</extent>
+<name>QDialog</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>inheritance</description>
+<source_reference file="../mpredialog.h" line="26" />
+</extent>
+<name>QString</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../mpredialog.cpp" line="13" />
+</extent>
+<name>QWidget</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../mpredialog.cpp" line="13" />
+</extent>
+<name>bool</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="330" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="388" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="398" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="407" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="417" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="427" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="436" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="446" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../mpredialog.cpp" line="452" />
+</extent>
+</supplier_module>
+</module>
+</structural_detail>
+</CCCC_Project>

@@ -3,6 +3,7 @@ CONFIG  += qtestlib
 SOURCES = test_flame_editor.cpp \
     ../../mainwindow.cpp \
     ../../machinescene.cpp \
+    ../../calculatelayers.cpp \
     ../../arrow.cpp \
     ../../machinemodel.cpp \
     ../../memorydelegate.cpp \
@@ -17,6 +18,7 @@ SOURCES = test_flame_editor.cpp \
     ../../adt.cpp \
     ../../memoryvariable.cpp \
     ../../modelxmlreader.cpp \
+    ../../modelxmlwriter.cpp \
     ../../machine.cpp \
     ../../transition.cpp \
     ../../state.cpp \

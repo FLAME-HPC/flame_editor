@@ -12,13 +12,12 @@
 
 MpostDialog::MpostDialog(MemoryModel * m, QWidget *parent)
      : QDialog(parent) {
-    // qDebug() << "MpreDialog";
     memory = m;
 
+    /* Initialise interface */
     lhsGroup = new QGroupBox(tr("LHS"));
     rhsGroup = new QGroupBox(tr("RHS"));
     opGroup = new QGroupBox(tr("OP"));
-
     myEnabled = new QCheckBox(tr("Enabled"));
 
     connect(myEnabled, SIGNAL(clicked(bool)), lhsGroup, SLOT(setEnabled(bool)));
@@ -71,6 +70,12 @@ MpostDialog::MpostDialog(MemoryModel * m, QWidget *parent)
     setWindowTitle(tr("Mpost Editor"));
 }
 
+/*!
+ * \brief Sets local mpost and updates interface
+ * \param[in] m The mpost
+ *
+ * Sets local mpost and updates interface.
+ */
 void MpostDialog::setMpost(Mpost m) {
     mpost = m;
     myEnabled->setChecked(mpost.enabled());
@@ -92,6 +97,12 @@ void MpostDialog::setMpost(Mpost m) {
     emit(setVariable2ComboBox(index));
 }
 
+/*!
+ * \brief Captures interface settings to local mpost and return
+ * \return The local mpost
+ *
+ * Captures interface settings to local mpost and return.
+ */
 Mpost MpostDialog::getMpost() {
     mpost.setEnabled(myEnabled->isChecked());
     mpost.setValue(value->value());

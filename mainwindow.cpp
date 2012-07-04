@@ -307,7 +307,8 @@ void MainWindow::saveModel() {
         statusBar()->showMessage(tr("File saved"), 2000);
 }
 
-void addRestOfModel(Machine * m, Machine * selected) {//, int foreign, int editable) {
+void addRestOfModel(Machine * m, Machine * selected) {
+    // , int foreign, int editable) {
         // For each child
         for (int i = 0; i < m->childCount(); i++) {
             // If child is agent
@@ -320,7 +321,7 @@ void addRestOfModel(Machine * m, Machine * selected) {//, int foreign, int edita
                 int editable = 0;
                 bool included = true;
                 /* If child is selected agent */
-                if(selected == m->child(i)) {
+                if (selected == m->child(i)) {
                     foreign = 0;
                     editable = 1;
                 }

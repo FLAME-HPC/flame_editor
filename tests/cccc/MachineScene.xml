@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Detailed report on module MachineScene-->
+<CCCC_Project>
+<module_summary>
+<lines_of_code value="753" level="1" />
+<lines_of_code_per_member_function value="******" level="0" />
+<McCabes_cyclomatic_complexity value="195" level="0" />
+<McCabes_cyclomatic_complexity_per_member_function value="******" level="2" />
+<lines_of_code value="209" level="0" />
+<lines_of_code_per_member_function value="********" level="2" />
+<lines_of_code_per_line_of_comment value="3.603" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.933" level="0" />
+<weighted_methods_per_class_unity value="25" level="0" />
+<weighted_methods_per_class_visibility value="0" level="0" />
+<depth_of_inheritance_tree value="1" level="0" />
+<number_of_children value="0" level="0" />
+<coupling_between_objects value="14" level="0" />
+<IF4 value="169" level="1" />
+<IF4_per_member_function value="********" level="2" />
+<IF4_visible value="169" level="2" />
+<IF4_visible_per_member_function value="********" level="2" />
+<IF4_concrete value="0" level="0" />
+<IF4_concrete_per_member_function value="********" level="0" />
+</module_summary>
+<module_detail>
+<description>definition</description>
+<source_reference file="../machinescene.h" line="18" />
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</module_detail>
+<procedural_detail>
+<member_function>
+<name>MachineScene(Machine *,QObject *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="12" />
+</extent>
+<lines_of_code value="15" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="8" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>addArrow(Arrow *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="445" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>addMessageCommunication(GraphicsItem *,MessageComm *,bool)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="300" />
+</extent>
+<lines_of_code value="28" level="0" />
+<McCabes_cyclomatic_complexity value="6" level="0" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="28.000" level="1" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="6.000" level="1" />
+</member_function>
+<member_function>
+<name>addState(GraphicsItem *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="433" />
+</extent>
+<lines_of_code value="5" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>addTransition(GraphicsItem *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="439" />
+</extent>
+<lines_of_code value="5" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>addTransitionString(QString,Transition *,int,int)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="353" />
+</extent>
+<lines_of_code value="70" level="1" />
+<McCabes_cyclomatic_complexity value="28" level="1" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="70.000" level="2" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="28.000" level="2" />
+</member_function>
+<member_function>
+<name>addTransitionTransition(QString,Transition *,int,int)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="332" />
+</extent>
+<lines_of_code value="16" level="0" />
+<McCabes_cyclomatic_complexity value="3" level="0" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>calcLayers()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../calculatelayers.cpp" line="22" />
+</extent>
+<lines_of_code value="227" level="2" />
+<McCabes_cyclomatic_complexity value="66" level="2" />
+<lines_of_comment value="112" level="0" />
+<lines_of_code_per_line_of_comment value="2.027" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.589" level="0" />
+</member_function>
+<member_function>
+<name>clearAll()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="690" />
+</extent>
+<lines_of_code value="6" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="2" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>deleteSelectedFunction()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="676" />
+</extent>
+<lines_of_code value="9" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="4" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>keyPressEvent(QKeyEvent *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="272" />
+</extent>
+<lines_of_code value="16" level="0" />
+<McCabes_cyclomatic_complexity value="5" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="******" level="0" />
+</member_function>
+<member_function>
+<name>keyReleaseEvent(QKeyEvent *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="289" />
+</extent>
+<lines_of_code value="10" level="0" />
+<McCabes_cyclomatic_complexity value="3" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>mouseMoveEvent(QGraphicsSceneMouseEvent *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="150" />
+</extent>
+<lines_of_code value="21" level="0" />
+<McCabes_cyclomatic_complexity value="6" level="0" />
+<lines_of_comment value="7" level="0" />
+<lines_of_code_per_line_of_comment value="3.000" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.857" level="0" />
+</member_function>
+<member_function>
+<name>mousePressEvent(QGraphicsSceneMouseEvent *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="181" />
+</extent>
+<lines_of_code value="31" level="1" />
+<McCabes_cyclomatic_complexity value="8" level="0" />
+<lines_of_comment value="18" level="0" />
+<lines_of_code_per_line_of_comment value="1.722" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.444" level="0" />
+</member_function>
+<member_function>
+<name>mouseReleaseEvent(QGraphicsSceneMouseEvent *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="28" />
+</extent>
+<lines_of_code value="85" level="1" />
+<McCabes_cyclomatic_complexity value="23" level="1" />
+<lines_of_comment value="18" level="0" />
+<lines_of_code_per_line_of_comment value="4.722" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="1.278" level="0" />
+</member_function>
+<member_function>
+<name>removeTransitionFunction(GraphicsItem *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="642" />
+</extent>
+<lines_of_code value="30" level="0" />
+<McCabes_cyclomatic_complexity value="4" level="0" />
+<lines_of_comment value="3" level="0" />
+<lines_of_code_per_line_of_comment value="10.000" level="1" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>selectState(QString)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="611" />
+</extent>
+<lines_of_code value="13" level="0" />
+<McCabes_cyclomatic_complexity value="3" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>selectTransition(QString)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="627" />
+</extent>
+<lines_of_code value="12" level="0" />
+<McCabes_cyclomatic_complexity value="3" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>updateInput(Transition *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="472" />
+</extent>
+<lines_of_code value="56" level="1" />
+<McCabes_cyclomatic_complexity value="14" level="1" />
+<lines_of_comment value="11" level="0" />
+<lines_of_code_per_line_of_comment value="5.091" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="1.273" level="0" />
+</member_function>
+<member_function>
+<name>updateOutput(Transition *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="542" />
+</extent>
+<lines_of_code value="56" level="1" />
+<McCabes_cyclomatic_complexity value="14" level="1" />
+<lines_of_comment value="10" level="0" />
+<lines_of_code_per_line_of_comment value="5.600" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="1.400" level="0" />
+</member_function>
+<member_function>
+<name>updateStateName(State *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="450" />
+</extent>
+<lines_of_code value="9" level="0" />
+<McCabes_cyclomatic_complexity value="2" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>updateTransitionName(Transition *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="461" />
+</extent>
+<lines_of_code value="9" level="0" />
+<McCabes_cyclomatic_complexity value="2" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>wheelEvent(QGraphicsSceneWheelEvent *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="235" />
+</extent>
+<lines_of_code value="9" level="0" />
+<McCabes_cyclomatic_complexity value="2" level="0" />
+<lines_of_comment value="13" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>zoomIn()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="263" />
+</extent>
+<lines_of_code value="3" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>zoomOut()</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinescene.cpp" line="267" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+</procedural_detail>
+<structural_detail>
+<module>
+<name>MachineScene</name>
+<client_module>
+<name>Machine</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>has by reference</description>
+<source_reference file="../machine.h" line="59" />
+</extent>
+</client_module>
+<supplier_module>
+<name>Arrow</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="445" />
+</extent>
+<name>GraphicsItem</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="300" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="433" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="439" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="642" />
+</extent>
+<name>Machine</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="12" />
+</extent>
+<name>MessageComm</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="300" />
+</extent>
+<name>QGraphicsScene</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>inheritance</description>
+<source_reference file="../machinescene.h" line="18" />
+</extent>
+<name>QGraphicsSceneMouseEvent</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="28" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="150" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="181" />
+</extent>
+<name>QGraphicsSceneWheelEvent</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="235" />
+</extent>
+<name>QKeyEvent</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="272" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="289" />
+</extent>
+<name>QObject</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="12" />
+</extent>
+<name>QString</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinescene.cpp" line="332" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinescene.cpp" line="353" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinescene.cpp" line="611" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinescene.cpp" line="627" />
+</extent>
+<name>State</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="450" />
+</extent>
+<name>Transition</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="333" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="354" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="461" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="472" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinescene.cpp" line="542" />
+</extent>
+<name>bool</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinescene.cpp" line="301" />
+</extent>
+</supplier_module>
+</module>
+</structural_detail>
+</CCCC_Project>

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Detailed report on module MachineModel-->
+<CCCC_Project>
+<module_summary>
+<lines_of_code value="197" level="0" />
+<lines_of_code_per_member_function value="******" level="0" />
+<McCabes_cyclomatic_complexity value="86" level="0" />
+<McCabes_cyclomatic_complexity_per_member_function value="******" level="2" />
+<lines_of_code value="90" level="0" />
+<lines_of_code_per_member_function value="********" level="2" />
+<lines_of_code_per_line_of_comment value="2.189" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.956" level="0" />
+<weighted_methods_per_class_unity value="14" level="0" />
+<weighted_methods_per_class_visibility value="0" level="0" />
+<depth_of_inheritance_tree value="1" level="0" />
+<number_of_children value="0" level="0" />
+<coupling_between_objects value="12" level="0" />
+<IF4 value="121" level="1" />
+<IF4_per_member_function value="********" level="2" />
+<IF4_visible value="121" level="2" />
+<IF4_visible_per_member_function value="********" level="2" />
+<IF4_concrete value="0" level="0" />
+<IF4_concrete_per_member_function value="********" level="0" />
+</module_summary>
+<module_detail>
+<description>definition</description>
+<source_reference file="../machinemodel.h" line="18" />
+<lines_of_code value="5" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</module_detail>
+<procedural_detail>
+<member_function>
+<name>addMessageToTransition(Transition *,bool,QString)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="213" />
+</extent>
+<lines_of_code value="13" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>addState(QString)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="12" />
+</extent>
+<lines_of_code value="5" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="10" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>addTransition(QString,State *,State *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="23" />
+</extent>
+<lines_of_code value="7" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="33" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>addTransitionString(QString,QString,QString,Condition,Mpost,Communication,Communication,QString)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="70" />
+</extent>
+<lines_of_code value="30" level="0" />
+<McCabes_cyclomatic_complexity value="6" level="0" />
+<lines_of_comment value="2" level="0" />
+<lines_of_code_per_line_of_comment value="15.000" level="1" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="3.000" level="0" />
+</member_function>
+<member_function>
+<name>columnCount(const QModelIndex &amp;)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="112" />
+</extent>
+<lines_of_code value="3" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>data(const QModelIndex &amp;,int)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="116" />
+</extent>
+<lines_of_code value="26" level="0" />
+<McCabes_cyclomatic_complexity value="23" level="1" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="******" level="2" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="******" level="2" />
+</member_function>
+<member_function>
+<name>deleteTransition(Transition *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="309" />
+</extent>
+<lines_of_code value="3" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>flags(const QModelIndex &amp;)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="166" />
+</extent>
+<lines_of_code value="6" level="0" />
+<McCabes_cyclomatic_complexity value="5" level="0" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="******" level="0" />
+</member_function>
+<member_function>
+<name>headerData(int,Orientation,int)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="145" />
+</extent>
+<lines_of_code value="19" level="0" />
+<McCabes_cyclomatic_complexity value="21" level="1" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="******" level="2" />
+</member_function>
+<member_function>
+<name>insertRows(int,int,const QModelIndex &amp;)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="227" />
+</extent>
+<lines_of_code value="8" level="0" />
+<McCabes_cyclomatic_complexity value="2" level="0" />
+<lines_of_comment value="8" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>removeRows(int,int,const QModelIndex &amp;)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="245" />
+</extent>
+<lines_of_code value="9" level="0" />
+<McCabes_cyclomatic_complexity value="2" level="0" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>rowCount(const QModelIndex &amp;)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="108" />
+</extent>
+<lines_of_code value="3" level="0" />
+<McCabes_cyclomatic_complexity value="1" level="0" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>setData(const QModelIndex &amp;,const QVariant &amp;,int)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="174" />
+</extent>
+<lines_of_code value="38" level="1" />
+<McCabes_cyclomatic_complexity value="12" level="1" />
+<lines_of_comment value="0" level="0" />
+<lines_of_code_per_line_of_comment value="******" level="2" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="******" level="2" />
+</member_function>
+<member_function>
+<name>transitionUpdated(QModelIndex,QModelIndex)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../machinemodel.cpp" line="278" />
+</extent>
+<lines_of_code value="22" level="0" />
+<McCabes_cyclomatic_complexity value="10" level="0" />
+<lines_of_comment value="27" level="0" />
+<lines_of_code_per_line_of_comment value="0.815" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.370" level="0" />
+</member_function>
+</procedural_detail>
+<structural_detail>
+<module>
+<name>MachineModel</name>
+<client_module>
+<name>Machine</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>has by reference</description>
+<source_reference file="../machine.h" line="57" />
+</extent>
+</client_module>
+<supplier_module>
+<name>Communication</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="72" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="72" />
+</extent>
+<name>Condition</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="71" />
+</extent>
+<name>Mpost</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="71" />
+</extent>
+<name>Orientation</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="145" />
+</extent>
+<name>QAbstractTableModel</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>inheritance</description>
+<source_reference file="../machinemodel.h" line="18" />
+</extent>
+<name>QModelIndex</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="108" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="112" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="116" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="166" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="174" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="228" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="246" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="278" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="279" />
+</extent>
+<name>QString</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="12" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="23" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="70" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="70" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="71" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="72" />
+</extent>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="214" />
+</extent>
+<name>QVariant</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="175" />
+</extent>
+<name>State</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="23" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="24" />
+</extent>
+<name>Transition</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="213" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../machinemodel.cpp" line="309" />
+</extent>
+<name>bool</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>pass by value</description>
+<source_reference file="../machinemodel.cpp" line="213" />
+</extent>
+</supplier_module>
+</module>
+</structural_detail>
+</CCCC_Project>

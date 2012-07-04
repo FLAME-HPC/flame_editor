@@ -42,7 +42,9 @@ class TestEditor: public QObject {
 void TestEditor::initTestCase() {
     saveImages = true;
 
+    /* Show main window */
     w.show();
+    /* Save screen shots of blank widgets */
     blank_machine_tree = getMachineTreeImage();
     if (saveImages) blank_machine_tree.save("machine_tree_0.png", "png");
     blank_memory_table = getMemoryTableImage();
@@ -52,6 +54,7 @@ void TestEditor::initTestCase() {
 }
 
 void TestEditor::cleanupTestCase() {
+    /* Close main window */
     w.close();
 }
 
@@ -82,37 +85,49 @@ void TestEditor::open_test_model() {
 
 void TestEditor::change_in_machine_tree_1() {
     QPixmap updated_tree = getMachineTreeImage();
+    /* Save screen shot of widget */
     if (saveImages) updated_tree.save("machine_tree_1.png", "png");
+    /* Verify widget has changed from inital image */
     QVERIFY(blank_machine_tree.toImage() != updated_tree.toImage());
 }
 
 void TestEditor::change_in_machine_tree_2() {
     QPixmap updated_tree = getMachineTreeImage();
+    /* Save screen shot of widget */
     if (saveImages) updated_tree.save("machine_tree_2.png", "png");
+    /* Verify widget has changed from inital image */
     QVERIFY(blank_machine_tree.toImage() == updated_tree.toImage());
 }
 
 void TestEditor::change_in_graphics_view_1() {
     QPixmap updated_graphics = getGraphicsViewImage();
+    /* Save screen shot of widget */
     if (saveImages) updated_graphics.save("graphics_view_1.png", "png");
+    /* Verify widget has changed from inital image */
     QVERIFY(blank_graphics_view.toImage() != updated_graphics.toImage());
 }
 
 void TestEditor::change_in_graphics_view_2() {
     QPixmap updated_graphics = getGraphicsViewImage();
+    /* Save screen shot of widget */
     if (saveImages) updated_graphics.save("graphics_view_2.png", "png");
+    /* Verify widget has changed from inital image */
     QVERIFY(blank_graphics_view.toImage() == updated_graphics.toImage());
 }
 
 void TestEditor::change_in_memory_table_1() {
     QPixmap updated_table = getMemoryTableImage();
+    /* Save screen shot of widget */
     if (saveImages) updated_table.save("memory_table_1.png", "png");
+    /* Verify widget has changed from inital image */
     QVERIFY(blank_memory_table.toImage() != updated_table.toImage());
 }
 
 void TestEditor::change_in_memory_table_2() {
     QPixmap updated_table = getMemoryTableImage();
+    /* Save screen shot of widget */
     if (saveImages) updated_table.save("memory_table_2.png", "png");
+    /* Verify widget has changed from inital image */
     QVERIFY(blank_memory_table.toImage() == updated_table.toImage());
 }
 

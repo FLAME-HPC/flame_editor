@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Detailed report on module MemoryDelegate-->
+<CCCC_Project>
+<module_summary>
+<lines_of_code value="52" level="0" />
+<lines_of_code_per_member_function value="******" level="0" />
+<McCabes_cyclomatic_complexity value="11" level="0" />
+<McCabes_cyclomatic_complexity_per_member_function value="******" level="2" />
+<lines_of_code value="104" level="0" />
+<lines_of_code_per_member_function value="********" level="2" />
+<lines_of_code_per_line_of_comment value="0.500" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.106" level="0" />
+<weighted_methods_per_class_unity value="5" level="0" />
+<weighted_methods_per_class_visibility value="0" level="0" />
+<depth_of_inheritance_tree value="1" level="0" />
+<number_of_children value="0" level="0" />
+<coupling_between_objects value="6" level="0" />
+<IF4 value="0" level="0" />
+<IF4_per_member_function value="********" level="0" />
+<IF4_visible value="0" level="0" />
+<IF4_visible_per_member_function value="********" level="0" />
+<IF4_concrete value="0" level="0" />
+<IF4_concrete_per_member_function value="********" level="0" />
+</module_summary>
+<module_detail>
+<description>definition</description>
+<source_reference file="../memorydelegate.h" line="20" />
+<lines_of_code value="12" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</module_detail>
+<procedural_detail>
+<member_function>
+<name>MemoryDelegate(QObject *)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../memorydelegate.cpp" line="11" />
+</extent>
+<lines_of_code value="3" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="6" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>createEditor(QWidget *,const QStyleOptionViewItem &amp;,const QModelIndex &amp;)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../memorydelegate.cpp" line="15" />
+</extent>
+<lines_of_code value="11" level="0" />
+<McCabes_cyclomatic_complexity value="5" level="0" />
+<lines_of_comment value="29" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="0.172" level="0" />
+</member_function>
+<member_function>
+<name>setEditorData(QWidget *,const QModelIndex &amp;)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../memorydelegate.cpp" line="55" />
+</extent>
+<lines_of_code value="11" level="0" />
+<McCabes_cyclomatic_complexity value="3" level="0" />
+<lines_of_comment value="32" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>setModelData(QWidget *,QAbstractItemModel *,const QModelIndex &amp;)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../memorydelegate.cpp" line="99" />
+</extent>
+<lines_of_code value="11" level="0" />
+<McCabes_cyclomatic_complexity value="3" level="0" />
+<lines_of_comment value="30" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+<member_function>
+<name>updateEditorGeometry(QWidget *,const QStyleOptionViewItem &amp;,const QModelIndex &amp;)</name>
+<extent>
+<description>definition</description>
+<source_reference file="../memorydelegate.cpp" line="142" />
+</extent>
+<lines_of_code value="4" level="0" />
+<McCabes_cyclomatic_complexity value="0" level="0" />
+<lines_of_comment value="1" level="0" />
+<lines_of_code_per_line_of_comment value="------" level="0" />
+<McCabes_cyclomatic_complexity_per_line_of_comment value="------" level="0" />
+</member_function>
+</procedural_detail>
+<structural_detail>
+<module>
+<name>MemoryDelegate</name>
+<client_module>
+</client_module>
+<supplier_module>
+<name>QAbstractItemModel</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="99" />
+</extent>
+<name>QItemDelegate</name>
+<visible>true</visible>
+<concrete>true</concrete>
+<extent>
+<description>inheritance</description>
+<source_reference file="../memorydelegate.h" line="20" />
+</extent>
+<name>QModelIndex</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="17" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="56" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="100" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="143" />
+</extent>
+<name>QObject</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="11" />
+</extent>
+<name>QStyleOptionViewItem</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="16" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="143" />
+</extent>
+<name>QWidget</name>
+<visible>true</visible>
+<concrete>false</concrete>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="15" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="55" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="99" />
+</extent>
+<extent>
+<description>pass by reference</description>
+<source_reference file="../memorydelegate.cpp" line="142" />
+</extent>
+</supplier_module>
+</module>
+</structural_detail>
+</CCCC_Project>

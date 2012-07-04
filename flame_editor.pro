@@ -51,7 +51,9 @@ SOURCES += main.cpp \
     machinetreedelegate.cpp \
     timeunitdialog.cpp \
     texteditdelegate.cpp \
-    graphicsitem.cpp
+    graphicsitem.cpp \
+    modelxmlwriter.cpp \
+    calculatelayers.cpp
 HEADERS += mainwindow.h \
     machinescene.h \
     arrow.h \

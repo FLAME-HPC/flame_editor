@@ -22,9 +22,23 @@ class Condition {
 
     void paint(QPainter *painter, const QRect &rect,
                 const QPalette &palette, EditMode mode) const;
-
+    void processConditionSide(QString * hs,
+            bool * isAgentVariable,
+            bool * isMessageVariable,
+            bool * isValue,
+            double * hsDouble);
     void processSymbols();
     QString toString();
+    void writeConditionValueXML(QString * hsString,
+                               bool isAgentVariable,
+                               bool isMessageVariable,
+                               bool isValue,
+                               QString hs,
+                               double hsDouble);
+    void writeConditionValuesXML(
+            const Condition * c, QXmlStreamWriter * stream);
+    void writeConditionTimeXML(
+            const Condition * c, QXmlStreamWriter * stream);
     void writeConditionXML(const Condition * c, QXmlStreamWriter * stream);
     void toXML(QXmlStreamWriter * stream);
 

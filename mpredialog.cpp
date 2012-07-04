@@ -16,6 +16,7 @@ MpreDialog::MpreDialog(Machine * a, QString * mt, QWidget *parent)
 
     agent = a;
 
+    /* Initialise interfaces */
     QStringList operators;
     operators << "==" << "!=" << "<" << ">" << "<=" << ">=" << "IN";
     comboBox_valueOp->addItems(operators);
@@ -27,7 +28,6 @@ MpreDialog::MpreDialog(Machine * a, QString * mt, QWidget *parent)
     comboBox_rhsAgentVariable->addItems(agentMemoryNames);
     comboBox_period->addItems(agent->getTimeUnits());
     comboBox_phaseVariable->addItems(agentMemoryNames);
-
     if (mt == 0) {  // if agent then disable message variables
         checkBox_lhsMessageVariable->setEnabled(false);
         comboBox_lhsMessageVariable->setEnabled(false);
@@ -39,6 +39,7 @@ MpreDialog::MpreDialog(Machine * a, QString * mt, QWidget *parent)
         comboBox_rhsMessageVariable->addItems(messageMemoryNames);
     }
 
+    /* Check interfaces to functions */
     connect(checkBox_enabled, SIGNAL(clicked(bool)),
             this, SLOT(enableCondition(bool)));
     connect(checkBox_lhsAgentVariable, SIGNAL(clicked(bool)),
@@ -68,6 +69,12 @@ MpreDialog::MpreDialog(Machine * a, QString * mt, QWidget *parent)
             this, SLOT(levelUpClicked()));
 }
 
+/*!
+ * \brief Sets up dialog using given condition
+ * \param[in] cond The condition
+ *
+ * Sets up dialog interface using given condition.
+ */
 void MpreDialog::setCurrentCondition(Condition *cond) {
     c = cond;
 
@@ -88,6 +95,7 @@ void MpreDialog::setCurrentCondition(Condition *cond) {
     checkBox_enabled->setChecked(c->enabled);
     enableCondition(c->enabled);
 
+    /* If condition uses values */
     if (c->isValues) {
         if (c->enabled) {
             groupBox_value->setEnabled(true);
@@ -168,6 +176,7 @@ void MpreDialog::setCurrentCondition(Condition *cond) {
         comboBox_valueOp->setCurrentIndex(0);
     }
 
+    /* If condition is time based */
     if (c->isTime) {
         if (c->enabled) {
             groupBox_value->setEnabled(false);
@@ -215,6 +224,7 @@ void MpreDialog::setCurrentCondition(Condition *cond) {
         spinBox_duration->setValue(0);
     }
 
+    /* If condition uses nested conditions */
     if (c->isConditions) {
         if (c->enabled) {
             groupBox_value->setEnabled(false);
@@ -239,12 +249,23 @@ void MpreDialog::setCurrentCondition(Condition *cond) {
     }
 }
 
+/*!
+ * \brief Sets local condition and calls interface to be updated
+ * \param[in] c The condition
+ *
+ * Sets local condition and calls interface to be updated.
+ */
 void MpreDialog::setCondition(Condition c) {
     condition = c;
 
     setCurrentCondition(&condition);
 }
 
+/*!
+ * \brief Captures interface settings and saves to local condition
+ *
+ * Captures interface settings and saves to local condition.
+ */
 void MpreDialog::getCurrentCondition() {
     c->enabled = checkBox_enabled->isChecked();
 
@@ -288,12 +309,24 @@ void MpreDialog::getCurrentCondition() {
     c->timeDuration = spinBox_duration->value();
 }
 
+/*!
+ * \brief Returns local condition
+ * \return The condition
+ *
+ * Calls for capture of condition settings and returns the local condition.
+ */
 Condition MpreDialog::getCondition() {
     getCurrentCondition();
 
     return condition;
 }
 
+/*!
+ * \brief Enables and disabled the condition interface
+ * \param[in] e The boolean
+ *
+ * Enables and disabled the condition interface.
+ */
 void MpreDialog::enableCondition(bool e) {
     radioButton_value->setEnabled(e);
     radioButton_time->setEnabled(e);
@@ -319,18 +352,33 @@ void MpreDialog::enableCondition(bool e) {
     }
 }
 
+/*!
+ * \brief Enables value group box and disables time and nested
+ *
+ * Enables value group box and disables time and nested.
+ */
 void MpreDialog::valueClicked() {
     groupBox_value->setEnabled(true);
     groupBox_time->setEnabled(false);
     groupBox_nested->setEnabled(false);
 }
 
+/*!
+ * \brief Enables time group box and disables value and nested
+ *
+ * Enables time group box and disables value and nested.
+ */
 void MpreDialog::timeClicked() {
     groupBox_value->setEnabled(false);
     groupBox_time->setEnabled(true);
     groupBox_nested->setEnabled(false);
 }
 
+/*!
+ * \brief Enables nested group box and disables time and value
+ *
+ * Enables nested group box and disables time and value.
+ */
 void MpreDialog::nestedClicked() {
     groupBox_value->setEnabled(false);
     groupBox_time->setEnabled(false);
@@ -346,6 +394,7 @@ void MpreDialog::checkedLhsAgentVariable(bool b) {
     comboBox_lhsMessageVariable->setEnabled(!b);
     doubleSpinBox_lhsValue->setEnabled(!b);
 }
+
 void MpreDialog::checkedLhsMessageVariable(bool b) {
     checkBox_lhsAgentVariable->setChecked(!b);
     checkBox_lhsValue->setChecked(!b);
@@ -406,6 +455,12 @@ void MpreDialog::disableTimePhaseValue(bool b) {
     spinBox_phaseValue->setEnabled(!b);
 }
 
+/*!
+ * \brief Creates a lhs condition and sets it as the local condition
+ *
+ * Captures interface settings to local condition.
+ * Creates a lhs condition (if it doesn't exist) and sets it as the local condition.
+ */
 void MpreDialog::editLhsClicked() {
     getCurrentCondition();
     if (c->lhsCondition == 0) {
@@ -417,6 +472,12 @@ void MpreDialog::editLhsClicked() {
     setCurrentCondition(c->lhsCondition);
 }
 
+/*!
+ * \brief Creates a rhs condition and sets it as the local condition
+ *
+ * Captures interface settings to local condition.
+ * Creates a rhs condition (if it doesn't exist) and sets it as the local condition.
+ */
 void MpreDialog::editRhsClicked() {
     getCurrentCondition();
     if (c->rhsCondition == 0) {

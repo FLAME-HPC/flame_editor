@@ -9,6 +9,7 @@
 #include "./condition.h"
 
 Condition::Condition() {
+    // Set variables using defaults
     parentCondition = 0;
     isNot = false;
     isTime = false;
@@ -36,33 +37,35 @@ Condition::Condition() {
 Condition::~Condition() {
 }
 
+void Condition::processConditionSide(QString * hs, bool * isAgentVariable,
+    bool * isMessageVariable, bool * isValue, double * hsDouble) {
+    // Handle agent variables
+    if (hs->startsWith("a.")) {
+        *isAgentVariable = true;
+        *isValue = false;
+        hs->remove(0, 2);
+    // Handle message variables
+    } else if (hs->startsWith("m.")) {
+        *isMessageVariable = true;
+        *isValue = false;
+        hs->remove(0, 2);
+    // Handle values
+    } else {
+        *isValue = true;
+        *hsDouble = hs->toDouble();
+    }
+}
+
 void Condition::processSymbols() {
-    if (lhs.startsWith("a.")) {
-        lhsIsAgentVariable = true;
-        lhsIsValue = false;
-        lhs.remove(0, 2);
-    } else if (lhs.startsWith("m.")) {
-        lhsIsMessageVariable = true;
-        lhsIsValue = false;
-        lhs.remove(0, 2);
-    } else {
-        lhsIsValue = true;
-        lhsDouble = lhs.toDouble();
-    }
+    // Handle LHS
+    processConditionSide(&lhs, &lhsIsAgentVariable,
+                         &lhsIsMessageVariable, &lhsIsValue, &lhsDouble);
 
-    if (rhs.startsWith("a.")) {
-        rhsIsAgentVariable = true;
-        rhsIsValue = false;
-        rhs.remove(0, 2);
-    } else if (rhs.startsWith("m.")) {
-        rhsIsMessageVariable = true;
-        rhsIsValue = false;
-        rhs.remove(0, 2);
-    } else {
-        rhsIsValue = true;
-        rhsDouble = rhs.toDouble();
-    }
+    // Handle RHS
+    processConditionSide(&rhs, &rhsIsAgentVariable,
+                         &rhsIsMessageVariable, &rhsIsValue, &rhsDouble);
 
+    // Handle time
     if (isTime) {
         if (timePhaseVariable.startsWith("a.")) {
             timePhaseVariable.remove(0, 2);
@@ -73,6 +76,7 @@ void Condition::processSymbols() {
         }
     }
 
+    // Handle operator
     if (op == "EQ") op = "==";
     else if (op == "NEQ") op = "!=";
     else if (op == "LEQ") op = "<=";
@@ -82,11 +86,14 @@ void Condition::processSymbols() {
 }
 
 void writeCondition(const Condition * c, QString * s) {
+    // Check condition is not null
     Q_ASSERT(c != 0);
 
+    // Handle not
     if (c->isNot) {
         s->append("not(");
     }
+    // Handle values condition
     if (c->isValues) {
         if (c->lhsIsAgentVariable) {
             s->append("a.");
@@ -110,6 +117,7 @@ void writeCondition(const Condition * c, QString * s) {
             s->append(QString().setNum(c->rhsDouble));
         }
     }
+    // Handle nested condition
     if (c->isConditions) {
         s->append("(");
         writeCondition(c->lhsCondition, s);
@@ -119,6 +127,7 @@ void writeCondition(const Condition * c, QString * s) {
         writeCondition(c->rhsCondition, s);
         s->append(")");
     }
+    // Handle time condition
     if (c->isTime) {
         s->append("time(");
         s->append(c->timePeriod);
@@ -132,6 +141,7 @@ void writeCondition(const Condition * c, QString * s) {
         }
         s->append(")");
     }
+    // Handle not
     if (c->isNot) {
         s->append(")");
     }
@@ -143,54 +153,87 @@ QString Condition::toString() {
     return s;
 }
 
+void Condition::writeConditionValueXML(QString * hsString,
+    bool isAgentVariable, bool isMessageVariable, bool isValue,
+        QString hs, double hsDouble) {
+    // Handle agent variable
+    if (isAgentVariable) {
+        hsString->append("a.");
+        hsString->append(hs);
+    // Handle message variable
+    } else if (isMessageVariable) {
+        hsString->append("m.");
+        hsString->append(hs);
+    // Handle value
+    } else if (isValue) {
+        hsString->append(QString().setNum(hsDouble));
+    }
+}
+
+void Condition::writeConditionValuesXML(const Condition * c,
+                                        QXmlStreamWriter * stream) {
+    // Default values to write out
+    QString lhsString = "";
+    QString rhsString = "";
+    QString opString;
+
+    // Format lhsString
+    writeConditionValueXML(&lhsString, lhsIsAgentVariable,
+                           lhsIsMessageVariable, lhsIsValue, lhs, lhsDouble);
+
+    // Format operator
+    if (c->op == "==") opString = "EQ";
+    else if (c->op == "!=") opString = "NEQ";
+    else if (c->op == "<=") opString = "LEQ";
+    else if (c->op == ">=") opString = "GEQ";
+    else if (c->op == "<") opString = "LT";
+    else if (c->op == ">") opString = "GT";
+
+    // Format rhsString
+    writeConditionValueXML(&rhsString, rhsIsAgentVariable,
+                           rhsIsMessageVariable, rhsIsValue, rhs, rhsDouble);
+
+    // Write out values to xml stream
+    stream->writeStartElement("lhs");
+    stream->writeTextElement("value", lhsString);
+    stream->writeEndElement();  // lhs
+    stream->writeTextElement("op", opString);
+    stream->writeStartElement("rhs");
+    stream->writeTextElement("value", rhsString);
+    stream->writeEndElement();  // rhs
+}
+
+void Condition::writeConditionTimeXML(const Condition * c,
+        QXmlStreamWriter * stream) {
+    stream->writeStartElement("time");
+    stream->writeTextElement("period", c->timePeriod);
+    if (c->timePhaseIsVariable) {
+        QString s = "a.";
+        s.append(c->timePhaseVariable);
+        stream->writeTextElement("phase", s);
+    } else {
+        stream->writeTextElement("phase",
+                QString::number(c->timePhaseValue));
+    }
+    if (c->timeDuration > 0)
+        stream->writeTextElement("duration",
+                QString::number(c->timeDuration));
+    stream->writeEndElement();  // time
+}
+
 void Condition::writeConditionXML(const Condition * c,
         QXmlStreamWriter * stream) {
+    // Check condition is not null
     Q_ASSERT(c != 0);
 
+    // Handle not
     if (c->isNot) {
         stream->writeStartElement("not");
     }
+    // Handle condition
     if (c->isValues) {
-        QString lhsString = "";
-        QString rhsString = "";
-        QString opString;
-
-        if (c->lhsIsAgentVariable) {
-            lhsString.append("a.");
-            lhsString.append(c->lhs);
-        } else if (c->lhsIsMessageVariable) {
-            lhsString.append("m.");
-            lhsString.append(c->lhs);
-        } else if (c->lhsIsValue) {
-                lhsString.append(QString().setNum(c->lhsDouble));
-        }
-
-        if (c->op == "==") opString = "EQ";
-        else if (c->op == "!=") opString = "NEQ";
-        else if (c->op == "<=") opString = "LEQ";
-        else if (c->op == ">=") opString = "GEQ";
-        else if (c->op == "<") opString = "LT";
-        else if (c->op == ">") opString = "GT";
-
-        if (c->rhsIsAgentVariable) {
-            rhsString.append("a.");
-            rhsString.append(c->rhs);
-        } else if (c->rhsIsMessageVariable) {
-            rhsString.append("m.");
-            rhsString.append(c->rhs);
-        } else if (c->rhsIsValue) {
-            rhsString.append(QString().setNum(c->rhsDouble));
-        }
-
-        stream->writeStartElement("lhs");
-        stream->writeTextElement("value", lhsString);
-        stream->writeEndElement();  // lhs
-        stream->writeTextElement("op", opString);
-        stream->writeStartElement("rhs");
-        stream->writeTextElement("value", rhsString);
-        stream->writeEndElement();  // rhs
-    }
-    if (c->isConditions) {
+        writeConditionValuesXML(c, stream);
+    } else if (c->isConditions) {
         stream->writeStartElement("lhs");
         writeConditionXML(c->lhsCondition, stream);
         stream->writeEndElement();  // lhs
@@ -198,23 +241,10 @@ void Condition::writeConditionXML(const Condition * c,
         stream->writeStartElement("rhs");
         writeConditionXML(c->rhsCondition, stream);
         stream->writeEndElement();  // rhs
+    } else if (c->isTime) {
+        writeConditionTimeXML(c, stream);
     }
-    if (c->isTime) {
-        stream->writeStartElement("time");
-        stream->writeTextElement("period", c->timePeriod);
-        if (c->timePhaseIsVariable) {
-            QString s = "a.";
-            s.append(c->timePhaseVariable);
-            stream->writeTextElement("phase", s);
-        } else {
-            stream->writeTextElement("phase",
-                    QString::number(c->timePhaseValue));
-        }
-        if (c->timeDuration > 0)
-            stream->writeTextElement("duration",
-                    QString::number(c->timeDuration));
-        stream->writeEndElement();  // time
-    }
+    // Handle closing of not tag
     if (c->isNot) {
         stream->writeEndElement();  // not
     }

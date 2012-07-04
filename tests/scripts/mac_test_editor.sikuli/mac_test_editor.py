@@ -44,7 +44,7 @@ if len(sys.argv) > 1:
 # If run from Sikuli GUI set parameters internally
 else:
     #app = "/home/stc/workspace/flame_editor/stc/flame_editor"
-    app = "/Users/stc/workspace/flame/flame_editor/branches/flame_editor-build-desktop/flame_editor.app"
+    app = "/Users/stc/workspace/flame/flame_editor/branches/flame_editor-build-desktop/FLAME Editor.app"
     #app = "/Users/stc/workspace/flame/flame_editor/tags/flame_editor-build-desktop/flame_editor.app"
     #app = "flame_editor"
     outfile = open(getBundlePath() + "/../" + "flame_editor_test_report.html", "w")

@@ -5,6 +5,7 @@ QMAKE_PAR = -spec macx-g++ test_flame_editor.pro
 SOURCES   = qtest/test_flame_editor.cpp \
             ../mainwindow.cpp \
             ../machinescene.cpp \
+            ../calculatelayers.cpp \
             ../arrow.cpp \
             ../machinemodel.cpp \
             ../memorydelegate.cpp \
@@ -19,6 +20,7 @@ SOURCES   = qtest/test_flame_editor.cpp \
             ../adt.cpp \
             ../memoryvariable.cpp \
             ../modelxmlreader.cpp \
+            ../modelxmlwriter.cpp \
             ../machine.cpp \
             ../transition.cpp \
             ../state.cpp \
@@ -83,6 +85,8 @@ HEADERS   = ../mainwindow.h \
             ../graphicsitem.h
 EXECUTABLE = test_flame_editor.app/Contents/MacOS/test_flame_editor
 CPPLINT    = /Users/stc/workspace/flame/flame_visualiser/tags/3/tests/ccplint/cpplint.py
+CCCC       = cccc
+
 lint:
 	$(CPPLINT) $(SOURCES) $(HEADERS)
 
@@ -103,6 +107,7 @@ lint:
 	./$(EXECUTABLE)
 
 clean:
+	rm -rf cccc; \
 	cd qtest; \
 	echo "clean up ..."; \
 	make distclean > /dev/null; \
@@ -112,3 +117,6 @@ memtest: 4.8
 	cd qtest; \
 	valgrind --leak-check=full ./$(EXECUTABLE)
 	
+cccc:
+	$(CCCC) $(SOURCES) $(HEADERS) --outdir=cccc; \
+	open cccc/cccc.html

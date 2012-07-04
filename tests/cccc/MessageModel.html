@@ -1,0 +1,168 @@
+<HTML><HEAD><TITLE>
+Detailed report on module MessageModel
+</TITLE>
+</HEAD>
+<BODY>
+<H1><A NAME="summary">Detailed report on module MessageModel</A></H1>
+<TABLE BORDER WIDTH=100%>
+<TR>
+<TH BGCOLOR="AQUA" WIDTH=70%>Metric</TH><TH BGCOLOR="AQUA" WIDTH=10%>Tag</TH><TH BGCOLOR="AQUA" WIDTH=10%>Overall</TH><TH BGCOLOR="AQUA" WIDTH=10%>Per Function</TH></TR>
+<TR>
+<TD>Lines of Code</TD><TD>LOC</TD><TD ALIGN=RIGHT>    93</TD><TD ALIGN=RIGHT>******</TD></TR>
+<TR>
+<TD>McCabe's Cyclomatic Number</TD><TD>MVG</TD><TD ALIGN=RIGHT>    44</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>Lines of Comment</TD><TD>COM</TD><TD ALIGN=RIGHT>    17</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>********</STRONG></TD></TR>
+<TR>
+<TD>LOC/COM</TD><TD>L_C</TD><TD ALIGN=RIGHT> 5.471</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>MVG/COM</TD><TD>M_C</TD><TD ALIGN=RIGHT> 2.588</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Weighted Methods per Class ( &nbsp;weighting = unity&nbsp;)</TD><TD>WMC1</TD><TD ALIGN=RIGHT>    10</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Weighted Methods per Class ( &nbsp;weighting = visible&nbsp;)</TD><TD>WMCv</TD><TD ALIGN=RIGHT>     0</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Depth of Inheritance Tree</TD><TD>DIT</TD><TD ALIGN=RIGHT>     1</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Number of Children</TD><TD>NOC</TD><TD ALIGN=RIGHT>     0</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Coupling between objects</TD><TD>CBO</TD><TD ALIGN=RIGHT>     7</TD><TD>&nbsp;</TD></TR>
+<TR>
+<TD>Information Flow measure ( &nbsp;inclusive&nbsp;)</TD><TD>IF4</TD><TD ALIGN=RIGHT>    36</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>********</STRONG></TD></TR>
+<TR>
+<TD>Information Flow measure ( &nbsp;visible&nbsp;)</TD><TD>IF4v</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    36</EM></TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>********</STRONG></TD></TR>
+<TR>
+<TD>Information Flow measure ( &nbsp;concrete&nbsp;)</TD><TD>IF4c</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>********</TD></TR>
+</TABLE>
+<H2><A NAME="modext">Definitions and Declarations</A></H2>
+<TABLE BORDER WIDTH=100%><TR>
+<TD WIDTH=50%>Description</TD><TH BGCOLOR="AQUA" WIDTH=10%>LOC</TH><TH BGCOLOR="AQUA" WIDTH=10%>MVG</TH><TH BGCOLOR="AQUA" WIDTH=10%>COM</TH><TH BGCOLOR="AQUA" WIDTH=10%>L_C</TH><TH BGCOLOR="AQUA" WIDTH=10%>M_C</TH><TR>
+<TD>definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.h:        16">../messagemodel.h:16</A></CODE><BR>
+</TD>
+<TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     6</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR><TD HEIGHT=12 COLSPAN=6></TD></TR>
+</TR></TABLE>
+<H2><A NAME="proc">Functions</A></H2>
+<TABLE BORDER WIDTH=100%><TR>
+<TD WIDTH=50%>Function prototype</TD><TH BGCOLOR="AQUA" WIDTH=10%>LOC</TH><TH BGCOLOR="AQUA" WIDTH=10%>MVG</TH><TH BGCOLOR="AQUA" WIDTH=10%>COM</TH><TH BGCOLOR="AQUA" WIDTH=10%>L_C</TH><TH BGCOLOR="AQUA" WIDTH=10%>M_C</TH><TR>
+<TD>addMessage( &nbsp;MessageComm&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:       105">../messagemodel.cpp:105</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>addMessage( &nbsp;QString&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:       111">../messagemodel.cpp:111</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>columnCount( &nbsp;const QModelIndex &amp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        14">../messagemodel.cpp:14</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT> 5.000</TD></TR>
+<TR>
+<TD>data( &nbsp;const QModelIndex &amp;, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        22">../messagemodel.cpp:22</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    17</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    13</EM></TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>13.000</STRONG></TD></TR>
+<TR>
+<TD>flags( &nbsp;const QModelIndex &amp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        58">../messagemodel.cpp:58</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     5</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>headerData( &nbsp;int, &nbsp;Orientation, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        43">../messagemodel.cpp:43</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    13</TD><TD ALIGN=RIGHT BGCOLOR="YELLOW"><EM>    11</EM></TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR>
+<TD>insertRows( &nbsp;int, &nbsp;int, &nbsp;const QModelIndex &amp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        81">../messagemodel.cpp:81</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>removeRows( &nbsp;int, &nbsp;int, &nbsp;const QModelIndex &amp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        93">../messagemodel.cpp:93</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     9</TD><TD ALIGN=RIGHT>     2</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>rowCount( &nbsp;const QModelIndex &amp;&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        10">../messagemodel.cpp:10</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>     3</TD><TD ALIGN=RIGHT>     1</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT>------</TD></TR>
+<TR>
+<TD>setData( &nbsp;const QModelIndex &amp;, &nbsp;const QVariant &amp;, &nbsp;int&nbsp;)<BR>
+definition &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        65">../messagemodel.cpp:65</A></CODE><BR>
+<BR>
+</TD><TD ALIGN=RIGHT>    14</TD><TD ALIGN=RIGHT>     7</TD><TD ALIGN=RIGHT>     0</TD><TD ALIGN=RIGHT>------</TD><TD ALIGN=RIGHT BGCOLOR="RED"><STRONG>******</STRONG></TD></TR>
+<TR><TD HEIGHT=12 COLSPAN=6></TD></TR>
+</TR></TABLE>
+<H2><A NAME="structdet">Relationships</A></H2>
+<TABLE BORDER WIDTH=100%>
+<TR><TH WIDTH=50%>Clients</TH><TH WIDTH=50%>Suppliers</TH></TR>
+<TR>
+<TD WIDTH=50%>
+Communication [V] <BR>
+has by reference &nbsp;
+<CODE><A HREF="cccc_src.html#../communication.h:        25">../communication.h:25</A></CODE><BR>
+<BR>
+<BR>
+&nbsp;
+</TD>
+<TD WIDTH=50%>
+MessageComm [CV] <BR>
+pass by value &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:       105">../messagemodel.cpp:105</A></CODE><BR>
+<BR>
+<BR>
+Orientation [CV] <BR>
+pass by value &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        43">../messagemodel.cpp:43</A></CODE><BR>
+<BR>
+<BR>
+QAbstractTableModel [CV] <BR>
+inheritance &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.h:        16">../messagemodel.h:16</A></CODE><BR>
+<BR>
+<BR>
+QModelIndex [V] <BR>
+pass by reference &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        10">../messagemodel.cpp:10</A></CODE><BR>
+pass by reference &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        14">../messagemodel.cpp:14</A></CODE><BR>
+pass by reference &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        22">../messagemodel.cpp:22</A></CODE><BR>
+pass by reference &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        58">../messagemodel.cpp:58</A></CODE><BR>
+pass by reference &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        65">../messagemodel.cpp:65</A></CODE><BR>
+pass by reference &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        82">../messagemodel.cpp:82</A></CODE><BR>
+pass by reference &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        94">../messagemodel.cpp:94</A></CODE><BR>
+<BR>
+<BR>
+QString [CV] <BR>
+pass by value &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:       111">../messagemodel.cpp:111</A></CODE><BR>
+<BR>
+<BR>
+QVariant [V] <BR>
+pass by reference &nbsp;
+<CODE><A HREF="cccc_src.html#../messagemodel.cpp:        66">../messagemodel.cpp:66</A></CODE><BR>
+<BR>
+<BR>
+&nbsp;
+</TD>
+</TR></TABLE>
+</BODY></HTML>
