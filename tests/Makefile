@@ -117,6 +117,9 @@ memtest: 4.8
 	cd qtest; \
 	valgrind --leak-check=full ./$(EXECUTABLE)
 	
+CCCCSUMMARY = /Users/stc/workspace/flame/scripts/ccccsummary.py
 cccc:
-	$(CCCC) $(SOURCES) $(HEADERS) --outdir=cccc; \
-	open cccc/cccc.html
+	cccc $(SOURCES) $(HEADERS) --outdir=cccc; \
+	$(CCCCSUMMARY) cccc
+
+.PHONY: cccc
