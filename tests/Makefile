@@ -84,7 +84,7 @@ HEADERS   = ../mainwindow.h \
             ../texteditdelegate.h \
             ../graphicsitem.h
 EXECUTABLE = test_flame_editor.app/Contents/MacOS/test_flame_editor
-CPPLINT    = /Users/stc/workspace/flame/flame_visualiser/tags/3/tests/ccplint/cpplint.py
+CPPLINT    = /Users/stc/workspace/flame/scripts/cpplint-qt.py
 CCCC       = cccc
 
 lint:
