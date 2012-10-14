@@ -42,7 +42,7 @@ QVariant VariableDeclaredModel::headerData(int section, Qt::Orientation orientat
          if(section == 0) return QString("Type");
          else if(section == 1) return QString("Name");
          else //if(section == 2)
-             return QString("Value");
+             return QString("Expression");
      }
      else
          return QString("Row %1").arg(section);
