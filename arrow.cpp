@@ -33,26 +33,74 @@ Arrow::Arrow(GraphicsItem *startItem, GraphicsItem *endItem,
     setPen(QPen(myColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     /* Be default show arrow head */
     showHead = true;
+
+    sansFont = new QFont("Helvetica", 12);
+    showName = false;
+    setName("");
 }
 
-QRectF Arrow::boundingRect() const {
-    qreal extra = ((pen().width() + 20));
+void Arrow::setName(QString n)
+{
+    name = n;
+    /* Use font metrics */
+    QFontMetrics fm(*sansFont);
+    nameWidth = fm.width(name) + 10;
+    nameHeight = fm.height();
+    myNameRect = QRectF(line().p1().x(), line().p1().y(),
+                        static_cast<float>(nameWidth), nameHeight*2.0);
+}
 
-    return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(),
+QRectF Arrow::setBoundingRect()
+{
+
+    QRectF r = QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(),
                                       line().p2().y() - line().p1().y()))
-        .normalized()
-        .adjusted(-extra, -extra, extra, extra);
+            .normalized();
+    if(r.height() > myNameRect.height()){
+        if(r.width() < myNameRect.width()){
+            qreal d = (nameWidth - myNameRect.width()) / 2.0;
+            r = QRectF(r.x()-d,r.y(),nameWidth,r.height());
+        }
+        showName = true;
+    }
+    else
+        showName = false;
+    QRectF rr = QRectF(r.x() + (r.width()-myNameRect.width()) / 2.0,
+                                   r.y() + (r.height()-myNameRect.height()) / 2.0,
+                       myNameRect.width(), myNameRect.height());
+    return rr;
+}
+
+QRectF Arrow::boundingRect() const{
+    qreal extra = ((pen().width() + 20));
+    //qDebug()<<"ok";
+    //updatePosition();
+    QRectF r = QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(),
+                                      line().p2().y() - line().p1().y()))
+            .normalized();
+    if(r.height() > myNameRect.height()){
+        if(r.width() < myNameRect.width()){
+            qreal d = (nameWidth - myNameRect.width()) / 2.0;
+            r = QRectF(r.x()-d,r.y(),nameWidth,r.height());
+        }
+    }
+    return r.adjusted(-extra, -extra, extra, extra);
 }
 
 QPainterPath Arrow::shape() const {
     QPainterPath path = QGraphicsLineItem::shape();
     path.addPolygon(arrowHead);
+    //if(showName)
+    //QRectF r = setBoundingRect();
+    //path.addRect(r);
     return path;
 }
 
 void Arrow::updatePosition() {
-    QLineF line(mapFromItem(myStartItem, 0, 0), mapFromItem(myEndItem, 0, 0));
-    setLine(line);
+    QLineF linef(mapFromItem(myStartItem, 0, 0), mapFromItem(myEndItem, 0, 0));
+    setLine(linef);
+
+    //setBoundingRect();
 }
 
 void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
@@ -134,4 +182,14 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     painter->drawPath(path);
     painter->setBrush(isSelected() ? Qt::red : Qt::black);
     painter->drawPolygon(arrowHead);
+
+    //qDebug()<<myBoundingRect<<" "<<myNameRect;
+
+    /* Draw text */
+    myNameRect = setBoundingRect();
+    //if(showName)
+    {
+        painter->setFont(*sansFont);
+        painter->drawText(myNameRect.x(), myNameRect.y() + myNameRect.height(), name);
+    }
 }

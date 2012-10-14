@@ -8,6 +8,12 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QComboBox>
+#include <QAbstractItemModel>
+#include <QCompleter>
+#include "autocompletiontextedit.h"
+#include "treemodelcompleter.h"
+
+class QAbstractItemModel;
 
 static const QString qsIdentifier = "Identifier";
 
@@ -22,27 +28,31 @@ class AssignmentDialog : public QDialog
 public:
     explicit AssignmentDialog(QWidget *parent = 0);
     ~AssignmentDialog();
+
+    QString getAssignmentText(){
+        return assignmentText;
+    }
     
 private:
 
     void setUI();
+    QAbstractItemModel *modelFromFileList(const QString& fileName);
+    QAbstractItemModel *modelFromFileTree(const QString& fileName);
+
+    TreeModelCompleter *completer;
 
 
     QLabel *lAssignment;
+    AutocompletionTextEdit *autocompletionTextEdit;
     QPushButton *pbOk;
     QPushButton *pbCancel;
 
-    QLabel *label1;
-    QComboBox *comboBox1;
+    QString assignmentText;
 
-    QLabel *label2;
-    QComboBox *comboBox2;
+private slots:
+    void ok_click();
+    void cancel_click();
 
-    QLabel *label3;
-    QComboBox *comboBox3;
-
-    QPushButton *pbAdd;
-    QPushButton *pbRemove;
 };
 
 #endif // ASSIGNMENTDIALOG_H

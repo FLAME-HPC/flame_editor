@@ -13,6 +13,19 @@
 
 class Arrow;
 
+enum ItemType{
+    State,
+    Transition,
+    Message,
+    ConditionIf,
+    ConditionWhile,
+    ConditionFor,
+    ConditionWhileFor,
+    EmptyState,
+    SolidState,
+    FinalState
+};
+
 class GraphicsItem : public QObject, public QGraphicsItem {
     Q_OBJECT
     #if QT_VERSION >= 0x040600  // If Qt version is 4.6 or higher
@@ -21,7 +34,10 @@ class GraphicsItem : public QObject, public QGraphicsItem {
 
   public:
     enum { Type = UserType + 15 };
-    GraphicsItem(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+    GraphicsItem(ItemType ItemType = State, QString n = "", QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+    ~GraphicsItem();
+
+    void changeCondition(ItemType item);
 
     QRectF boundingRect() const;
     QPainterPath shape() const;
@@ -36,8 +52,9 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     void setMessage(QString name);
     void setDiamond(QString name);
     int width();
-    int mytype;  /* 0-state, 1-transition, 2-message, 3-diamond */
+    ItemType mytype;  /* 0-state, 1-transition, 2-message, 3-diamond */
 
+    QColor getColor() { return color;}
     void setColor(QColor c) {color = c;}
 
     void addGraphicsItem(QGraphicsItem *g)
@@ -48,15 +65,46 @@ class GraphicsItem : public QObject, public QGraphicsItem {
       {return graphicsItemList.count();}
     QGraphicsItem* getGraphicsItem()
       {return graphicsItemList.last();}
+    QGraphicsItem* getGraphicsItem(int i)
+      {
+        if(i >= 0 && i < graphicsItemList.count())
+            return graphicsItemList[i];
+    }
 
-    bool isToDiamond() const {return diamond;}
-    void setToDiamond() { diamond = true;}
+    bool isDiamond() const {return diamond;}
+    void setDiamond(bool b) { diamond = b;}
 
-    GraphicsItem* getGraphicsItemParent() const
-      {return graphicsItemParent;}
+    int countGraphicsItemParents() const
+      {
+        return graphicsItemParents.count();
+      }
 
-    void setGraphicsItemParent(GraphicsItem * p)
-      {graphicsItemParent = p;}
+    GraphicsItem* getGraphicsItemParents() const
+      {
+        if(graphicsItemParents.count() == 0)
+            return 0;
+        else
+            return graphicsItemParents[0];
+      }
+
+    void setGraphicsItemParents(GraphicsItem * p)
+      {
+        if(graphicsItemParents.count() == 0)
+            graphicsItemParents.append(p);
+        else
+            graphicsItemParents[0] = p;
+      }
+
+    void addGraphicsItemParents(GraphicsItem * p)
+      {
+        graphicsItemParents.append(p);
+      }
+    void removeGraphicsItemParents(GraphicsItem *g)
+      {graphicsItemParents.removeOne(g);}
+
+    QStringList *getAssignmentList(){
+        return &assignmentList;
+    }
 
   private:
     void setBoundingRect();
@@ -66,6 +114,8 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     QRectF myBoundingRect;
     QFont * sansFont;
     QString name;
+    QString conditionName;
+    qreal conditionGapName;
     int nameWidth;
     int nameHeight;
     int condWidth;
@@ -74,7 +124,9 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     QList<QGraphicsItem*> graphicsItemList;
     bool diamond;
     QColor color;
-    GraphicsItem* graphicsItemParent;
+    QList<GraphicsItem*> graphicsItemParents;
+
+    QStringList assignmentList;
 };
 
 #endif  // GRAPHICSITEM_H_

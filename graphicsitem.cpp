@@ -11,16 +11,66 @@
 #include <QDebug>
 #include "./graphicsitem.h"
 
-GraphicsItem::GraphicsItem(QGraphicsItem *parent, QGraphicsScene *scene)
-    : QGraphicsItem(parent, scene) {
+GraphicsItem::GraphicsItem(ItemType ItemType, QString n, QGraphicsItem *parent, QGraphicsScene *scene)
+    : mytype(ItemType) ,QGraphicsItem(parent, scene) {
     /* Set GraphicsItem flags */
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     /* Set font used for name */
     sansFont = new QFont("Helvetica", 12);
 
+    if(n != "")
+        setName(n);
+
+    conditionGapName = 3;
+
     diamond = false;
     color = (QColor)Qt::black;
+
+    switch (mytype)
+    {
+        case ConditionIf: conditionName = "if"; break;
+        case ConditionWhileFor: conditionName = "while / for"; break;
+        case ConditionWhile: conditionName = "while"; break;
+        case ConditionFor: conditionName = "for"; break;
+    }
+
+    if(mytype == EmptyState || mytype == SolidState)
+    {
+        qreal g = 5;
+        myNameRect = QRectF(-g, -g, g*2, g*2);
+        setBoundingRect();
+    }
+}
+
+GraphicsItem::~GraphicsItem()
+{
+}
+
+void GraphicsItem::changeCondition(ItemType item)
+{
+    if(mytype == ConditionWhileFor || mytype == ConditionWhile || mytype == ConditionFor)
+    {
+        if(item == ConditionWhileFor || item == ConditionWhile || item == ConditionFor)
+        {
+            mytype = item;
+            assignmentList.clear();
+            if(mytype == ConditionWhileFor)
+                conditionName = "while / for";
+            else if(mytype == ConditionWhile)
+            {
+                conditionName = "while";
+                assignmentList.append("");
+            }
+            else if(mytype == ConditionFor)
+            {
+                conditionName = "for";
+                assignmentList.append("");
+                assignmentList.append("");
+                assignmentList.append("");
+            }
+        }
+    }
 }
 
 QString GraphicsItem::getName() {
@@ -35,7 +85,7 @@ void GraphicsItem::setName(QString n) {
     nameWidth = fm.width(name) + 10;
     nameHeight = fm.height();
     /* Calculate rectangle around the name text */
-    if (mytype == 2) {  // message
+    if (mytype == Message) {  // message
         myNameRect = QRectF(-(nameWidth/2.0)-5.0,
                 static_cast<float>(-nameHeight),
                 static_cast<float>(nameWidth+10.0), nameHeight*2.0);
@@ -49,7 +99,9 @@ void GraphicsItem::setName(QString n) {
         myPath.lineTo(myNameRect.bottomLeft());
     }
     else
-    if (mytype == 3) {  // diamond
+    if (mytype == ConditionIf || mytype == ConditionWhile || mytype == ConditionFor || mytype == ConditionWhileFor) {
+        nameWidth = fm.width(name) + 10 >= fm.width(conditionName) + 10?fm.width(name) + 10:fm.width(conditionName) + 10;
+        nameHeight = nameHeight + conditionGapName * 2;
         float mx = 20.0;
         float my = 20.0;
         myNameRect = QRectF(-(nameWidth/2.0) - mx, static_cast<float>(-nameHeight - my),
@@ -74,23 +126,23 @@ void GraphicsItem::setName(QString n) {
 }
 
 void GraphicsItem::setState(QString name) {
-    mytype = 0;
+    mytype = State;
     setName(name);
 }
 
 void GraphicsItem::setTransition(QString name) {
-    mytype = 1;
+    mytype = Transition;
     setName(name);
 }
 
 void GraphicsItem::setMessage(QString name) {
-    mytype = 2;
+    mytype = Message;
     setName(name);
 }
 
 void GraphicsItem::setDiamond(QString name)
 {
-    mytype = 3;
+    mytype = ConditionIf;
     setName(name);
 }
 
@@ -114,10 +166,12 @@ QRectF GraphicsItem::boundingRect() const {
  */
 QPainterPath GraphicsItem::shape() const {
     QPainterPath path;
-    if (mytype == 0) path.addEllipse(myNameRect);
-    if (mytype == 1) path.addRect(myNameRect);
-    if (mytype == 2) return myPath;
-    if (mytype == 3) return myPath;
+    if (mytype == State || mytype == FinalState) path.addEllipse(myNameRect);
+    if (mytype == Transition) path.addRect(myNameRect);
+    if (mytype == Message) return myPath;
+    if (mytype == ConditionIf || mytype == ConditionWhile || mytype == ConditionFor || mytype == ConditionWhileFor) return myPath;
+    if (mytype == EmptyState) path.addEllipse(myNameRect);
+    if (mytype == SolidState) path.addEllipse(myNameRect);
     return path;
 }
 
@@ -132,11 +186,49 @@ void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     painter->setBrush(Qt::white);
     painter->setPen(isSelected() ? Qt::red : color);
     /* Draw shape */
-    if (mytype == 0) painter->drawEllipse(myNameRect);
-    if (mytype == 1) painter->drawRect(myNameRect);
-    if (mytype == 2) painter->drawPath(myPath);
-    if (mytype == 3) painter->drawPath(myPath);
+    if (mytype == State) painter->drawEllipse(myNameRect);
+    if (mytype == Transition) painter->drawRect(myNameRect);
+    if (mytype == Message) painter->drawPath(myPath);
+    if (mytype == ConditionIf || mytype == ConditionWhile || mytype == ConditionFor || mytype == ConditionWhileFor) painter->drawPath(myPath);
+    if (mytype == EmptyState || mytype == SolidState)
+    {
+        qreal g = 5;
+        myNameRect = QRectF(-g, -g, g*2, g*2);
+        //qDebug()<<"draw"<<myNameRect;
+        QPen p;
+        p.setWidth(2);
+        p.setColor(isSelected() ? Qt::red : color);
+        if(mytype == SolidState)
+            painter->setBrush(isSelected() ? Qt::red : color);
+        painter->setPen(p);
+        painter->drawEllipse(myNameRect);
+    }
+    else if(mytype == FinalState)
+    {
+        QPen p;
+        p.setWidth(3);
+        p.setColor(isSelected() ? Qt::red : color);
+        painter->setPen(p);
+        painter->drawEllipse(myNameRect);
+    }
     /* Draw text */
-    painter->setFont(*sansFont);
-    painter->drawText(-(nameWidth/2)+5, (nameHeight/2)-2, getName());
+
+    if(mytype == State || mytype == FinalState || mytype == Transition || mytype == Message)
+    {
+        painter->setFont(*sansFont);
+        painter->drawText(-(nameWidth/2)+5, (nameHeight/2)-2, getName());
+    }
+    else if(mytype == ConditionIf || mytype == ConditionWhile || mytype == ConditionFor || mytype == ConditionWhileFor)
+    {
+        QFontMetrics fm(*sansFont);
+        nameHeight = fm.height();
+        sansFont->setItalic(true);
+        painter->setFont(*sansFont);
+        nameWidth = fm.width(conditionName) + 10;
+        painter->drawText(-(nameWidth/2)+5, -nameHeight/2, conditionName);
+        sansFont->setItalic(false);
+        painter->setFont(*sansFont);
+        nameWidth = fm.width(name) + 10;
+        painter->drawText(-(nameWidth/2)+5, (nameHeight/2)-2, getName());
+    }
 }

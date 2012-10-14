@@ -34,6 +34,9 @@ class Arrow : public QGraphicsLineItem {
 
     int type() const
         { return Type; }
+    QString getName() const { return name; }
+    void setName(QString n);
+    QRectF setBoundingRect();
     QRectF boundingRect() const;
     QPainterPath shape() const;
     void setColor(const QColor &color)
@@ -61,6 +64,13 @@ class Arrow : public QGraphicsLineItem {
     /*! \brief the polygon representation of the arrow head. */
     QPolygonF arrowHead;
     bool showHead;              /**< \brief flag to show the arrow head. */
+    QRectF myBoundingRect;
+    QString name;
+    bool showName;
+    QRectF myNameRect;
+    QFont * sansFont;
+    int nameWidth;
+    int nameHeight;
 };
 
 #endif  // ARROW_H_
