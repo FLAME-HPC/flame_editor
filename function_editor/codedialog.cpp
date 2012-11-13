@@ -26,7 +26,7 @@ CodeDialog::CodeDialog(QWidget *parent) :
 
     setUI();
 
-    memory = new MemoryModel;
+    memory = new FEMemoryModel;
     tableViewMemory->verticalHeader()->hide();
     tableViewMemory->setModel(memory);
 

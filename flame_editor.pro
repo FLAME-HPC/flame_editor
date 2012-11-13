@@ -4,6 +4,8 @@
 
 TEMPLATE = app
 
+QT       += xml
+
 macx {
     TARGET = "FLAME Editor"
 } else {
@@ -53,7 +55,27 @@ SOURCES += main.cpp \
     texteditdelegate.cpp \
     graphicsitem.cpp \
     modelxmlwriter.cpp \
-    calculatelayers.cpp
+    calculatelayers.cpp \
+    function_editor/assignmentdialog.cpp \
+    function_editor/femachinescene.cpp \
+    function_editor/fegraphicsitem.cpp \
+    function_editor/fearrow.cpp \
+    function_editor/codedialog.cpp \
+    function_editor/autocompletiontextedit.cpp \
+    function_editor/parser/y.tab.c \
+    function_editor/parser/lex.yy.c \
+    function_editor/treemodelcompleter.cpp \
+    function_editor/linkedlist.cpp \
+    function_editor/codeparser.cpp \
+    function_editor/graphicsarcitem.cpp \
+    function_editor/graphicsgrup.cpp \
+    function_editor/xmlfile.cpp \
+    function_editor/filetype.cpp \
+    function_editor/cfile.cpp \
+    function_editor/fememorymodel.cpp \
+    function_editor/variabledeclared.cpp \
+    function_editor/variabledeclaredmodel.cpp \
+    function_editor/variabledeclareddelegate.cpp
 HEADERS += mainwindow.h \
     machinescene.h \
     arrow.h \
@@ -92,7 +114,26 @@ HEADERS += mainwindow.h \
     machinetreedelegate.h \
     timeunitdialog.h \
     texteditdelegate.h \
-    graphicsitem.h
+    graphicsitem.h \
+    function_editor/femachinescene.h \
+    function_editor/fegraphicsitem.h \
+    function_editor/fearrow.h \
+    function_editor/codedialog.h \
+    function_editor/assignmentdialog.h \
+    function_editor/autocompletiontextedit.h \
+    function_editor/parser/y.tab.h \
+    function_editor/treemodelcompleter.h \
+    function_editor/linkedlist.h \
+    function_editor/codeparser.h \
+    function_editor/graphicsarcitem.h \
+    function_editor/graphicsgrup.h \
+    function_editor/xmlfile.h \
+    function_editor/filetype.h \
+    function_editor/cfile.h \
+    function_editor/fememorymodel.h \
+    function_editor/variabledeclared.h \
+    function_editor/variabledeclaredmodel.h \
+    function_editor/variabledeclareddelegate.h
 FORMS += mainwindow.ui \
     conditiondialog.ui \
     commdialog.ui \

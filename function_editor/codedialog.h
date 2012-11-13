@@ -15,7 +15,7 @@
 #include <QItemSelectionModel>
 #include "autocompletiontextedit.h"
 #include "treemodelcompleter.h"
-#include "./memorymodel.h"
+#include "./fememorymodel.h"
 #include "./variabledeclaredmodel.h"
 #include "./variabledeclareddelegate.h"
 
@@ -114,7 +114,7 @@ private:
     TreeModelCompleter *completer;
 
     QTableView *tableViewMemory;
-    MemoryModel *memory;
+    FEMemoryModel *memory;
     QTableView *tableViewVariables;
     QItemSelectionModel *selectionModel;
     VariableDeclaredModel *variablesDeclared;

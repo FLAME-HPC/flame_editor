@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QString>
 #include <QXmlStreamWriter>
-#include <QDomDocument>
-#include <QDomElement>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
 #include <QFile>
 #include <QMap>
 #include "./fegraphicsitem.h"

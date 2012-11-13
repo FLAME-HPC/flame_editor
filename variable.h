@@ -10,7 +10,7 @@
 
 #include <QString>
 
-class ADT;
+// class ADT;
 
 class Variable {
   public:
