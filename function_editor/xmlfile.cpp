@@ -1,7 +1,7 @@
 #include "xmlfile.h"
 #include <QtGui>
 #include "./codeparser.h"
-#include "./arrow.h"
+#include "./fearrow.h"
 
 XMLFile::XMLFile(QString fileName) : FileType(fileName, "")
 {
@@ -104,14 +104,14 @@ bool XMLFile::openToWrite()
 
 }
 
-void XMLFile::writeState(GraphicsItem *g)
+void XMLFile::writeState(FEGraphicsItem *g)
 {
     docToWrite->writeStartElement(XMLConstants::SSTATE);
     docToWrite->writeTextElement(XMLConstants::SNAME, g->getName());
     docToWrite->writeEndElement();
 }
 
-void XMLFile::writeTransition(GraphicsItem *g)
+void XMLFile::writeTransition(FEGraphicsItem *g)
 {
     docToWrite->writeStartElement(XMLConstants::STRANSITION);
     docToWrite->writeTextElement(XMLConstants::SNAME, g->getName());
@@ -128,7 +128,7 @@ void XMLFile::writeTransition(GraphicsItem *g)
     docToWrite->writeEndElement();
 }
 
-void XMLFile::writeStartIF(GraphicsItem *g)
+void XMLFile::writeStartIF(FEGraphicsItem *g)
 {
     docToWrite->writeStartElement(XMLConstants::SBLOCKIF);
     docToWrite->writeStartElement(XMLConstants::SCONDITION);
@@ -170,7 +170,7 @@ void XMLFile::writeStopFalse()
     docToWrite->writeEndElement();
 }
 
-void XMLFile::writeStartWHILE(GraphicsItem *g)
+void XMLFile::writeStartWHILE(FEGraphicsItem *g)
 {
     docToWrite->writeStartElement(XMLConstants::SBLOCKWHILE);
     docToWrite->writeStartElement(XMLConstants::SCONDITION);
@@ -188,14 +188,14 @@ void XMLFile::writeStartWHILE(GraphicsItem *g)
     docToWrite->writeStartElement(XMLConstants::SBLOCK);
 }
 
-void XMLFile::writeEndWHILE(GraphicsItem *g)
+void XMLFile::writeEndWHILE(FEGraphicsItem *g)
 {
     docToWrite->writeEndElement();
     writeState(g);
     docToWrite->writeEndElement();
 }
 
-void XMLFile::writeStartFOR(GraphicsItem *g)
+void XMLFile::writeStartFOR(FEGraphicsItem *g)
 {
     docToWrite->writeStartElement(XMLConstants::SBLOCKFOR);
     docToWrite->writeStartElement(XMLConstants::STATEMENTS);
@@ -216,7 +216,7 @@ void XMLFile::writeStartFOR(GraphicsItem *g)
     docToWrite->writeStartElement(XMLConstants::SBLOCK);
 }
 
-void XMLFile::writeEndFOR(GraphicsItem *g)
+void XMLFile::writeEndFOR(FEGraphicsItem *g)
 {
     docToWrite->writeEndElement();
     writeState(g);
@@ -255,7 +255,7 @@ bool XMLFile::openToRead()
     return true;
 }
 
-void XMLFile::read(QList<GraphicsItem *> &itemsList)
+void XMLFile::read(QList<FEGraphicsItem *> &itemsList)
 {
     QDomElement root = docToRead->documentElement();
     if(!root.isNull())
@@ -263,20 +263,20 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList)
         QDomNode r = root.firstChild();
         sFunctionName = readTextElement(r, XMLConstants::SFUNCTIONNAME);
         qDebug()<<r.nodeName();
-        QList<GraphicsItem*> items;
+        QList<FEGraphicsItem*> items;
         read(itemsList, items, r, 0);
     }
 }
 
-void XMLFile::read(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &items, QDomNode node, int level)
+void XMLFile::read(QList<FEGraphicsItem *> &itemsList, QList<FEGraphicsItem *> &items, QDomNode node, int level)
 {
     QDomNode lastChild = node.lastChild();
     QDomNode n = node.firstChild();
     QString name;
-    GraphicsItem *p = 0;
-    GraphicsItem *c = 0;
-    GraphicsItem *gif = 0;
-    GraphicsItem *w = 0;
+    FEGraphicsItem *p = 0;
+    FEGraphicsItem *c = 0;
+    FEGraphicsItem *gif = 0;
+    FEGraphicsItem *w = 0;
     if(items.count() > 0)
     {
         p = items.last();
@@ -293,7 +293,7 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &item
         else if(name == XMLConstants::SBLOCKIF)
         {
             gif = readIF(itemsList, items, n, level + 1);
-            Arrow *a = new Arrow(p, gif);
+            FEArrow *a = new FEArrow(p, gif);
             if(w != 0) a->setName("exit");
             p->addGraphicsItem(a);
             gif->addGraphicsItemParents(p);
@@ -301,7 +301,7 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &item
         }
         else if(name == XMLConstants::SBLOCKWHILE)
         {
-            QList<GraphicsItem *> itemsBlock;
+            QList<FEGraphicsItem *> itemsBlock;
             itemsBlock.append(p);
             c = readWhile(itemsList, itemsBlock, n, level + 1);
             p = c;
@@ -309,7 +309,7 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &item
         }
         else if(name == XMLConstants::SBLOCKFOR)
         {
-            QList<GraphicsItem *> itemsBlock;
+            QList<FEGraphicsItem *> itemsBlock;
             itemsBlock.append(p);
             c = readFor(itemsList, itemsBlock, n, level + 1);
             p = c;
@@ -320,7 +320,7 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &item
         {
             if(gif != 0 && w != 0)
             {
-                Arrow *a2 = new Arrow(p, w);
+                FEArrow *a2 = new FEArrow(p, w);
                 p->addGraphicsItem(a2);
                 w->addGraphicsItemParents(p);
                 w = 0;
@@ -331,9 +331,9 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &item
                 {
                     while(items.count() > 0)
                     {
-                        GraphicsItem *itm = items.first();
+                        FEGraphicsItem *itm = items.first();
                         items.removeAt(0);
-                        Arrow *a = new Arrow(itm, c);
+                        FEArrow *a = new FEArrow(itm, c);
                         itm->addGraphicsItem(a);
                         c->addGraphicsItemParents(itm);
                     }
@@ -344,12 +344,12 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &item
                 }
                 else if(w != 0)
                 {
-                    Arrow *a1 = new Arrow(p, c);
+                    FEArrow *a1 = new FEArrow(p, c);
                     a1->setName("exit");
                     p->addGraphicsItem(a1);
                     c->addGraphicsItemParents(p);
 
-                    Arrow *a2 = new Arrow(p, w);
+                    FEArrow *a2 = new FEArrow(p, w);
                     p->addGraphicsItem(a2);
                     w->addGraphicsItemParents(p);
                     p = c;
@@ -367,7 +367,7 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &item
         }
         else if(p != 0 && c != 0)
         {
-            Arrow *a = new Arrow(p, c);
+            FEArrow *a = new FEArrow(p, c);
             p->addGraphicsItem(a);
             c->addGraphicsItemParents(p);
             p = c;
@@ -380,11 +380,11 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &item
         items.append(p);
 }
 
-GraphicsItem* XMLFile::readIF(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &items, QDomNode node, int level)
+FEGraphicsItem* XMLFile::readIF(QList<FEGraphicsItem *> &itemsList, QList<FEGraphicsItem *> &items, QDomNode node, int level)
 {
     items.clear();
     QDomNode dnConditionIf = node.namedItem(XMLConstants::SCONDITION);
-    GraphicsItem *gConditionIf = 0;
+    FEGraphicsItem *gConditionIf = 0;
     if(!dnConditionIf.isNull())
     {
         gConditionIf = readCondition(dnConditionIf, ConditionIf);
@@ -398,8 +398,8 @@ GraphicsItem* XMLFile::readIF(QList<GraphicsItem *> &itemsList, QList<GraphicsIt
         }
     }
     itemsList.append(gConditionIf);
-    GraphicsItem *stateFalse = new GraphicsItem(EmptyState);
-    Arrow *af = new Arrow(gConditionIf, stateFalse);
+    FEGraphicsItem *stateFalse = new FEGraphicsItem(EmptyState);
+    FEArrow *af = new FEArrow(gConditionIf, stateFalse);
     af->setName("false");
     gConditionIf->addGraphicsItem(af);
     stateFalse->addGraphicsItemParents(gConditionIf);
@@ -407,7 +407,7 @@ GraphicsItem* XMLFile::readIF(QList<GraphicsItem *> &itemsList, QList<GraphicsIt
     QDomNode dnFalse = node.namedItem(XMLConstants::SBLOCKFALSE);
     if(!dnFalse.isNull())
     {
-        QList<GraphicsItem *> itemsFalse;
+        QList<FEGraphicsItem *> itemsFalse;
         itemsFalse.append(stateFalse);
         read(itemsList, itemsFalse, dnFalse, level + 1);
         itemsFalse.removeOne(stateFalse);
@@ -417,8 +417,8 @@ GraphicsItem* XMLFile::readIF(QList<GraphicsItem *> &itemsList, QList<GraphicsIt
             itemsFalse.removeAt(0);
         }
     }
-    GraphicsItem *stateTrue = new GraphicsItem(EmptyState);
-    Arrow *at = new Arrow(gConditionIf, stateTrue);
+    FEGraphicsItem *stateTrue = new FEGraphicsItem(EmptyState);
+    FEArrow *at = new FEArrow(gConditionIf, stateTrue);
     at->setName("true");
     gConditionIf->addGraphicsItem(at);
     stateTrue->addGraphicsItemParents(gConditionIf);
@@ -426,7 +426,7 @@ GraphicsItem* XMLFile::readIF(QList<GraphicsItem *> &itemsList, QList<GraphicsIt
     QDomNode dnTrue = node.namedItem(XMLConstants::SBLOCKTRUE);
     if(!dnTrue.isNull())
     {
-        QList<GraphicsItem *> itemsTrue;
+        QList<FEGraphicsItem *> itemsTrue;
         itemsTrue.append(stateTrue);
         read(itemsList, itemsTrue, dnTrue, level + 1);
         itemsTrue.removeOne(stateTrue);
@@ -439,16 +439,16 @@ GraphicsItem* XMLFile::readIF(QList<GraphicsItem *> &itemsList, QList<GraphicsIt
     return gConditionIf;
 }
 
-GraphicsItem *XMLFile::readWhile(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &items, QDomNode node, int level)
+FEGraphicsItem *XMLFile::readWhile(QList<FEGraphicsItem *> &itemsList, QList<FEGraphicsItem *> &items, QDomNode node, int level)
 {
     QDomNode dnConditionWhile = node.namedItem(XMLConstants::SCONDITION);
-    GraphicsItem *p = items.first();
+    FEGraphicsItem *p = items.first();
     items.clear();
-    GraphicsItem *gConditionWhile = 0;
+    FEGraphicsItem *gConditionWhile = 0;
     if(!dnConditionWhile.isNull())
     {
         gConditionWhile = readCondition(dnConditionWhile, ConditionWhile);
-        Arrow *a = new Arrow(p, gConditionWhile);
+        FEArrow *a = new FEArrow(p, gConditionWhile);
         p->addGraphicsItem(a);
         gConditionWhile->addGraphicsItemParents(p);
         QDomNode dnExpression = dnConditionWhile.namedItem(XMLConstants::SEXPRESSION);
@@ -462,8 +462,8 @@ GraphicsItem *XMLFile::readWhile(QList<GraphicsItem *> &itemsList, QList<Graphic
     }
     itemsList.append(gConditionWhile);
 
-    GraphicsItem *gOutsideEmptyState = new GraphicsItem(EmptyState);
-    Arrow *aOutsideEmptyState = new Arrow(gConditionWhile, gOutsideEmptyState);
+    FEGraphicsItem *gOutsideEmptyState = new FEGraphicsItem(EmptyState);
+    FEArrow *aOutsideEmptyState = new FEArrow(gConditionWhile, gOutsideEmptyState);
     aOutsideEmptyState->setName("exit");
     gConditionWhile->addGraphicsItem(aOutsideEmptyState);
     gOutsideEmptyState->addGraphicsItemParents(gConditionWhile);
@@ -472,20 +472,20 @@ GraphicsItem *XMLFile::readWhile(QList<GraphicsItem *> &itemsList, QList<Graphic
     QDomNode dnBlock = node.namedItem(XMLConstants::SBLOCK);
     if(!dnBlock.isNull())
     {
-        QList<GraphicsItem *> itemsBlock;
-        GraphicsItem *gEmptyState = new GraphicsItem(EmptyState);
-        Arrow *aEmptyState = new Arrow(gConditionWhile, gEmptyState);
+        QList<FEGraphicsItem *> itemsBlock;
+        FEGraphicsItem *gEmptyState = new FEGraphicsItem(EmptyState);
+        FEArrow *aEmptyState = new FEArrow(gConditionWhile, gEmptyState);
         gConditionWhile->addGraphicsItem(aEmptyState);
         gEmptyState->addGraphicsItemParents(gConditionWhile);
         itemsList.append(gEmptyState);
         itemsBlock.append(gEmptyState);
         read(itemsList, itemsBlock, dnBlock, level + 1);
-        GraphicsItem *gSolidState = new GraphicsItem(SolidState);
+        FEGraphicsItem *gSolidState = new FEGraphicsItem(SolidState);
         while(itemsBlock.count() > 0)
         {
-            GraphicsItem *g = itemsBlock.first();
+            FEGraphicsItem *g = itemsBlock.first();
             itemsBlock.removeAt(0);
-            Arrow *a = new Arrow(g, gSolidState);
+            FEArrow *a = new FEArrow(g, gSolidState);
             g->addGraphicsItem(a);
             gSolidState->addGraphicsItemParents(g);
         }
@@ -494,16 +494,16 @@ GraphicsItem *XMLFile::readWhile(QList<GraphicsItem *> &itemsList, QList<Graphic
     return gOutsideEmptyState;
 }
 
-GraphicsItem *XMLFile::readFor(QList<GraphicsItem *> &itemsList, QList<GraphicsItem *> &items, QDomNode node, int level)
+FEGraphicsItem *XMLFile::readFor(QList<FEGraphicsItem *> &itemsList, QList<FEGraphicsItem *> &items, QDomNode node, int level)
 {
     QDomNode dnConditionFor = node.namedItem(XMLConstants::STATEMENTS);
-    GraphicsItem *p = items.first();
+    FEGraphicsItem *p = items.first();
     items.clear();
-    GraphicsItem *gConditionFor = 0;
+    FEGraphicsItem *gConditionFor = 0;
     if(!dnConditionFor.isNull())
     {
         gConditionFor = readCondition(dnConditionFor, ConditionFor);
-        Arrow *a = new Arrow(p, gConditionFor);
+        FEArrow *a = new FEArrow(p, gConditionFor);
         p->addGraphicsItem(a);
         gConditionFor->addGraphicsItemParents(p);
         QDomNode dnExpression = dnConditionFor.firstChild();
@@ -524,8 +524,8 @@ GraphicsItem *XMLFile::readFor(QList<GraphicsItem *> &itemsList, QList<GraphicsI
     }
     itemsList.append(gConditionFor);
 
-    GraphicsItem *gOutsideEmptyState = new GraphicsItem(EmptyState);
-    Arrow *aOutsideEmptyState = new Arrow(gConditionFor, gOutsideEmptyState);
+    FEGraphicsItem *gOutsideEmptyState = new FEGraphicsItem(EmptyState);
+    FEArrow *aOutsideEmptyState = new FEArrow(gConditionFor, gOutsideEmptyState);
     aOutsideEmptyState->setName("exit");
     gConditionFor->addGraphicsItem(aOutsideEmptyState);
     gOutsideEmptyState->addGraphicsItemParents(gConditionFor);
@@ -534,20 +534,20 @@ GraphicsItem *XMLFile::readFor(QList<GraphicsItem *> &itemsList, QList<GraphicsI
     QDomNode dnBlock = node.namedItem(XMLConstants::SBLOCK);
     if(!dnBlock.isNull())
     {
-        QList<GraphicsItem *> itemsBlock;
-        GraphicsItem *gEmptyState = new GraphicsItem(EmptyState);
-        Arrow *aEmptyState = new Arrow(gConditionFor, gEmptyState);
+        QList<FEGraphicsItem *> itemsBlock;
+        FEGraphicsItem *gEmptyState = new FEGraphicsItem(EmptyState);
+        FEArrow *aEmptyState = new FEArrow(gConditionFor, gEmptyState);
         gConditionFor->addGraphicsItem(aEmptyState);
         gEmptyState->addGraphicsItemParents(gConditionFor);
         itemsList.append(gEmptyState);
         itemsBlock.append(gEmptyState);
         read(itemsList, itemsBlock, dnBlock, level + 1);
-        GraphicsItem *gSolidState = new GraphicsItem(SolidState);
+        FEGraphicsItem *gSolidState = new FEGraphicsItem(SolidState);
         while(itemsBlock.count() > 0)
         {
-            GraphicsItem *g = itemsBlock.first();
+            FEGraphicsItem *g = itemsBlock.first();
             itemsBlock.removeAt(0);
-            Arrow *a = new Arrow(g, gSolidState);
+            FEArrow *a = new FEArrow(g, gSolidState);
             g->addGraphicsItem(a);
             gSolidState->addGraphicsItemParents(g);
         }
@@ -556,16 +556,16 @@ GraphicsItem *XMLFile::readFor(QList<GraphicsItem *> &itemsList, QList<GraphicsI
     return gOutsideEmptyState;
 }
 
-GraphicsItem* XMLFile::readState(QDomNode node, ItemType type)
+FEGraphicsItem* XMLFile::readState(QDomNode node, ItemType type)
 {
-    GraphicsItem *g = new GraphicsItem(type);
+    FEGraphicsItem *g = new FEGraphicsItem(type);
     g->setName(readTextElement(node, XMLConstants::SNAME));
     return g;
 }
 
-GraphicsItem *XMLFile::readTransition(QDomNode node)
+FEGraphicsItem *XMLFile::readTransition(QDomNode node)
 {
-    GraphicsItem *g = new GraphicsItem(Transition);
+    FEGraphicsItem *g = new FEGraphicsItem(Transition);
     g->setName(readTextElement(node, XMLConstants::SNAME));
     QDomNode dnSS = node.namedItem(XMLConstants::STATEMENTS);
     if(!dnSS.isNull())
@@ -583,9 +583,9 @@ GraphicsItem *XMLFile::readTransition(QDomNode node)
     return g;
 }
 
-GraphicsItem *XMLFile::readCondition(QDomNode node, ItemType type)
+FEGraphicsItem *XMLFile::readCondition(QDomNode node, ItemType type)
 {
-    GraphicsItem *g = new GraphicsItem(type);
+    FEGraphicsItem *g = new FEGraphicsItem(type);
     g->setName(readTextElement(node, XMLConstants::SNAME));
     return g;
 }

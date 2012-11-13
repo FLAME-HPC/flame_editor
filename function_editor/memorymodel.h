@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QAbstractTableModel>
 #include <QStringList>
-#include "variable.h"
+#include "../variable.h"
 
 class MemoryModel : public QAbstractTableModel
 {

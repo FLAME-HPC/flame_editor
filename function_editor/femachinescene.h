@@ -5,26 +5,26 @@
  * \copyright Copyright (c) 2012 University of Sheffield
  * \brief Header file for the graphics scene for stategraphs
 */
-#ifndef MACHINESCENE_H_
-#define MACHINESCENE_H_
+#ifndef FEMACHINESCENE_H_
+#define FEMACHINESCENE_H_
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QMenu>
 #include <QAction>
-#include "./graphicsitem.h"
-#include "./arrow.h"
+#include "./fegraphicsitem.h"
+#include "./fearrow.h"
 #include "./filetype.h"
 #include "./cfile.h"
 #include "./xmlfile.h"
 #include "./graphicsarcitem.h"
 #include "./graphicsgrup.h"
 
-class MachineScene : public QGraphicsScene {
+class FEMachineScene : public QGraphicsScene {
     Q_OBJECT
 
   public:
-    MachineScene(QObject *parent = 0);
+    FEMachineScene(QObject *parent = 0);
 
     void setSelectItemText(QString s){
         if(itemSelect != 0){
@@ -77,40 +77,40 @@ class MachineScene : public QGraphicsScene {
 
   private:
     /* Used to help add items to the graphics scene */
-    void addState(GraphicsItem * s);
-    void addTransitionItem(GraphicsItem * s);
-    void addCondition(GraphicsItem * s);
-    void addArrow(Arrow * t);
+    void addState(FEGraphicsItem * s);
+    void addTransitionItem(FEGraphicsItem * s);
+    void addCondition(FEGraphicsItem * s);
+    void addArrow(FEArrow * t);
 
-    void newState(GraphicsItem *state);
-    void newTransition(GraphicsItem *state);
-    void addTransition(GraphicsItem *item);
-    void addIF(GraphicsItem *state, bool place);
-    void addWHILEorFOR(GraphicsItem *state);
-    bool testIF(GraphicsItem *stateStart, GraphicsItem *stateStop);
-    bool testWHILE(GraphicsItem *stateStart);
+    void newState(FEGraphicsItem *state);
+    void newTransition(FEGraphicsItem *state);
+    void addTransition(FEGraphicsItem *item);
+    void addIF(FEGraphicsItem *state, bool place);
+    void addWHILEorFOR(FEGraphicsItem *state);
+    bool testIF(FEGraphicsItem *stateStart, FEGraphicsItem *stateStop);
+    bool testWHILE(FEGraphicsItem *stateStart);
 
     QAction *editAction;
     QAction *splitAction;
 
-    GraphicsItem *check(GraphicsItem *g);
-    GraphicsItem *saveFile(GraphicsItem *g, FileType *x);
+    FEGraphicsItem *check(FEGraphicsItem *g);
+    FEGraphicsItem *saveFile(FEGraphicsItem *g, FileType *x);
 
-    GraphicsItem *arrangeGraphicsItem(GraphicsGrup &item, GraphicsItem *g);
+    FEGraphicsItem *arrangeGraphicsItem(GraphicsGrup &item, FEGraphicsItem *g);
 
-    QMap<GraphicsItem *, int> *map;
+    QMap<FEGraphicsItem *, int> *map;
 
     QObject *codeDialog;
 
     /* Used to draw line when moving mouse */
     QGraphicsLineItem *line;
     GraphicsArcItem *arc;
-    GraphicsItem *itemToMove;
-    GraphicsItem *itemToColaps;
-    GraphicsItem *itemStart;
-    GraphicsItem *itemArc;
+    FEGraphicsItem *itemToMove;
+    FEGraphicsItem *itemToColaps;
+    FEGraphicsItem *itemStart;
+    FEGraphicsItem *itemArc;
 
-    GraphicsItem *itemSelect;
+    FEGraphicsItem *itemSelect;
     /* Used to increment numbers for names */
     int num_states;
     int num_transitions;
@@ -129,4 +129,4 @@ private slots:
 };
 
 
-#endif  // MACHINESCENE_H_
+#endif  // FEMACHINESCENE_H_

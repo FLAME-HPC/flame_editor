@@ -6,11 +6,11 @@
  * \brief Implementation of the graphics Scene for the stategraph
  */
 #include <QtGui>
-#include "./machinescene.h"
+#include "./femachinescene.h"
 //#include "./machine.h"
 #include "./codedialog.h"
 
-MachineScene::MachineScene(QObject *parent)
+FEMachineScene::FEMachineScene(QObject *parent)
     : QGraphicsScene(parent) {
     /* Initialise variables */
     codeDialog = parent;
@@ -43,7 +43,7 @@ MachineScene::MachineScene(QObject *parent)
 
     /* Add the start state */
     /* Create GraphicsItem object */
-    GraphicsItem * state = new GraphicsItem(State, "start");
+    FEGraphicsItem * state = new FEGraphicsItem(State, "start");
     /* Set the position in the scene */
     state->setPos(50.0, 100.0);
     itemStart = state;
@@ -59,16 +59,16 @@ MachineScene::MachineScene(QObject *parent)
     arrangeGraphicsItem();
 }
 
-void MachineScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
+void FEMachineScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     /* Initialise pointers to any graphics item at the
      * start or end of the drawing line when using the mouse */
-    GraphicsItem * startItem = 0;
-    GraphicsItem * endItem = 0;
+    FEGraphicsItem * startItem = 0;
+    FEGraphicsItem * endItem = 0;
 
     //qDebug()<<(itemToColaps !=0 )<< (itemToMove != 0);
     if(itemToMove != 0 && itemToColaps != 0){
         if(itemToMove->getGraphicsItemParents() != 0){
-            Arrow * arrow = qgraphicsitem_cast<Arrow*>( itemToMove->getGraphicsItemParents()->getGraphicsItem());
+            FEArrow * arrow = qgraphicsitem_cast<FEArrow*>( itemToMove->getGraphicsItemParents()->getGraphicsItem());
             arrow->setEndItem(itemToColaps);
             arrow->updatePosition();
             itemToColaps->addGraphicsItemParents(itemToMove->getGraphicsItemParents());
@@ -140,11 +140,11 @@ void MachineScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
         /* Make startItem and endItem equal to any graphics items at
          * the start and end points of the line */
         if (startItems.count() > 0 &&
-                startItems.first()->type() == GraphicsItem::Type)
-            startItem = qgraphicsitem_cast<GraphicsItem *>(startItems.first());
+                startItems.first()->type() == FEGraphicsItem::Type)
+            startItem = qgraphicsitem_cast<FEGraphicsItem *>(startItems.first());
         if (endItems.count() > 0 &&
-                endItems.first()->type() == GraphicsItem::Type)
-            endItem = qgraphicsitem_cast<GraphicsItem *>(endItems.first());
+                endItems.first()->type() == FEGraphicsItem::Type)
+            endItem = qgraphicsitem_cast<FEGraphicsItem *>(endItems.first());
 
         /* If the startItem is a state and the endItem is nothing then
          * create a new state at the end of the line and assign to endItem */
@@ -169,7 +169,7 @@ void MachineScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 }
 
 /*
-void MachineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void FEMachineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     if(itemSelect != 0){
         CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
@@ -188,21 +188,21 @@ void MachineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 }
 */
 
-void MachineScene::keyReleaseEvent(QKeyEvent *e)
+void FEMachineScene::keyReleaseEvent(QKeyEvent *e)
 {
     if(e->key() == Qt::Key_Delete && itemSelect != 0){
         if(itemSelect->mytype == 3){
             if(itemSelect->countGraphicsItem() == 2){
-                GraphicsItem *state1 = new GraphicsItem;
-                Arrow *arrow1 = qgraphicsitem_cast<Arrow*>(itemSelect->getGraphicsItem(0));
+                FEGraphicsItem *state1 = new FEGraphicsItem;
+                FEArrow *arrow1 = qgraphicsitem_cast<FEArrow*>(itemSelect->getGraphicsItem(0));
                 itemSelect->removeGraphicsItem(arrow1);
                 state1->setPos(itemSelect->pos() + QPointF(-50, 0));
                 state1->addGraphicsItem(arrow1);
                 arrow1->setStartItem(state1);
                 addState(state1);
 
-                GraphicsItem *state2 = new GraphicsItem;
-                Arrow *arrow2 = qgraphicsitem_cast<Arrow*>(itemSelect->getGraphicsItem(0));
+                FEGraphicsItem *state2 = new FEGraphicsItem;
+                FEArrow *arrow2 = qgraphicsitem_cast<FEArrow*>(itemSelect->getGraphicsItem(0));
                 itemSelect->removeGraphicsItem(arrow2);
                 state2->setPos(itemSelect->pos() + QPointF(50, 0));
                 state1->addGraphicsItem(arrow2);
@@ -215,7 +215,7 @@ void MachineScene::keyReleaseEvent(QKeyEvent *e)
                 if(itemSelect->getGraphicsItemParents()->isDiamond())
                     itemSelect->getGraphicsItemParents()->setDiamond(false);
 
-                Arrow *arrow3 = qgraphicsitem_cast<Arrow*>(itemSelect->getGraphicsItemParents()->getGraphicsItem(0));
+                FEArrow *arrow3 = qgraphicsitem_cast<FEArrow*>(itemSelect->getGraphicsItemParents()->getGraphicsItem(0));
                 itemSelect->getGraphicsItemParents()->removeGraphicsItem(arrow3);
 
                 removeItem(arrow3);
@@ -223,12 +223,12 @@ void MachineScene::keyReleaseEvent(QKeyEvent *e)
                 removeItem(itemSelect);
                 delete itemSelect;
             } else if(itemSelect->countGraphicsItem() == 1){
-                Arrow *arrow1 = qgraphicsitem_cast<Arrow*>(itemSelect->getGraphicsItem(0));
+                FEArrow *arrow1 = qgraphicsitem_cast<FEArrow*>(itemSelect->getGraphicsItem(0));
 
                 if(itemSelect->getGraphicsItemParents()->isDiamond())
                     itemSelect->getGraphicsItemParents()->setDiamond(false);
 
-                Arrow *arrow2 = qgraphicsitem_cast<Arrow*>(itemSelect->getGraphicsItemParents()->getGraphicsItem(0));
+                FEArrow *arrow2 = qgraphicsitem_cast<FEArrow*>(itemSelect->getGraphicsItemParents()->getGraphicsItem(0));
                 itemSelect->getGraphicsItemParents()->removeGraphicsItem(arrow2);
                 itemSelect->getGraphicsItemParents()->addGraphicsItem(arrow1);
                 arrow1->setStartItem(itemSelect->getGraphicsItemParents());
@@ -240,8 +240,8 @@ void MachineScene::keyReleaseEvent(QKeyEvent *e)
             }
         }
         else if(itemSelect->mytype == 1){
-            GraphicsItem *item;
-            Arrow *arrow = qgraphicsitem_cast<Arrow*>(itemSelect->getGraphicsItem(0));
+            FEGraphicsItem *item;
+            FEArrow *arrow = qgraphicsitem_cast<FEArrow*>(itemSelect->getGraphicsItem(0));
             itemSelect->removeGraphicsItem(arrow);
             item = arrow->getEndItem();
             if(item->mytype == 0 && item->countGraphicsItem() == 0){
@@ -255,7 +255,7 @@ void MachineScene::keyReleaseEvent(QKeyEvent *e)
             qDebug()<<item->countGraphicsItem();
             int i;
             for(i = 0; i < item->countGraphicsItem() && arrow == 0;i++){
-                Arrow *a = qgraphicsitem_cast<Arrow*>(item->getGraphicsItem(i));
+                FEArrow *a = qgraphicsitem_cast<FEArrow*>(item->getGraphicsItem(i));
                 if(a->getEndItem() == itemSelect)
                     arrow = a;
             }
@@ -267,7 +267,7 @@ void MachineScene::keyReleaseEvent(QKeyEvent *e)
                 if(item->getGraphicsItemParents()->isDiamond())
                     item->getGraphicsItemParents()->setDiamond(false);
 
-                Arrow *arrow1 = qgraphicsitem_cast<Arrow*>(item->getGraphicsItemParents()->getGraphicsItem(0));
+                FEArrow *arrow1 = qgraphicsitem_cast<FEArrow*>(item->getGraphicsItemParents()->getGraphicsItem(0));
                 item->getGraphicsItemParents()->removeGraphicsItem(arrow1);
 
                 removeItem(arrow1);
@@ -282,7 +282,7 @@ void MachineScene::keyReleaseEvent(QKeyEvent *e)
     }
 }
 
-void MachineScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
+void FEMachineScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     moveMouse = true;
     changed = true;
     /* If a line is being drawn (i.e. right mouse button down */
@@ -295,8 +295,8 @@ void MachineScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
             itemSelect->setColor(Qt::black);
         }
         QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
-        if (qgraphicsitem_cast<GraphicsItem *>(qitem)) {
-            GraphicsItem *sitem = qgraphicsitem_cast<GraphicsItem *>(qitem);
+        if (qgraphicsitem_cast<FEGraphicsItem *>(qitem)) {
+            FEGraphicsItem *sitem = qgraphicsitem_cast<FEGraphicsItem *>(qitem);
             if(sitem->mytype == State || sitem->mytype == FinalState || sitem->mytype == EmptyState ||
                     sitem->mytype == SolidState){
                 if(itemArc != 0 && itemArc != sitem)
@@ -331,12 +331,12 @@ void MachineScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
             QList<QGraphicsItem *> itemList = items(r, Qt::IntersectsItemBoundingRect);
             itemList.removeOne(itemToMove);
             //qDebug()<<"opo0"<<r<<p;
-            GraphicsItem * it = 0;
+            FEGraphicsItem * it = 0;
             bool b = false;
             for(int i = 0;i < itemList.count();i++){
-                if (qgraphicsitem_cast<GraphicsItem *>(itemList[i]) &&
-                        qgraphicsitem_cast<GraphicsItem *>(itemList[i])->mytype == 0) {
-                    it = qgraphicsitem_cast<GraphicsItem *>(itemList[i]);
+                if (qgraphicsitem_cast<FEGraphicsItem *>(itemList[i]) &&
+                        qgraphicsitem_cast<FEGraphicsItem *>(itemList[i])->mytype == 0) {
+                    it = qgraphicsitem_cast<FEGraphicsItem *>(itemList[i]);
                         if(it == itemToColaps){
                             it = 0;
                             b = true;
@@ -364,7 +364,7 @@ void MachineScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     }
 }
 
-void MachineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+void FEMachineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     if(moveMouse == false)
     {
@@ -375,7 +375,7 @@ void MachineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     QAction *refreshAction = new QAction(tr("Refresh"), this);
     m->addAction(refreshAction);
     QGraphicsItem * qitem = itemAt(event->scenePos());
-    if(!moveMouse && qitem !=0 && (itemSelect = qgraphicsitem_cast<GraphicsItem *>(qitem)))
+    if(!moveMouse && qitem !=0 && (itemSelect = qgraphicsitem_cast<FEGraphicsItem *>(qitem)))
     {
         if(itemSelect->mytype == State || itemSelect->mytype == FinalState || itemSelect->mytype == Transition
                 || itemSelect->mytype == ConditionIf || itemSelect->mytype == ConditionWhile
@@ -428,7 +428,7 @@ void MachineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     }
 }
 
-void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
+void FEMachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     //QGraphicsScene::mousePressEvent(mouseEvent);
     //mouseEvent->accept();
     //return;
@@ -448,8 +448,8 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
             clearSelection();
             qitem->setSelected(true);
             //qDebug()<<"ok";
-            if (qgraphicsitem_cast<GraphicsItem *>(qitem)) {
-                itemToMove = qgraphicsitem_cast<GraphicsItem *>(qitem);
+            if (qgraphicsitem_cast<FEGraphicsItem *>(qitem)) {
+                itemToMove = qgraphicsitem_cast<FEGraphicsItem *>(qitem);
                     if(itemSelect == 0){
                         itemSelect = itemToMove;
                     } else if(itemToMove != itemSelect){
@@ -474,9 +474,9 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
         /* If there is an item at mouse position */
         if (qitem != 0) {
             /* If graphics item is a GraphicsItem */
-            if (qgraphicsitem_cast<GraphicsItem *>(qitem)) {
-                GraphicsItem * sitem =
-                qgraphicsitem_cast<GraphicsItem *>(qitem);
+            if (qgraphicsitem_cast<FEGraphicsItem *>(qitem)) {
+                FEGraphicsItem * sitem =
+                qgraphicsitem_cast<FEGraphicsItem *>(qitem);
 
                 /* If the graphics item is a state */
                 if(sitem->mytype == State || sitem->mytype == EmptyState || sitem->mytype == SolidState) {
@@ -497,7 +497,7 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     }
 }
 
-void MachineScene::addState(GraphicsItem * s) {
+void FEMachineScene::addState(FEGraphicsItem * s) {
     if(s->mytype == State)
     {
         QString ss = QString("state %1").arg(num_states++);
@@ -507,14 +507,14 @@ void MachineScene::addState(GraphicsItem * s) {
     addItem(s);
 }
 
-void MachineScene::addTransitionItem(GraphicsItem * t) {
+void FEMachineScene::addTransitionItem(FEGraphicsItem * t) {
     QString s = QString("transition %1").arg(num_transitions++);
     t->setName(s);
     nameList.append(s);
     addItem(t);
 }
 
-void MachineScene::addCondition(GraphicsItem *t)
+void FEMachineScene::addCondition(FEGraphicsItem *t)
 {
     QString s = QString("condition %1").arg(num_conditions++);
     t->setName(s);
@@ -522,33 +522,33 @@ void MachineScene::addCondition(GraphicsItem *t)
     addItem(t);
 }
 
-void MachineScene::addArrow(Arrow * t) {
+void FEMachineScene::addArrow(FEArrow * t) {
     addItem(t);
     /* Draw arrows underneath states and functions */
     t->setZValue(-1.0);
 }
 
-void MachineScene::newState(GraphicsItem *state)
+void FEMachineScene::newState(FEGraphicsItem *state)
 {
     if(state->mytype == SolidState)
     {
     }
 }
 
-bool MachineScene::check()
+bool FEMachineScene::check()
 {
     bool ok = true;
     bool b = true;
-    GraphicsItem *state = itemStart;
+    FEGraphicsItem *state = itemStart;
     do{
         if(state->mytype == 3)
         {
             if(state->countGraphicsItem() == 2)
             {
-                Arrow *a1 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
-                Arrow *a2 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(1));
-                GraphicsItem *r1 = check(a1->getEndItem());
-                GraphicsItem *r2 = check(a2->getEndItem());
+                FEArrow *a1 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
+                FEArrow *a2 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(1));
+                FEGraphicsItem *r1 = check(a1->getEndItem());
+                FEGraphicsItem *r2 = check(a2->getEndItem());
                 if(r1 != 0 && r2 != 0 && r1 == r2)
                     state = r1;
                 else
@@ -560,7 +560,7 @@ bool MachineScene::check()
         else
             if(state->countGraphicsItem() > 0)
             {
-                Arrow *a = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
+                FEArrow *a = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
                 state = a->getEndItem();
             }
             else
@@ -569,7 +569,7 @@ bool MachineScene::check()
     return ok;
 }
 
-bool MachineScene::readFile(QString fileName)
+bool FEMachineScene::readFile(QString fileName)
 {
     XMLFile *x = new XMLFile(fileName);
     bool ok = false;
@@ -584,7 +584,7 @@ bool MachineScene::readFile(QString fileName)
             delete i;
             item.removeAt(0);
         }
-        QList<GraphicsItem*> itemsList;
+        QList<FEGraphicsItem*> itemsList;
         x->read(itemsList);
         CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
         cd->setFunctionName(x->getFunctionName());
@@ -597,12 +597,12 @@ bool MachineScene::readFile(QString fileName)
         itemStart->setPos(100, 100);
         while(itemsList.count() > 0)
         {
-            GraphicsItem *i = itemsList.first();
+            FEGraphicsItem *i = itemsList.first();
             itemsList.removeAt(0);
             addItem(i);
             for(int j=0;j<i->countGraphicsItem();j++)
             {
-                Arrow *a = qgraphicsitem_cast<Arrow *>(i->getGraphicsItem(j));
+                FEArrow *a = qgraphicsitem_cast<FEArrow *>(i->getGraphicsItem(j));
                 addArrow(a);
             }
             if(i->mytype == State)
@@ -628,10 +628,10 @@ bool MachineScene::readFile(QString fileName)
     return ok;
 }
 
-GraphicsItem *MachineScene::check(GraphicsItem *g)
+FEGraphicsItem *FEMachineScene::check(FEGraphicsItem *g)
 {
     bool b = true;
-    GraphicsItem *state = g;
+    FEGraphicsItem *state = g;
     do{
         if(state->countGraphicsItemParents() > 1)
             b = false;
@@ -640,10 +640,10 @@ GraphicsItem *MachineScene::check(GraphicsItem *g)
             {
                 if(state->countGraphicsItem() == 2)
                 {
-                    Arrow *a1 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
-                    Arrow *a2 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(1));
-                    GraphicsItem *r1 = check(a1->getEndItem());
-                    GraphicsItem *r2 = check(a2->getEndItem());
+                    FEArrow *a1 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
+                    FEArrow *a2 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(1));
+                    FEGraphicsItem *r1 = check(a1->getEndItem());
+                    FEGraphicsItem *r2 = check(a2->getEndItem());
                     if(r1 != 0 && r2 != 0 && r1 == r2)
                         state = r1;
                     else
@@ -661,7 +661,7 @@ GraphicsItem *MachineScene::check(GraphicsItem *g)
             else
                 if(state->countGraphicsItem() > 0)
                 {
-                    Arrow *a = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
+                    FEArrow *a = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
                     state = a->getEndItem();
                 }
                 else
@@ -673,7 +673,7 @@ GraphicsItem *MachineScene::check(GraphicsItem *g)
     return state;
 }
 
-bool MachineScene::saveFile(QString fileName, QString sFunctionName, int type)
+bool FEMachineScene::saveFile(QString fileName, QString sFunctionName, int type)
 {
     FileType *x = 0;
     if(type == 0)
@@ -685,8 +685,8 @@ bool MachineScene::saveFile(QString fileName, QString sFunctionName, int type)
     {
         ok = true;
         bool b = true;
-        GraphicsItem *state = itemStart;
-        map = new QMap<GraphicsItem *, int>();
+        FEGraphicsItem *state = itemStart;
+        map = new QMap<FEGraphicsItem *, int>();
         saveFile(itemStart, x);
         delete map;
         if(type == 0)
@@ -696,11 +696,11 @@ bool MachineScene::saveFile(QString fileName, QString sFunctionName, int type)
     return ok;
 }
 
-GraphicsItem *MachineScene::saveFile(GraphicsItem *g, FileType *x)
+FEGraphicsItem *FEMachineScene::saveFile(FEGraphicsItem *g, FileType *x)
 {
-    QStack<GraphicsItem*> stack;
+    QStack<FEGraphicsItem*> stack;
     bool b = true;
-    GraphicsItem *state = g;
+    FEGraphicsItem *state = g;
     do{
         if(state->countGraphicsItemParents() > 1)
         {
@@ -730,14 +730,14 @@ GraphicsItem *MachineScene::saveFile(GraphicsItem *g, FileType *x)
                     //x->writeState(state);
                     //state = ((Arrow*)(qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0))))->getEndItem();
                     //qDebug()<<state->mytype;
-                    Arrow *a1 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
-                    Arrow *a2 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(1));
+                    FEArrow *a1 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
+                    FEArrow *a2 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(1));
                     x->writeStartIF(state);
                     x->writeStartTrue();
-                    GraphicsItem *r2 = saveFile(a2->getEndItem(), x);
+                    FEGraphicsItem *r2 = saveFile(a2->getEndItem(), x);
                     x->writeStopTrue();
                     x->writeStartFalse();
-                    GraphicsItem *r1 = saveFile(a1->getEndItem(), x);
+                    FEGraphicsItem *r1 = saveFile(a1->getEndItem(), x);
                     x->writeStopFalse();
                     x->writeStopIF();
                     state = r1;
@@ -746,11 +746,11 @@ GraphicsItem *MachineScene::saveFile(GraphicsItem *g, FileType *x)
             }
             else if(state->mytype == ConditionWhile)
             {
-                Arrow *a1 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
+                FEArrow *a1 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
                 stack.push(a1->getEndItem());
-                Arrow *a2 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(1));
+                FEArrow *a2 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(1));
                 x->writeStartWHILE(state);
-                GraphicsItem *r1 = saveFile(a2->getEndItem(), x);
+                FEGraphicsItem *r1 = saveFile(a2->getEndItem(), x);
                 state = r1;
                 state->setName("while state");
                 x->writeEndWHILE(state);
@@ -759,11 +759,11 @@ GraphicsItem *MachineScene::saveFile(GraphicsItem *g, FileType *x)
             }
             else if(state->mytype == ConditionFor)
             {
-                Arrow *a1 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
+                FEArrow *a1 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
                 stack.push(a1->getEndItem());
-                Arrow *a2 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(1));
+                FEArrow *a2 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(1));
                 x->writeStartFOR(state);
-                GraphicsItem *r1 = saveFile(a2->getEndItem(), x);
+                FEGraphicsItem *r1 = saveFile(a2->getEndItem(), x);
                 state = r1;
                 state->setName("for state");
                 x->writeEndFOR(state);
@@ -781,7 +781,7 @@ GraphicsItem *MachineScene::saveFile(GraphicsItem *g, FileType *x)
                         x->writeTransition(state);
                 for(int i=0;i < state->countGraphicsItem();i++)
                 {
-                    Arrow *a = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(i));
+                    FEArrow *a = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(i));
                     stack.push(a->getEndItem());
                 }
                 if(stack.isEmpty() == false)
@@ -794,9 +794,9 @@ GraphicsItem *MachineScene::saveFile(GraphicsItem *g, FileType *x)
     return state;
 }
 
-void MachineScene::arrangeGraphicsItem()
+void FEMachineScene::arrangeGraphicsItem()
 {
-    map = new QMap<GraphicsItem *, int>();
+    map = new QMap<FEGraphicsItem *, int>();
     GraphicsGrup *grup = new GraphicsGrup();
     arrangeGraphicsItem(*grup, itemStart);
     delete map;
@@ -804,10 +804,10 @@ void MachineScene::arrangeGraphicsItem()
     invalidate();
 }
 
-GraphicsItem* MachineScene::arrangeGraphicsItem(GraphicsGrup &item, GraphicsItem *g)
+FEGraphicsItem* FEMachineScene::arrangeGraphicsItem(GraphicsGrup &item, FEGraphicsItem *g)
 {
     bool b = true;
-    GraphicsItem *state = g;
+    FEGraphicsItem *state = g;
     do{
         if(state->countGraphicsItemParents() > 1)
         {
@@ -836,13 +836,13 @@ GraphicsItem* MachineScene::arrangeGraphicsItem(GraphicsGrup &item, GraphicsItem
             if(state->mytype == ConditionIf)
             {
                 item.add(state);
-                    Arrow *a1 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
-                    Arrow *a2 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(1));
+                    FEArrow *a1 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
+                    FEArrow *a2 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(1));
                     GraphicsGrup *g1 = new GraphicsGrup(true);
-                    GraphicsItem *r1 = arrangeGraphicsItem(*g1, a1->getEndItem());
+                    FEGraphicsItem *r1 = arrangeGraphicsItem(*g1, a1->getEndItem());
                     g1->finalArrangement();
                     GraphicsGrup *g2 = new GraphicsGrup(true);
-                    GraphicsItem *r2 = arrangeGraphicsItem(*g2, a2->getEndItem());
+                    FEGraphicsItem *r2 = arrangeGraphicsItem(*g2, a2->getEndItem());
                     g2->finalArrangement();
                     item.add(*g1, *g2);
                     delete g1;
@@ -852,13 +852,13 @@ GraphicsItem* MachineScene::arrangeGraphicsItem(GraphicsGrup &item, GraphicsItem
             else if(state->mytype == ConditionWhileFor || state->mytype == ConditionWhile || state->mytype == ConditionFor)
             {
                 item.add(state);
-                Arrow *a1 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
-                Arrow *a2 = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(1));
+                FEArrow *a1 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
+                FEArrow *a2 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(1));
                 //GraphicsGrup *g1 = new GraphicsGrup(true);
                 //GraphicsItem *r1 = arrangeGraphicsItem(*g1, a1->getEndItem());
                 //g1->finalArrangement();
                 GraphicsGrup *g2 = new GraphicsGrup(true);
-                GraphicsItem *r2 = arrangeGraphicsItem(*g2, a2->getEndItem());
+                FEGraphicsItem *r2 = arrangeGraphicsItem(*g2, a2->getEndItem());
                 g2->finalArrangement();
                 item.add(*g2);
                 state = a1->getEndItem();
@@ -873,7 +873,7 @@ GraphicsItem* MachineScene::arrangeGraphicsItem(GraphicsGrup &item, GraphicsItem
             {
                 if(state->countGraphicsItem() == 1)
                 {
-                    Arrow *a = qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0));
+                    FEArrow *a = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
                     item.add(state);
                     state = a->getEndItem();
                 }
@@ -888,7 +888,7 @@ GraphicsItem* MachineScene::arrangeGraphicsItem(GraphicsGrup &item, GraphicsItem
     return state;
 }
 
-void MachineScene::edit()
+void FEMachineScene::edit()
 {
     if(itemSelect != 0){
         CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
@@ -910,36 +910,36 @@ void MachineScene::edit()
     qDebug()<<"edit";
 }
 
-void MachineScene::newTransition(GraphicsItem *state)
+void FEMachineScene::newTransition(FEGraphicsItem *state)
 {
-    GraphicsItem *transition = new GraphicsItem(Transition);
-    GraphicsItem *state1 = new GraphicsItem(FinalState, "Final");
+    FEGraphicsItem *transition = new FEGraphicsItem(Transition);
+    FEGraphicsItem *state1 = new FEGraphicsItem(FinalState, "Final");
     QPointF p = state->pos();
     QRectF r = state->boundingRect();
     addTransitionItem(transition);
     addItem(state1);
-    Arrow *arrow1 = new Arrow(state ,transition);
+    FEArrow *arrow1 = new FEArrow(state ,transition);
     addArrow(arrow1);
     state->addGraphicsItem(arrow1);
-    Arrow *arrow2 = new Arrow(transition, state1);
+    FEArrow *arrow2 = new FEArrow(transition, state1);
     addArrow(arrow2);
     transition->addGraphicsItem(arrow2);
     transition->addGraphicsItemParents(state);
     state1->addGraphicsItemParents(transition);
 }
 
-void MachineScene::addTransition(GraphicsItem *item)
+void FEMachineScene::addTransition(FEGraphicsItem *item)
 {
-    Arrow *arrow = qgraphicsitem_cast<Arrow*>(item->getGraphicsItem(0));
-    GraphicsItem *oldState = arrow->getEndItem();
-    GraphicsItem *newTransition = new GraphicsItem(Transition);
-    GraphicsItem *newState = new GraphicsItem;
+    FEArrow *arrow = qgraphicsitem_cast<FEArrow*>(item->getGraphicsItem(0));
+    FEGraphicsItem *oldState = arrow->getEndItem();
+    FEGraphicsItem *newTransition = new FEGraphicsItem(Transition);
+    FEGraphicsItem *newState = new FEGraphicsItem;
     arrow->setEndItem(newState);
     arrow->updatePosition();
-    Arrow *arrow1 = new Arrow(newState ,newTransition);
+    FEArrow *arrow1 = new FEArrow(newState ,newTransition);
     addArrow(arrow1);
     newState->addGraphicsItem(arrow1);
-    Arrow *arrow2 = new Arrow(newTransition, oldState);
+    FEArrow *arrow2 = new FEArrow(newTransition, oldState);
     addArrow(arrow2);
     newTransition->addGraphicsItem(arrow2);
     newState->setGraphicsItemParents(item);
@@ -949,45 +949,45 @@ void MachineScene::addTransition(GraphicsItem *item)
     addTransitionItem(newTransition);
 }
 
-void MachineScene::addIF(GraphicsItem *state, bool place)
+void FEMachineScene::addIF(FEGraphicsItem *state, bool place)
 {
-    Arrow *arrow = qgraphicsitem_cast<Arrow*>(state->getGraphicsItem(0));
-    GraphicsItem *transition = arrow->getEndItem();
-    GraphicsItem *stateFinal = ((Arrow*)qgraphicsitem_cast<Arrow*>(transition->getGraphicsItem(0)))->getEndItem();
+    FEArrow *arrow = qgraphicsitem_cast<FEArrow*>(state->getGraphicsItem(0));
+    FEGraphicsItem *transition = arrow->getEndItem();
+    FEGraphicsItem *stateFinal = ((FEArrow*)qgraphicsitem_cast<FEArrow*>(transition->getGraphicsItem(0)))->getEndItem();
     stateFinal->removeGraphicsItemParents(transition);
-    Arrow *a = qgraphicsitem_cast<Arrow*>(transition->getGraphicsItem(0));
+    FEArrow *a = qgraphicsitem_cast<FEArrow*>(transition->getGraphicsItem(0));
     transition->removeGraphicsItem(a);
     removeItem(a);
     delete a;
-    GraphicsItem *transitionTrue = 0;
-    GraphicsItem *transitionFalse = 0;
+    FEGraphicsItem *transitionTrue = 0;
+    FEGraphicsItem *transitionFalse = 0;
     if(place)
     {
-        transitionTrue = new GraphicsItem(Transition);
+        transitionTrue = new FEGraphicsItem(Transition);
         transitionFalse = transition;
         addTransitionItem(transitionTrue);
     }
     else
     {
         transitionTrue = transition;
-        transitionFalse = new GraphicsItem(Transition);
+        transitionFalse = new FEGraphicsItem(Transition);
         addTransitionItem(transitionFalse);
     }
-    GraphicsItem *condition = new GraphicsItem(ConditionIf);
+    FEGraphicsItem *condition = new FEGraphicsItem(ConditionIf);
     arrow->setEndItem(condition);
     condition->setGraphicsItemParents(state);
     transitionTrue->setGraphicsItemParents(condition);
     transitionFalse->setGraphicsItemParents(condition);
-    GraphicsItem *stateTrue = new GraphicsItem(EmptyState);
+    FEGraphicsItem *stateTrue = new FEGraphicsItem(EmptyState);
     addState(stateTrue);
-    GraphicsItem *stateFalse = new GraphicsItem(EmptyState);
+    FEGraphicsItem *stateFalse = new FEGraphicsItem(EmptyState);
     addState(stateFalse);
-    Arrow *arrowStateTrue = new Arrow(condition, stateTrue);
-    Arrow *arrowTransitionTrue = new Arrow(stateTrue, transitionTrue);
-    Arrow *arrowStateFalse = new Arrow(condition, stateFalse);
-    Arrow *arrowTransitionFalse = new Arrow(stateFalse, transitionFalse);
-    Arrow *arrow2 = new Arrow(transitionTrue, stateFinal);
-    Arrow *arrow3 = new Arrow(transitionFalse, stateFinal);
+    FEArrow *arrowStateTrue = new FEArrow(condition, stateTrue);
+    FEArrow *arrowTransitionTrue = new FEArrow(stateTrue, transitionTrue);
+    FEArrow *arrowStateFalse = new FEArrow(condition, stateFalse);
+    FEArrow *arrowTransitionFalse = new FEArrow(stateFalse, transitionFalse);
+    FEArrow *arrow2 = new FEArrow(transitionTrue, stateFinal);
+    FEArrow *arrow3 = new FEArrow(transitionFalse, stateFinal);
     arrowStateTrue->setName("false");
     arrowStateFalse->setName("true");
     condition->addGraphicsItem(arrowStateTrue);
@@ -1009,23 +1009,23 @@ void MachineScene::addIF(GraphicsItem *state, bool place)
     addArrow(arrowTransitionFalse);
 }
 
-void MachineScene::addWHILEorFOR(GraphicsItem *state)
+void FEMachineScene::addWHILEorFOR(FEGraphicsItem *state)
 {
-    Arrow *arrow = qgraphicsitem_cast<Arrow*>(state->getGraphicsItem(0));
-    GraphicsItem *stateOld = arrow->getEndItem();
+    FEArrow *arrow = qgraphicsitem_cast<FEArrow*>(state->getGraphicsItem(0));
+    FEGraphicsItem *stateOld = arrow->getEndItem();
     stateOld->removeGraphicsItemParents(state);
-    GraphicsItem *condition = new GraphicsItem(ConditionWhileFor);
-    GraphicsItem *stateConditionEmpty = new GraphicsItem(EmptyState);
-    GraphicsItem *transition = new GraphicsItem(Transition);
-    GraphicsItem *stateSolid = new GraphicsItem(SolidState, "while state");
-    GraphicsItem *stateEmpty = new GraphicsItem(EmptyState);
+    FEGraphicsItem *condition = new FEGraphicsItem(ConditionWhileFor);
+    FEGraphicsItem *stateConditionEmpty = new FEGraphicsItem(EmptyState);
+    FEGraphicsItem *transition = new FEGraphicsItem(Transition);
+    FEGraphicsItem *stateSolid = new FEGraphicsItem(SolidState, "while state");
+    FEGraphicsItem *stateEmpty = new FEGraphicsItem(EmptyState);
 
-    Arrow *arrowEmptyState = new Arrow(condition, stateEmpty);
+    FEArrow *arrowEmptyState = new FEArrow(condition, stateEmpty);
     arrowEmptyState->setName("exit");
-    Arrow *arrowOldState = new Arrow(stateEmpty, stateOld);
-    Arrow *arrow2 = new Arrow(condition, stateConditionEmpty);
-    Arrow *arrow3 = new Arrow(stateConditionEmpty, transition);
-    Arrow *arrow4 = new Arrow(transition, stateSolid);
+    FEArrow *arrowOldState = new FEArrow(stateEmpty, stateOld);
+    FEArrow *arrow2 = new FEArrow(condition, stateConditionEmpty);
+    FEArrow *arrow3 = new FEArrow(stateConditionEmpty, transition);
+    FEArrow *arrow4 = new FEArrow(transition, stateSolid);
 
     arrow->setEndItem(condition);
     //state->addGraphicsItem(arrowOldState);
@@ -1056,20 +1056,20 @@ void MachineScene::addWHILEorFOR(GraphicsItem *state)
     addArrow(arrow4);
 }
 
-bool MachineScene::testIF(GraphicsItem *stateStart, GraphicsItem *stateStop)
+bool FEMachineScene::testIF(FEGraphicsItem *stateStart, FEGraphicsItem *stateStop)
 {
     bool b = stateStart->mytype == State || stateStart->mytype == EmptyState;
     if(b)
     {
         if(stateStart->countGraphicsItem() == 0)
             return false;
-        GraphicsItem *state = ((Arrow*)(qgraphicsitem_cast<Arrow*>(stateStart->getGraphicsItem(0))))->getEndItem();
+        FEGraphicsItem *state = ((FEArrow*)(qgraphicsitem_cast<FEArrow*>(stateStart->getGraphicsItem(0))))->getEndItem();
         b = state->mytype == Transition;
         if(b)
         {
             if(stateStart->countGraphicsItem() == 0)
                 return false;
-            state = ((Arrow*)(qgraphicsitem_cast<Arrow*>(state->getGraphicsItem(0))))->getEndItem();
+            state = ((FEArrow*)(qgraphicsitem_cast<FEArrow*>(state->getGraphicsItem(0))))->getEndItem();
             b = state->mytype == State || state->mytype == FinalState || state->mytype == SolidState;
             if(b)
             {
@@ -1080,7 +1080,7 @@ bool MachineScene::testIF(GraphicsItem *stateStart, GraphicsItem *stateStop)
     return b;
 }
 
-bool MachineScene::testWHILE(GraphicsItem *stateStart)
+bool FEMachineScene::testWHILE(FEGraphicsItem *stateStart)
 {
     bool b = stateStart->mytype == State || stateStart->mytype == EmptyState || stateStart->mytype == SolidState;
     if(b)
@@ -1091,7 +1091,7 @@ bool MachineScene::testWHILE(GraphicsItem *stateStart)
     return b;
 }
 
-void MachineScene::split()
+void FEMachineScene::split()
 {
     addTransition(itemSelect);
     arrangeGraphicsItem();

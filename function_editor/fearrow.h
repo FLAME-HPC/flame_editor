@@ -5,11 +5,11 @@
  * \copyright Copyright (c) 2012 University of Sheffield
  * \brief Header file for arrow used in stategraphs
  */
-#ifndef ARROW_H_
-#define ARROW_H_
+#ifndef FEARROW_H_
+#define FEARROW_H_
 
 #include <QGraphicsLineItem>
-#include "./graphicsitem.h"
+#include "./fegraphicsitem.h"
 //#include "./mpre.h"
 //#include "./mpost.h"
 //#include "./memorymodel.h"
@@ -20,7 +20,7 @@
  *
  * This class represents an arrow in the stategraph graphics scene.
  */
-class Arrow : public QGraphicsLineItem {
+class FEArrow : public QGraphicsLineItem {
   public:
     /*!
      * \brief This enum is used to hold a unique int associated with graphicsitems
@@ -29,7 +29,7 @@ class Arrow : public QGraphicsLineItem {
         Type = UserType + 4 /**< enum Type is the unique graphicsitems int. */
     };
 
-    Arrow(GraphicsItem *getStartItem, GraphicsItem *getEndItem,
+    FEArrow(FEGraphicsItem *getStartItem, FEGraphicsItem *getEndItem,
       QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
 
     int type() const
@@ -41,14 +41,14 @@ class Arrow : public QGraphicsLineItem {
     QPainterPath shape() const;
     void setColor(const QColor &color)
         { myColor = color; }
-    GraphicsItem *getStartItem() const
+    FEGraphicsItem *getStartItem() const
         { return myStartItem; }
-    GraphicsItem *getEndItem() const
+    FEGraphicsItem *getEndItem() const
         { return myEndItem; }
     void drawHead(bool b) { showHead = b; }
 
-    void setStartItem(GraphicsItem *g) {myStartItem = g;}
-    void setEndItem(GraphicsItem *g) {myEndItem = g;}
+    void setStartItem(FEGraphicsItem *g) {myStartItem = g;}
+    void setEndItem(FEGraphicsItem *g) {myEndItem = g;}
 
   public slots:
     void updatePosition();
@@ -58,8 +58,8 @@ class Arrow : public QGraphicsLineItem {
                QWidget *widget = 0);
 
   private:
-    GraphicsItem *myStartItem;  /**< \brief the tail graphics item. */
-    GraphicsItem *myEndItem;    /**< \brief the head graphics item. */
+    FEGraphicsItem *myStartItem;  /**< \brief the tail graphics item. */
+    FEGraphicsItem *myEndItem;    /**< \brief the head graphics item. */
     QColor myColor;             /**< \brief the arrow colour. */
     /*! \brief the polygon representation of the arrow head. */
     QPolygonF arrowHead;
@@ -73,4 +73,4 @@ class Arrow : public QGraphicsLineItem {
     int nameHeight;
 };
 
-#endif  // ARROW_H_
+#endif  // FEARROW_H_

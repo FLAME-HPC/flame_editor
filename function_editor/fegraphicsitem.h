@@ -5,8 +5,8 @@
  * \copyright Copyright (c) 2012 University of Sheffield
  * \brief Header file for graphics items in stategraphs
  */
-#ifndef GRAPHICSITEM_H_
-#define GRAPHICSITEM_H_
+#ifndef FEGRAPHICSITEM_H_
+#define FEGRAPHICSITEM_H_
 
 #include <QGraphicsItem>
 #include <QObject>
@@ -26,7 +26,7 @@ enum ItemType{
     FinalState
 };
 
-class GraphicsItem : public QObject, public QGraphicsItem {
+class FEGraphicsItem : public QObject, public QGraphicsItem {
     Q_OBJECT
     #if QT_VERSION >= 0x040600  // If Qt version is 4.6 or higher
     Q_INTERFACES(QGraphicsItem)
@@ -34,8 +34,8 @@ class GraphicsItem : public QObject, public QGraphicsItem {
 
   public:
     enum { Type = UserType + 15 };
-    GraphicsItem(ItemType ItemType = State, QString n = "", QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
-    ~GraphicsItem();
+    FEGraphicsItem(ItemType ItemType = State, QString n = "", QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+    ~FEGraphicsItem();
 
     void changeCondition(ItemType item);
 
@@ -79,7 +79,7 @@ class GraphicsItem : public QObject, public QGraphicsItem {
         return graphicsItemParents.count();
       }
 
-    GraphicsItem* getGraphicsItemParents() const
+    FEGraphicsItem* getGraphicsItemParents() const
       {
         if(graphicsItemParents.count() == 0)
             return 0;
@@ -87,7 +87,7 @@ class GraphicsItem : public QObject, public QGraphicsItem {
             return graphicsItemParents[0];
       }
 
-    void setGraphicsItemParents(GraphicsItem * p)
+    void setGraphicsItemParents(FEGraphicsItem * p)
       {
         if(graphicsItemParents.count() == 0)
             graphicsItemParents.append(p);
@@ -95,11 +95,11 @@ class GraphicsItem : public QObject, public QGraphicsItem {
             graphicsItemParents[0] = p;
       }
 
-    void addGraphicsItemParents(GraphicsItem * p)
+    void addGraphicsItemParents(FEGraphicsItem * p)
       {
         graphicsItemParents.append(p);
       }
-    void removeGraphicsItemParents(GraphicsItem *g)
+    void removeGraphicsItemParents(FEGraphicsItem *g)
       {graphicsItemParents.removeOne(g);}
 
     QStringList *getAssignmentList(){
@@ -124,9 +124,9 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     QList<QGraphicsItem*> graphicsItemList;
     bool diamond;
     QColor color;
-    QList<GraphicsItem*> graphicsItemParents;
+    QList<FEGraphicsItem*> graphicsItemParents;
 
     QStringList assignmentList;
 };
 
-#endif  // GRAPHICSITEM_H_
+#endif  // FEGRAPHICSITEM_H_

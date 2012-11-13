@@ -9,9 +9,9 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QDebug>
-#include "./graphicsitem.h"
+#include "./fegraphicsitem.h"
 
-GraphicsItem::GraphicsItem(ItemType ItemType, QString n, QGraphicsItem *parent, QGraphicsScene *scene)
+FEGraphicsItem::FEGraphicsItem(ItemType ItemType, QString n, QGraphicsItem *parent, QGraphicsScene *scene)
     : mytype(ItemType) ,QGraphicsItem(parent, scene) {
     /* Set GraphicsItem flags */
     setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -43,11 +43,11 @@ GraphicsItem::GraphicsItem(ItemType ItemType, QString n, QGraphicsItem *parent, 
     }
 }
 
-GraphicsItem::~GraphicsItem()
+FEGraphicsItem::~FEGraphicsItem()
 {
 }
 
-void GraphicsItem::changeCondition(ItemType item)
+void FEGraphicsItem::changeCondition(ItemType item)
 {
     if(mytype == ConditionWhileFor || mytype == ConditionWhile || mytype == ConditionFor)
     {
@@ -73,11 +73,11 @@ void GraphicsItem::changeCondition(ItemType item)
     }
 }
 
-QString GraphicsItem::getName() {
+QString FEGraphicsItem::getName() {
     return name;
 }
 
-void GraphicsItem::setName(QString n) {
+void FEGraphicsItem::setName(QString n) {
     /* Calculated the graphics item size dependent on the item name */
     name = n;
     /* Use font metrics */
@@ -125,46 +125,46 @@ void GraphicsItem::setName(QString n) {
     setBoundingRect();
 }
 
-void GraphicsItem::setState(QString name) {
+void FEGraphicsItem::setState(QString name) {
     mytype = State;
     setName(name);
 }
 
-void GraphicsItem::setTransition(QString name) {
+void FEGraphicsItem::setTransition(QString name) {
     mytype = Transition;
     setName(name);
 }
 
-void GraphicsItem::setMessage(QString name) {
+void FEGraphicsItem::setMessage(QString name) {
     mytype = Message;
     setName(name);
 }
 
-void GraphicsItem::setDiamond(QString name)
+void FEGraphicsItem::setDiamond(QString name)
 {
     mytype = ConditionIf;
     setName(name);
 }
 
-void GraphicsItem::setBoundingRect() {
+void FEGraphicsItem::setBoundingRect() {
     prepareGeometryChange();
     myBoundingRect = myNameRect;
 }
 
-/** \fn GraphicsItem::boundingRect() const
+/** \fn FEGraphicsItem::boundingRect() const
  *  \brief The bounding rect where all painting must be restricted to. Used to determine if the item needs redrawing.
  *  \return The bounding rect.
  */
-QRectF GraphicsItem::boundingRect() const {
+QRectF FEGraphicsItem::boundingRect() const {
     qreal adjust = 0.5;
     return myBoundingRect.adjusted(-adjust, -adjust, adjust, adjust);
 }
 
-/** \fn GraphicsItem::shape() const
+/** \fn FEGraphicsItem::shape() const
  *  \brief The shape of the object used for collision detection, hit tests etc.
  *  \return The shape.
  */
-QPainterPath GraphicsItem::shape() const {
+QPainterPath FEGraphicsItem::shape() const {
     QPainterPath path;
     if (mytype == State || mytype == FinalState) path.addEllipse(myNameRect);
     if (mytype == Transition) path.addRect(myNameRect);
@@ -175,11 +175,11 @@ QPainterPath GraphicsItem::shape() const {
     return path;
 }
 
-int GraphicsItem::width() {
+int FEGraphicsItem::width() {
     return myBoundingRect.width();
 }
 
-void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
+void FEGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         QWidget *) {
     /* Set paint options */
     painter->setRenderHint(QPainter::Antialiasing);

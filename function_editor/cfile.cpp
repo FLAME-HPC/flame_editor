@@ -53,11 +53,11 @@ bool CFile::open(OpenMode om)
         return false;
 }
 
-void CFile::writeState(GraphicsItem *g)
+void CFile::writeState(FEGraphicsItem *g)
 {
 }
 
-void CFile::writeTransition(GraphicsItem *g)
+void CFile::writeTransition(FEGraphicsItem *g)
 {
     QStringList *list = g->getAssignmentList();
     int n = 0;
@@ -70,7 +70,7 @@ void CFile::writeTransition(GraphicsItem *g)
     add(n);
 }
 
-void CFile::writeStartIF(GraphicsItem *g)
+void CFile::writeStartIF(FEGraphicsItem *g)
 {
     QStringList *list = g->getAssignmentList();
     QString s = list->count() == 0?"":QString(list->at(0));
@@ -133,7 +133,7 @@ void CFile::writeStopFalse()
     //delete b;
 }
 
-void CFile::writeStartWHILE(GraphicsItem *g)
+void CFile::writeStartWHILE(FEGraphicsItem *g)
 {
     QStringList *list = g->getAssignmentList();
     QString s = list->count() == 0?"":QString(list->at(0));
@@ -145,7 +145,7 @@ void CFile::writeStartWHILE(GraphicsItem *g)
     creatIndentationText(indentationNumber);
 }
 
-void CFile::writeEndWHILE(GraphicsItem *g)
+void CFile::writeEndWHILE(FEGraphicsItem *g)
 {
     Block b = blocks.pop();
     indentationNumber--;
@@ -163,7 +163,7 @@ void CFile::writeEndWHILE(GraphicsItem *g)
     }
 }
 
-void CFile::writeStartFOR(GraphicsItem *g)
+void CFile::writeStartFOR(FEGraphicsItem *g)
 {
     QStringList *list = g->getAssignmentList();
     QString s1 = QString(list->at(0));
@@ -177,7 +177,7 @@ void CFile::writeStartFOR(GraphicsItem *g)
     creatIndentationText(indentationNumber);
 }
 
-void CFile::writeEndFOR(GraphicsItem *g)
+void CFile::writeEndFOR(FEGraphicsItem *g)
 {
     Block b = blocks.pop();
     indentationNumber--;

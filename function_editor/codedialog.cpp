@@ -279,7 +279,7 @@ void CodeDialog::setUI()
     graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     /* Create the machine scene object */
-    machineScene = new MachineScene(this);
+    machineScene = new FEMachineScene(this);
     /* Set the graphics view to use the machine scene object */
     graphicsView->setScene(machineScene);
 

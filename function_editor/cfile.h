@@ -19,18 +19,18 @@ public:
     CFile(QString fileName, QString FunctionName);
     ~CFile();
     bool open(OpenMode om);
-    void writeState(GraphicsItem *g);
-    void writeTransition(GraphicsItem *g);
-    void writeStartIF(GraphicsItem *g);
+    void writeState(FEGraphicsItem *g);
+    void writeTransition(FEGraphicsItem *g);
+    void writeStartIF(FEGraphicsItem *g);
     void writeStopIF();
     void writeStartTrue();
     void writeStopTrue();
     void writeStartFalse();
     void writeStopFalse();
-    void writeStartWHILE(GraphicsItem *g);
-    void writeEndWHILE(GraphicsItem *g);
-    void writeStartFOR(GraphicsItem *g);
-    void writeEndFOR(GraphicsItem *g);
+    void writeStartWHILE(FEGraphicsItem *g);
+    void writeEndWHILE(FEGraphicsItem *g);
+    void writeStartFOR(FEGraphicsItem *g);
+    void writeEndFOR(FEGraphicsItem *g);
 
 private:
     enum BlockType{

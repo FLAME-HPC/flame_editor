@@ -3,21 +3,21 @@
 
 GraphicsGrup::GraphicsGrup()
 {
-    graphicsList = new QList<GraphicsItem*>;
+    graphicsList = new QList<FEGraphicsItem*>;
     gap = 20;
     sub = false;
 }
 
 GraphicsGrup::GraphicsGrup(bool b)
 {
-    graphicsList = new QList<GraphicsItem*>;
+    graphicsList = new QList<FEGraphicsItem*>;
     gap = 20;
     sub = true;
 }
 
-GraphicsGrup::GraphicsGrup(GraphicsItem *item)
+GraphicsGrup::GraphicsGrup(FEGraphicsItem *item)
 {
-    graphicsList = new QList<GraphicsItem*>;
+    graphicsList = new QList<FEGraphicsItem*>;
     gap = 20;
     add(item);
 }
@@ -29,7 +29,7 @@ GraphicsGrup::~GraphicsGrup()
     delete graphicsList;
 }
 
-void GraphicsGrup::add(GraphicsItem *item)
+void GraphicsGrup::add(FEGraphicsItem *item)
 {
     qreal gapy = gap;
     if(graphicsList->count() > 0 && graphicsList->last()->mytype == EmptyState)
@@ -180,7 +180,7 @@ void GraphicsGrup::move(qreal x, qreal y)
     QPointF p(x, y);
     for(int i = 0;i < graphicsList->count();i++)
     {
-        GraphicsItem *g = graphicsList->value(i);
+        FEGraphicsItem *g = graphicsList->value(i);
         g->setPos(g->pos() + p);
     }
     myBoundingRect.setTopLeft(myBoundingRect.topLeft() + p);

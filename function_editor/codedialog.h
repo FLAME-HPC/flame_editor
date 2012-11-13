@@ -2,7 +2,7 @@
 #define CODEDIALOG_H
 
 #include <QDialog>
-#include "./machinescene.h"
+#include "./femachinescene.h"
 #include <QGraphicsView>
 #include <QVBoxLayout>
 #include <QListWidget>
@@ -105,7 +105,7 @@ private:
     QAbstractItemModel *modelFromFileTree(const QStringList& fileName);
 
     QGraphicsView *graphicsView;
-    MachineScene *machineScene;
+    FEMachineScene *machineScene;
     QVBoxLayout *mainLayout;
     QVBoxLayout *mainContentLayout;
     QVBoxLayout *listLayout;

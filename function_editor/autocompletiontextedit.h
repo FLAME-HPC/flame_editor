@@ -42,7 +42,7 @@
  #define AUTOCOMPLETIONTEXTEDIT_H
 
  #include <QTextEdit>
- #include <./graphicsitem.h>
+ #include <./fegraphicsitem.h>
 
  class QCompleter;
 

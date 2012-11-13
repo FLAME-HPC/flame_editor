@@ -7,12 +7,12 @@
  */
 #include <QtGui>
 #include <math.h>
-#include "./arrow.h"
+#include "./fearrow.h"
 
 const qreal Pi = 3.14; /* definition of Pi */
 
 /*!
- * \brief Arrow constructor
+ * \brief FEArrow constructor
  * \param[in] startItem The tail graphics item
  * \param[in] endItem The head graphics item
  * \param[in] parent Not required, is automatically initalised
@@ -20,7 +20,7 @@ const qreal Pi = 3.14; /* definition of Pi */
  *
  * This contructor takes starting and ending graphics items for an arrow to be drawn between them.
  */
-Arrow::Arrow(GraphicsItem *startItem, GraphicsItem *endItem,
+FEArrow::FEArrow(FEGraphicsItem *startItem, FEGraphicsItem *endItem,
          QGraphicsItem *parent, QGraphicsScene *scene)
     : QGraphicsLineItem(parent, scene) {
     /* The start and end graphics items */
@@ -39,7 +39,7 @@ Arrow::Arrow(GraphicsItem *startItem, GraphicsItem *endItem,
     setName("");
 }
 
-void Arrow::setName(QString n)
+void FEArrow::setName(QString n)
 {
     name = n;
     /* Use font metrics */
@@ -50,7 +50,7 @@ void Arrow::setName(QString n)
                         static_cast<float>(nameWidth), nameHeight*2.0);
 }
 
-QRectF Arrow::setBoundingRect()
+QRectF FEArrow::setBoundingRect()
 {
 
     QRectF r = QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(),
@@ -71,7 +71,7 @@ QRectF Arrow::setBoundingRect()
     return rr;
 }
 
-QRectF Arrow::boundingRect() const{
+QRectF FEArrow::boundingRect() const{
     qreal extra = ((pen().width() + 20));
     //qDebug()<<"ok";
     //updatePosition();
@@ -87,7 +87,7 @@ QRectF Arrow::boundingRect() const{
     return r.adjusted(-extra, -extra, extra, extra);
 }
 
-QPainterPath Arrow::shape() const {
+QPainterPath FEArrow::shape() const {
     QPainterPath path = QGraphicsLineItem::shape();
     path.addPolygon(arrowHead);
     //if(showName)
@@ -96,14 +96,14 @@ QPainterPath Arrow::shape() const {
     return path;
 }
 
-void Arrow::updatePosition() {
+void FEArrow::updatePosition() {
     QLineF linef(mapFromItem(myStartItem, 0, 0), mapFromItem(myEndItem, 0, 0));
     setLine(linef);
 
     //setBoundingRect();
 }
 
-void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
+void FEArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
           QWidget *) {
     if (myStartItem->collidesWithItem(myEndItem))
         return;

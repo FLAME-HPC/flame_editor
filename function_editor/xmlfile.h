@@ -8,7 +8,7 @@
 #include <QDomElement>
 #include <QFile>
 #include <QMap>
-#include "./graphicsitem.h"
+#include "./fegraphicsitem.h"
 #include "./filetype.h"
 
 namespace XMLConstants{
@@ -47,24 +47,24 @@ public:
     bool containsOperator(QString o);
     QString getOperators(QString o);
     bool open(OpenMode om);
-    void writeState(GraphicsItem *g);
-    void writeTransition(GraphicsItem *g);
-    void writeStartIF(GraphicsItem *g);
+    void writeState(FEGraphicsItem *g);
+    void writeTransition(FEGraphicsItem *g);
+    void writeStartIF(FEGraphicsItem *g);
     void writeStopIF();
     void writeStartTrue();
     void writeStopTrue();
     void writeStartFalse();
     void writeStopFalse();
-    void writeStartWHILE(GraphicsItem *g);
-    void writeEndWHILE(GraphicsItem *g);
-    void writeStartFOR(GraphicsItem *g);
-    void writeEndFOR(GraphicsItem *g);
+    void writeStartWHILE(FEGraphicsItem *g);
+    void writeEndWHILE(FEGraphicsItem *g);
+    void writeStartFOR(FEGraphicsItem *g);
+    void writeEndFOR(FEGraphicsItem *g);
     void writeStartElement(QString name);
     void writeStopElement();
     void writeTextElement(QString name, QString v);
 
 
-    void read(QList<GraphicsItem*> &itemsList);
+    void read(QList<FEGraphicsItem*> &itemsList);
 
     QString getFunctionName() const { return sFunctionName;}
 
@@ -81,13 +81,13 @@ private:
     bool openToWrite();
     bool openToRead();
 
-    void read(QList<GraphicsItem*> &itemsList, QList<GraphicsItem*> &items, QDomNode node, int level);
-    GraphicsItem* readIF(QList<GraphicsItem*> &itemsList, QList<GraphicsItem*> &items, QDomNode node, int level);
-    GraphicsItem* readWhile(QList<GraphicsItem*> &itemsList, QList<GraphicsItem*> &items, QDomNode node, int level);
-    GraphicsItem* readFor(QList<GraphicsItem*> &itemsList, QList<GraphicsItem*> &items, QDomNode node, int level);
-    GraphicsItem* readState(QDomNode node, ItemType type);
-    GraphicsItem* readTransition(QDomNode node);
-    GraphicsItem* readCondition(QDomNode node, ItemType type);
+    void read(QList<FEGraphicsItem*> &itemsList, QList<FEGraphicsItem*> &items, QDomNode node, int level);
+    FEGraphicsItem* readIF(QList<FEGraphicsItem*> &itemsList, QList<FEGraphicsItem*> &items, QDomNode node, int level);
+    FEGraphicsItem* readWhile(QList<FEGraphicsItem*> &itemsList, QList<FEGraphicsItem*> &items, QDomNode node, int level);
+    FEGraphicsItem* readFor(QList<FEGraphicsItem*> &itemsList, QList<FEGraphicsItem*> &items, QDomNode node, int level);
+    FEGraphicsItem* readState(QDomNode node, ItemType type);
+    FEGraphicsItem* readTransition(QDomNode node);
+    FEGraphicsItem* readCondition(QDomNode node, ItemType type);
     void readStatement(QDomNode node, QString &statement);
     QString readTextElement(QDomNode node, QString name);
     QString readTextElement(QDomNode node);
