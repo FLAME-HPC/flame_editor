@@ -69,6 +69,7 @@ class FEGraphicsItem : public QObject, public QGraphicsItem {
       {
         if(i >= 0 && i < graphicsItemList.count())
             return graphicsItemList[i];
+        return 0;
     }
 
     bool isDiamond() const {return diamond;}

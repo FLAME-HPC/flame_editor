@@ -9,6 +9,7 @@
 #include "./femachinescene.h"
 //#include "./machine.h"
 #include "./codedialog.h"
+#include "functioncodedialog.h"
 
 FEMachineScene::FEMachineScene(QObject *parent)
     : QGraphicsScene(parent) {
@@ -435,10 +436,10 @@ void FEMachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     moveMouse = false;
     /* Make qitem equal to any graphics item at the mouse position */
     QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
-    CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
+    //CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
 
-    if(cd->isShowList() && cd->isCorrect() == false || cd->isShowSelectItem())
-        return;
+    //if(cd->isShowList() && cd->isCorrect() == false || cd->isShowSelectItem())
+    //    return;
 
     /* If left mouse click proceed with event,
      * which is passed to scene items to select/move them */
@@ -455,6 +456,7 @@ void FEMachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                     } else if(itemToMove != itemSelect){
                         itemSelect = itemToMove;
                     }
+                    emit(myedit(itemSelect));
             }
 
         }
@@ -586,8 +588,8 @@ bool FEMachineScene::readFile(QString fileName)
         }
         QList<FEGraphicsItem*> itemsList;
         x->read(itemsList);
-        CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
-        cd->setFunctionName(x->getFunctionName());
+        //CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
+        //cd->setFunctionName(x->getFunctionName());
         num_states = 0;
         num_transitions = 0;
         num_conditions = 0;
@@ -684,8 +686,8 @@ bool FEMachineScene::saveFile(QString fileName, QString sFunctionName, int type)
     if(x->open(Write))
     {
         ok = true;
-        bool b = true;
-        FEGraphicsItem *state = itemStart;
+        //bool b = true;
+        //FEGraphicsItem *state = itemStart;
         map = new QMap<FEGraphicsItem *, int>();
         saveFile(itemStart, x);
         delete map;
@@ -731,10 +733,10 @@ FEGraphicsItem *FEMachineScene::saveFile(FEGraphicsItem *g, FileType *x)
                     //state = ((Arrow*)(qgraphicsitem_cast<Arrow *>(state->getGraphicsItem(0))))->getEndItem();
                     //qDebug()<<state->mytype;
                     FEArrow *a1 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(0));
-                    FEArrow *a2 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(1));
+                    //FEArrow *a2 = qgraphicsitem_cast<FEArrow *>(state->getGraphicsItem(1));
                     x->writeStartIF(state);
                     x->writeStartTrue();
-                    FEGraphicsItem *r2 = saveFile(a2->getEndItem(), x);
+                    //FEGraphicsItem *r2 = saveFile(a2->getEndItem(), x);
                     x->writeStopTrue();
                     x->writeStartFalse();
                     FEGraphicsItem *r1 = saveFile(a1->getEndItem(), x);
@@ -842,7 +844,8 @@ FEGraphicsItem* FEMachineScene::arrangeGraphicsItem(GraphicsGrup &item, FEGraphi
                     FEGraphicsItem *r1 = arrangeGraphicsItem(*g1, a1->getEndItem());
                     g1->finalArrangement();
                     GraphicsGrup *g2 = new GraphicsGrup(true);
-                    FEGraphicsItem *r2 = arrangeGraphicsItem(*g2, a2->getEndItem());
+                    //FEGraphicsItem *r2 =
+                    arrangeGraphicsItem(*g2, a2->getEndItem());
                     g2->finalArrangement();
                     item.add(*g1, *g2);
                     delete g1;
@@ -858,7 +861,8 @@ FEGraphicsItem* FEMachineScene::arrangeGraphicsItem(GraphicsGrup &item, FEGraphi
                 //GraphicsItem *r1 = arrangeGraphicsItem(*g1, a1->getEndItem());
                 //g1->finalArrangement();
                 GraphicsGrup *g2 = new GraphicsGrup(true);
-                FEGraphicsItem *r2 = arrangeGraphicsItem(*g2, a2->getEndItem());
+                //FEGraphicsItem *r2 =
+                arrangeGraphicsItem(*g2, a2->getEndItem());
                 g2->finalArrangement();
                 item.add(*g2);
                 state = a1->getEndItem();
@@ -890,24 +894,26 @@ FEGraphicsItem* FEMachineScene::arrangeGraphicsItem(GraphicsGrup &item, FEGraphi
 
 void FEMachineScene::edit()
 {
-    if(itemSelect != 0){
+    functionCodeDialog();
+
+    /*if(itemSelect != 0){
         CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
         QString s = itemSelect->getName();
         namePosition = nameList.indexOf(s);
         if(itemSelect->mytype == State || itemSelect->mytype == FinalState)
-            cd->setSelectItem("State neme: ", s);
+            cd->setSelectItem("State name", s);
         if(itemSelect->mytype == Transition){
             cd->setShowList(true);
-            cd->setSelectItem("Transition neme: ", s);
+            cd->setSelectItem("Transition name", s);
         }
         if(itemSelect->mytype == ConditionIf || itemSelect->mytype == ConditionWhile || itemSelect->mytype == ConditionFor){
             cd->setShowList(true);
-            cd->setSelectItem("Condition neme: ", s);
+            cd->setSelectItem("Condition name", s);
         }
         cd->setShowSelectItem(true);
         changed = true;
     }
-    qDebug()<<"edit";
+    qDebug()<<"edit";*/
 }
 
 void FEMachineScene::newTransition(FEGraphicsItem *state)
@@ -1098,4 +1104,18 @@ void FEMachineScene::split()
     changed = true;
     //arrangeGraphicsItem();invalidate();
     qDebug()<<"split";
+}
+
+void FEMachineScene::functionCodeDialog() {
+    FunctionCodeDialog *editor = new FunctionCodeDialog(itemSelect);
+    connect(editor, SIGNAL(accepted()), this, SLOT(commitAndCloseEditor()));
+    editor->setModal(true);
+    editor->show();
+}
+
+void FEMachineScene::commitAndCloseEditor() {
+    //FunctionCodeDialog *editor = qobject_cast<FunctionCodeDialog *>(sender());
+    //emit commitData(editor);
+    //emit closeEditor(editor);
+    qDebug() << "Close FunctionCodeDialog";
 }

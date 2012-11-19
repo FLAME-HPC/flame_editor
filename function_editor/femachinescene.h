@@ -90,6 +90,8 @@ class FEMachineScene : public QGraphicsScene {
     bool testIF(FEGraphicsItem *stateStart, FEGraphicsItem *stateStop);
     bool testWHILE(FEGraphicsItem *stateStart);
 
+    void functionCodeDialog();
+
     QAction *editAction;
     QAction *splitAction;
 
@@ -126,6 +128,10 @@ class FEMachineScene : public QGraphicsScene {
 private slots:
     void edit();
     void split();
+    void commitAndCloseEditor();
+
+signals:
+  void myedit(FEGraphicsItem*);
 };
 
 

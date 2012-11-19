@@ -79,7 +79,7 @@
  protected:
      void keyPressEvent(QKeyEvent *e);
      void focusInEvent(QFocusEvent *e);
-     void focusOutEvent(QFocusEvent *e);
+     void focusOutEvent(QFocusEvent *);
 
  private slots:
      void insertCompletion(const QString &completion);
@@ -87,7 +87,7 @@
 
  private:
      QString textUnderCursor() const;
-     QString getCompletionPrefix(QString input);
+     QString getCompletionPrefix(QString);
      bool valid(QString s);
      bool multiAssignments;
      bool showMessageBox;

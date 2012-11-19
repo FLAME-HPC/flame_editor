@@ -75,7 +75,8 @@ SOURCES += main.cpp \
     function_editor/fememorymodel.cpp \
     function_editor/variabledeclared.cpp \
     function_editor/variabledeclaredmodel.cpp \
-    function_editor/variabledeclareddelegate.cpp
+    function_editor/variabledeclareddelegate.cpp \
+    function_editor/functioncodedialog.cpp
 HEADERS += mainwindow.h \
     machinescene.h \
     arrow.h \
@@ -133,12 +134,15 @@ HEADERS += mainwindow.h \
     function_editor/fememorymodel.h \
     function_editor/variabledeclared.h \
     function_editor/variabledeclaredmodel.h \
-    function_editor/variabledeclareddelegate.h
+    function_editor/variabledeclareddelegate.h \
+    function_editor/functioncodedialog.h
 FORMS += mainwindow.ui \
     conditiondialog.ui \
     commdialog.ui \
     sortdialog.ui \
-    timeunitdialog.ui
+    timeunitdialog.ui \
+    function_editor/codedialog.ui \
+    function_editor/functioncodedialog.ui
 
 
 

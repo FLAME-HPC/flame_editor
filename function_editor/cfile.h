@@ -18,7 +18,7 @@ class CFile : public FileType
 public:
     CFile(QString fileName, QString FunctionName);
     ~CFile();
-    bool open(OpenMode om);
+    bool open(OpenMode);
     void writeState(FEGraphicsItem *g);
     void writeTransition(FEGraphicsItem *g);
     void writeStartIF(FEGraphicsItem *g);

@@ -87,7 +87,7 @@ QList<Token> CodeParser::getTokensList(QString s)
     QString a, t;
     int i;
     textToScanner(s.toLocal8Bit().data());
-    while(i = yylex())
+    while(i == yylex())
     {
         t = QString(yytext);
         //qDebug()<<t;
@@ -116,7 +116,7 @@ QStringList CodeParser::getIdentifierList(QString s)
     QString a, t;
     int i;
     textToScanner(s.toLocal8Bit().data());
-    while(i = yylex())
+    while(i == yylex())
     {
         t = QString(yytext);
         if(i == IDENTIFIER)

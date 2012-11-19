@@ -7,7 +7,7 @@
  */
 #include <QtGui>
 #include "./mpostdelegate.h"
-#include "./mpostdialog.h"
+#include "function_editor/codedialog.h"
 #include "./mpost.h"
 
 MpostDelegate::MpostDelegate(MemoryModel * m, QObject *parent)
@@ -15,10 +15,19 @@ MpostDelegate::MpostDelegate(MemoryModel * m, QObject *parent)
     memory = m;
 }
 
-QWidget *MpostDelegate::createEditor(QWidget *parent,
+QWidget *MpostDelegate::createEditor(QWidget */*parent*/,
     const QStyleOptionViewItem &/*option*/,
     const QModelIndex &/*index*/) const {
-    QTextEdit *editor = new QTextEdit(parent);
+    CodeDialog *editor = new CodeDialog(memory);
+
+    connect(editor, SIGNAL(accepted()), this, SLOT(commitAndCloseEditor()));
+    connect(editor, SIGNAL(rejected()), this, SLOT(commitAndCloseEditor()));
+
+    // editor->setParent(windowParent);
+    editor->setModal(true);
+    // editor->move(100, 100);
+    // editor->setWindowFlags(WShowModal);
+
     return editor;
 }
 
@@ -44,9 +53,9 @@ void MpostDelegate::setEditorData(QWidget *editor,
                                     const QModelIndex &index) const {
     if (qVariantCanConvert<Mpost>(index.data())) {
         Mpost mpost = qVariantValue<Mpost>(index.data());
-        QTextEdit * textEdit = static_cast<QTextEdit*>(editor);
+        //QTextEdit * textEdit = static_cast<QTextEdit*>(editor);
         // lineEdit->setText(mpost.getText());
-        textEdit->setText(mpost.getText());
+        // textEdit->setText(mpost.getText());
     } else {
          QItemDelegate::setEditorData(editor, index);
     }
@@ -55,11 +64,11 @@ void MpostDelegate::setEditorData(QWidget *editor,
 void MpostDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                    const QModelIndex &index) const {
     if (qVariantCanConvert<Mpost>(index.data())) {
-        QTextEdit *textEdit = static_cast<QTextEdit*>(editor);
+        /*QTextEdit *textEdit = static_cast<QTextEdit*>(editor);
         Mpost mpost;
         mpost.setMemory(this->memory);
         mpost.setText(textEdit->toPlainText());  // lineEdit->text());
-        model->setData(index, qVariantFromValue(mpost));
+        model->setData(index, qVariantFromValue(mpost));*/
     } else {
          QItemDelegate::setModelData(editor, model, index);
     }
@@ -68,4 +77,11 @@ void MpostDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
 void MpostDelegate::updateEditorGeometry(QWidget *editor,
     const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const {
     editor->setGeometry(option.rect);
+}
+
+void MpostDelegate::commitAndCloseEditor() {
+    CodeDialog *editor = qobject_cast<CodeDialog *>(sender());
+    emit commitData(editor);
+    emit closeEditor(editor);
+    qDebug() << "Close CodeDialog";
 }

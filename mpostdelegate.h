@@ -11,10 +11,6 @@
 #include <QItemDelegate>
 #include <QModelIndex>
 #include <QObject>
-#include <QSize>
-#include <QSpinBox>
-#include <QDoubleSpinBox>
-#include <QComboBox>
 #include "./memorymodel.h"
 
 class MpostDelegate : public QItemDelegate {
@@ -25,7 +21,7 @@ class MpostDelegate : public QItemDelegate {
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                 const QModelIndex &index) const;
-    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
+    QWidget *createEditor(QWidget *, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;
 
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
@@ -34,6 +30,9 @@ class MpostDelegate : public QItemDelegate {
 
     void updateEditorGeometry(QWidget *editor,
         const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+  private slots:
+    void commitAndCloseEditor();
 
   private:
     MemoryModel * memory;

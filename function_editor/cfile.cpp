@@ -35,7 +35,7 @@ CFile::~CFile()
     blocks.clear();
 }
 
-bool CFile::open(OpenMode om)
+bool CFile::open(OpenMode /*om*/)
 {
     file = new QFile(_fileName);
     if(file->open(QIODevice::WriteOnly | QIODevice::Text))
@@ -53,7 +53,7 @@ bool CFile::open(OpenMode om)
         return false;
 }
 
-void CFile::writeState(FEGraphicsItem *g)
+void CFile::writeState(FEGraphicsItem */*g*/)
 {
 }
 
@@ -145,7 +145,7 @@ void CFile::writeStartWHILE(FEGraphicsItem *g)
     creatIndentationText(indentationNumber);
 }
 
-void CFile::writeEndWHILE(FEGraphicsItem *g)
+void CFile::writeEndWHILE(FEGraphicsItem */*g*/)
 {
     Block b = blocks.pop();
     indentationNumber--;
@@ -177,7 +177,7 @@ void CFile::writeStartFOR(FEGraphicsItem *g)
     creatIndentationText(indentationNumber);
 }
 
-void CFile::writeEndFOR(FEGraphicsItem *g)
+void CFile::writeEndFOR(FEGraphicsItem */*g*/)
 {
     Block b = blocks.pop();
     indentationNumber--;

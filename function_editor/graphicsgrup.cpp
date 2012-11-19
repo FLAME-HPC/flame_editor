@@ -8,7 +8,7 @@ GraphicsGrup::GraphicsGrup()
     sub = false;
 }
 
-GraphicsGrup::GraphicsGrup(bool b)
+GraphicsGrup::GraphicsGrup(bool /*b*/)
 {
     graphicsList = new QList<FEGraphicsItem*>;
     gap = 20;
@@ -155,7 +155,7 @@ void GraphicsGrup::finalArrangement(QList<QRectF> &boundingList)
     {
         int i = positionItem.last();
         positionItem.removeLast();
-        qreal t, x, y, x1, y1;
+        qreal x, y, x1, y1;//,t;
         x = boundingList.first().right();
         y = graphicsList->at(i)->pos().y();
         GraphicsGrup *grup = grups.last();

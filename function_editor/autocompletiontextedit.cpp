@@ -212,7 +212,7 @@
      QTextEdit::focusInEvent(e);
  }
 
- void AutocompletionTextEdit::focusOutEvent(QFocusEvent *e)
+ void AutocompletionTextEdit::focusOutEvent(QFocusEvent */*e*/)
  {
      qDebug()<<"           paaaaaaaaa";
      if(showMessageBox == false){
@@ -305,7 +305,7 @@
      return tc.selectedText();
  }
 
- QString AutocompletionTextEdit::getCompletionPrefix(QString input)
+ QString AutocompletionTextEdit::getCompletionPrefix(QString /*input*/)
  {
      QTextCursor tc = textCursor();
      int i=tc.position();

@@ -167,7 +167,7 @@ Qt::ItemFlags MachineModel::flags(const QModelIndex &index) const {
      if (!index.isValid())
          return Qt::ItemIsEnabled;
 
-     if (index.column() == 4) return QAbstractItemModel::flags(index);
+     // if (index.column() == 4) return QAbstractItemModel::flags(index);
      return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 

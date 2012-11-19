@@ -12,28 +12,39 @@
 #include "./linkedlist.h"
 #include <stdlib.h>
 
-CodeDialog::CodeDialog(QWidget *parent) :
+CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
     QDialog(parent)
 {
+    setupUi(this);
 
-    Qt::WindowFlags f = 0;
-    f |= Qt::WindowMaximizeButtonHint;
+    // Create the machine scene object
+    machineScene = new FEMachineScene(this);
+    // Set the graphics view to use the machine scene object
+    graphicsView->setScene(machineScene);
+    //connect(machineScene, SIGNAL(myedit(FEGraphicsItem*)), this, SLOT(edit(FEGraphicsItem*)));
 
-    setWindowFlags(f);
-    setModal(true);
-    setWindowModality(Qt::ApplicationModal);
-    setWindowTitle("Code Editor");
+    this->setMinimumSize(500, 500);
 
-    setUI();
+    //autocompletionTextEdit->setEnabled(false);
+    //leName->setEnabled(false);
+    //pbCheck->setEnabled(false);
 
-    memory = new FEMemoryModel;
+    //leFunctionName->setText("Function Name");
+
+    //memory = new FEMemoryModel;
+    //m->setEditable(false);
     tableViewMemory->verticalHeader()->hide();
-    tableViewMemory->setModel(memory);
+    tableViewMemory->setModel(m);
+    tableViewMemory->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    memory->insertRow(1);
-    memory->insertRow(1);
-    memory->insertRow(1);
-    memory->insertRow(1);
+    //memory->insertRow(1);
+    //memory->insertRow(1);
+    //memory->insertRow(1);
+    //memory->insertRow(1);
+
+    tableViewMemory->resizeColumnsToContents();
+    tableViewMemory->resizeRowsToContents();
+    tableViewMemory->update();
 
     variablesDeclared = new VariableDeclaredModel;
     tableViewVariables->setItemDelegate(new VariableDeclaredDelegate);
@@ -41,67 +52,57 @@ CodeDialog::CodeDialog(QWidget *parent) :
     tableViewVariables->setModel(variablesDeclared);
     selectionModel = tableViewVariables->selectionModel();
 
-    showList = false;
-    showSelectItem = false;
+    //showList = false;
+    //showSelectItem = false;
 
-    isAfterShowMessageBox = false;
+    //isAfterShowMessageBox = false;
 
     //QStringList l;
     //l << "add" << "ok";
     //QCompleter *c = new QCompleter(l);
     //leName->setCompleter(c);
 
-    this->setMinimumSize(500, 500);
-
-    setShowSelectItem(false);
-    setShowList(false);
+    //setShowSelectItem(false);
+    //setShowList(false);
 
     pbRemove->setEnabled(false);
 
     connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(currentRowChanged(QItemSelection,QItemSelection)));
-
     connect(pbAdd, SIGNAL(clicked()), this, SLOT(add_click()));
-
     connect(pbRemove, SIGNAL(clicked()), this, SLOT(remove_click()));
-
-    connect(pbCheck, SIGNAL(clicked()), this, SLOT(check_click()));
+    //connect(pbCheck, SIGNAL(clicked()), this, SLOT(check_click()));
+    //connect(leName, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
 
 #ifdef debug_on
     connect(pbSaveXML, SIGNAL(clicked()), this, SLOT(saveXML_click()));
-
     connect(pbSaveC, SIGNAL(clicked()), this, SLOT(saveC_click()));
-
     connect(pbReadXML, SIGNAL(clicked()), this, SLOT(readXML_click()));
 #endif
-
-    connect(leName, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
-
-
-    connect(openAction, SIGNAL(triggered()), this, SLOT(open_click()));
+/*    connect(openAction, SIGNAL(triggered()), this, SLOT(open_click()));
     connect(saveAction, SIGNAL(triggered()), this, SLOT(save_click()));
     connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs_click()));
     connect(saveGenerateAction, SIGNAL(triggered()), this, SLOT(saveGenerate_click()));
     connect(generateAction, SIGNAL(triggered()), this, SLOT(generate_click()));
 
-    connect(mainMenu, SIGNAL(aboutToShow()), this, SLOT(showMainMenu()));
+    connect(mainMenu, SIGNAL(aboutToShow()), this, SLOT(showMainMenu()));*/
 
-    machineScene->installEventFilter(this);
-
+//    machineScene->installEventFilter(this);
 }
 
 CodeDialog::~CodeDialog()
 {
-    delete machineScene;
+    //delete machineScene;
 }
 
-void CodeDialog::hideEvent(QHideEvent *e)
+void CodeDialog::hideEvent(QHideEvent */*e*/)
 {
-    qDebug()<<"hide";
+    //qDebug()<<"hide";
 }
 
 void CodeDialog::closeEvent(QCloseEvent *e)
 {
-    qDebug()<<"pppppppppppppppppppppp";
+    //qDebug()<<"pppppppppppppppppppppp";
+/*
     autocompletionTextEdit->testValid();
     if(isShowList() && isCorrect() == false)
     {
@@ -125,24 +126,26 @@ void CodeDialog::closeEvent(QCloseEvent *e)
             else if(sb == QMessageBox::No)
                 e->accept();
         }
-        else
+        else*/
             e->accept();
+
 }
 
 bool CodeDialog::eventFilter(QObject *o, QEvent *e)
 {
     //qDebug()<<"777777777777777777778978878";
     //qDebug()<<autocompletionTextEdit<<"  "<<o;
+/*
     if(o == machineScene && e->type() == QEvent::FocusIn)
     {
         qDebug()<<"---- ====  "<<(autocompletionTextEdit->isCorrect() == false);
-        if(autocompletionTextEdit->isVisible() && autocompletionTextEdit->isCorrect() == false &&
+        if(autocompletionTextEdit->isEnabled() && autocompletionTextEdit->isCorrect() == false &&
                 autocompletionTextEdit->isAfterShowMessageBox() == false)
         {
             autocompletionTextEdit->showMessage();
             return true;
         }
-        else if(autocompletionTextEdit->isVisible() && autocompletionTextEdit->isAfterShowMessageBox())
+        else if(autocompletionTextEdit->isEnabled() && autocompletionTextEdit->isAfterShowMessageBox())
         {
             autocompletionTextEdit->setFocus();
             return true;
@@ -180,9 +183,10 @@ bool CodeDialog::eventFilter(QObject *o, QEvent *e)
             }
         }
     }
+    */
     return QDialog::eventFilter(o, e);
 }
-
+/*
 void CodeDialog::setUI()
 {
     mainLayout = new QVBoxLayout();
@@ -203,136 +207,137 @@ void CodeDialog::setUI()
 
     menuBar->addMenu(mainMenu);
     mainLayout->setMenuBar(menuBar);
-    mainContentLayout = new QVBoxLayout();
+//    mainContentLayout = new QVBoxLayout();
 
-    QHBoxLayout *gUpLayout = new QHBoxLayout();
+//    QHBoxLayout *gUpLayout = new QHBoxLayout();
 
-    lFunctionName = new QLabel("Function Name");
-    lFunctionName->setMaximumSize(80, 10);
-    lFunctionName->setMinimumSize(50, 10);
-    leFunctionName = new QLineEdit();
-    leFunctionName->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    leFunctionName->setMinimumSize(100, 20);
-    leFunctionName->setMaximumSize(100, 20);
-    leFunctionName->setText("function1");
+//    lFunctionName = new QLabel("Function Name");
+//    lFunctionName->setMaximumSize(80, 10);
+//    lFunctionName->setMinimumSize(50, 10);
+//    leFunctionName = new QLineEdit();
+//    leFunctionName->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    leFunctionName->setMinimumSize(100, 20);
+//    leFunctionName->setMaximumSize(100, 20);
+//    leFunctionName->setText("function1");
 
-    gUpLayout->addWidget(lFunctionName);
-    gUpLayout->addWidget(leFunctionName, 0, Qt::AlignLeft);
+//    gUpLayout->addWidget(lFunctionName);
+//    gUpLayout->addWidget(leFunctionName, 0, Qt::AlignLeft);
 
-    mainLayout->addLayout(gUpLayout);
+//    mainLayout->addLayout(gUpLayout);
 
-    QGridLayout *gridLayout = new QGridLayout;
+ //   QGridLayout *gridLayout = new QGridLayout;
 
-    QGridLayout *gridLayoutTableMemory = new QGridLayout;
+ //   QGridLayout *gridLayoutTableMemory = new QGridLayout;
 
-    QLabel *lMemory = new QLabel("Memory");
-    lMemory->setMaximumSize(80, 10);
-    lMemory->setMinimumSize(50, 10);
+//    QLabel *lMemory = new QLabel("Memory");
+//    lMemory->setMaximumSize(80, 10);
+//    lMemory->setMinimumSize(50, 10);
 
-    gridLayoutTableMemory->addWidget(lMemory, 0, 0);
+//    gridLayoutTableMemory->addWidget(lMemory, 0, 0);
 
-    tableViewMemory = new QTableView;
-    tableViewMemory->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    tableViewMemory->setMinimumSize(319, 110);
-    tableViewMemory->setMaximumSize(319, 110);
+//    tableViewMemory = new QTableView;
+//    tableViewMemory->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    tableViewMemory->setMinimumSize(319, 110);
+//    tableViewMemory->setMaximumSize(319, 110);
 
-    gridLayoutTableMemory->addWidget(tableViewMemory, 1, 0, 2, 2);
+//    gridLayoutTableMemory->addWidget(tableViewMemory, 1, 0, 2, 2);
 
-    gridLayout->addLayout(gridLayoutTableMemory, 0, 0, 1, 1, Qt::AlignRight);
+//    gridLayout->addLayout(gridLayoutTableMemory, 0, 0, 1, 1, Qt::AlignRight);
 
-    QGridLayout *gridLayoutTableVariables = new QGridLayout;
+//    QGridLayout *gridLayoutTableVariables = new QGridLayout;
 
-    QLabel *lVariables = new QLabel("Local Variables");
-    lVariables->setMaximumSize(80, 10);
-    lVariables->setMinimumSize(50, 10);
+//    QLabel *lVariables = new QLabel("Local Variables");
+//    lVariables->setMaximumSize(80, 10);
+//    lVariables->setMinimumSize(50, 10);
 
-    gridLayoutTableVariables->addWidget(lVariables, 0, 0);
+//    gridLayoutTableVariables->addWidget(lVariables, 0, 0);
 
-    tableViewVariables = new QTableView;
-    tableViewVariables->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    tableViewVariables->setMinimumSize(319, 80);
-    tableViewVariables->setMaximumSize(319, 80);
+//    tableViewVariables = new QTableView;
+//    tableViewVariables->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    tableViewVariables->setMinimumSize(319, 80);
+//    tableViewVariables->setMaximumSize(319, 80);
 
-    gridLayoutTableVariables->addWidget(tableViewVariables, 1, 0, 1, 2);
+//    gridLayoutTableVariables->addWidget(tableViewVariables, 1, 0, 1, 2);
 
-    pbAdd = new QPushButton("Add");
-    pbAdd->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    pbAdd->setMinimumSize(50, 25);
+//    pbAdd = new QPushButton("Add");
+//    pbAdd->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    pbAdd->setMinimumSize(50, 25);
 
-    gridLayoutTableVariables->addWidget(pbAdd, 2, 0, Qt::AlignLeft);
+//    gridLayoutTableVariables->addWidget(pbAdd, 2, 0, Qt::AlignLeft);
 
-    pbRemove = new QPushButton("Remove");
-    pbRemove->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    pbRemove->setMinimumSize(50, 25);
+//    pbRemove = new QPushButton("Remove");
+//    pbRemove->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    pbRemove->setMinimumSize(50, 25);
 
-    gridLayoutTableVariables->addWidget(pbRemove, 2, 1, Qt::AlignRight);
+//    gridLayoutTableVariables->addWidget(pbRemove, 2, 1, Qt::AlignRight);
 
-    gridLayout->addLayout(gridLayoutTableVariables, 0, 1, 1, 1, Qt::AlignLeft);
+//    gridLayout->addLayout(gridLayoutTableVariables, 0, 1, 1, 1, Qt::AlignLeft);
 
-    mainLayout->addLayout(gridLayout);
+//    mainLayout->addLayout(gridLayout);
 
-    graphicsView = new QGraphicsView(this);
-    mainContentLayout->addWidget(graphicsView);
-    mainLayout->addLayout(mainContentLayout);
-    setLayout(mainLayout);
-    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+//    graphicsView = new QGraphicsView(this);
+//    mainContentLayout->addWidget(graphicsView);
+//    mainLayout->addLayout(mainContentLayout);
+//    setLayout(mainLayout);
+//    graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+//    graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    /* Create the machine scene object */
+    // Create the machine scene object
     machineScene = new FEMachineScene(this);
-    /* Set the graphics view to use the machine scene object */
+    // Set the graphics view to use the machine scene object
     graphicsView->setScene(machineScene);
+    connect(machineScene, SIGNAL(myedit(FEGraphicsItem*)), this, SLOT(edit(FEGraphicsItem*)));
 
-    QHBoxLayout *gLayout = new QHBoxLayout();
+//    QHBoxLayout *gLayout = new QHBoxLayout();
 
-    lName = new QLabel("vedem");
-    lName->setMaximumSize(80, 10);
-    lName->setMinimumSize(50, 10);
-    leName = new QLineEdit();
-    leName->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    leName->setMinimumSize(100, 20);
-    leName->setMaximumSize(100, 20);
+//    lName = new QLabel("vedem");
+//    lName->setMaximumSize(80, 10);
+//    lName->setMinimumSize(50, 10);
+//    leName = new QLineEdit();
+//    leName->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    leName->setMinimumSize(100, 20);
+//    leName->setMaximumSize(100, 20);
 
-    mainLayout->addSpacing(10);
+//    mainLayout->addSpacing(10);
 
-    gLayout->addWidget(lName);
-    gLayout->addWidget(leName, 0, Qt::AlignLeft);
+//    gLayout->addWidget(lName);
+//    gLayout->addWidget(leName, 0, Qt::AlignLeft);
 
-    mainLayout->addLayout(gLayout);
+//    mainLayout->addLayout(gLayout);
 
-    listLayout = new QVBoxLayout();
-    label = new QLabel("Assignments");
-    listLayout->addWidget(label);
+//    listLayout = new QVBoxLayout();
+//    label = new QLabel("Assignments");
+//    listLayout->addWidget(label);
 
     //listWidget = new QListWidget();
     //listWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     //listWidget->setMinimumSize(50, 10);
     //listLayout->addWidget(listWidget);
 
-    autocompletionTextEdit = new AutocompletionTextEdit;
-    autocompletionTextEdit->setWordWrapMode(QTextOption::NoWrap);
-    autocompletionTextEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    autocompletionTextEdit->setMinimumSize(50, 10);
+//    autocompletionTextEdit = new AutocompletionTextEdit;
+//    autocompletionTextEdit->setWordWrapMode(QTextOption::NoWrap);
+//    autocompletionTextEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+//    autocompletionTextEdit->setMinimumSize(50, 10);
     //autocompletionTextEdit->setMaximumSize(500, 150);
-    completer = new TreeModelCompleter(this);
-    completer->setSeparator(".");
+//    completer = new TreeModelCompleter(this);
+//    completer->setSeparator(".");
     //completer->setModel(modelFromFileList(":/resources/wordlist.txt"));
-    QStringList list;
-    list<<"pooo"<<"poo";
-    completer->setModel(modelFromFileTree(list));
-    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    completer->setWrapAround(false);
-    autocompletionTextEdit->setCompleter(completer);
-    listLayout->addWidget(autocompletionTextEdit);
+//    QStringList list;
+//    list<<"pooo"<<"poo";
+//    completer->setModel(modelFromFileTree(list));
+//    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+//    completer->setCaseSensitivity(Qt::CaseInsensitive);
+//    completer->setWrapAround(false);
+//    autocompletionTextEdit->setCompleter(completer);
+//    listLayout->addWidget(autocompletionTextEdit);
 
 
-    QHBoxLayout *h = new QHBoxLayout();
+//    QHBoxLayout *h = new QHBoxLayout();
 
-    pbCheck = new QPushButton("Check");
-    pbCheck->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    pbCheck->setMinimumSize(50, 25);
-    h->addWidget(pbCheck, 0, Qt::AlignLeft);
+//    pbCheck = new QPushButton("Check");
+//    pbCheck->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+//    pbCheck->setMinimumSize(50, 25);
+//    h->addWidget(pbCheck, 0, Qt::AlignLeft);
 
 #ifdef debug_on
     pbSaveXML = new QPushButton("Save XML");
@@ -351,13 +356,14 @@ void CodeDialog::setUI()
     h->addWidget(pbReadXML, 0, Qt::AlignLeft);
 #endif
 
-    listLayout->addLayout(h);
+//    listLayout->addLayout(h);
 
-    mainLayout->addLayout(listLayout);
+//    mainLayout->addLayout(listLayout);
 
     //pbAdd->setVisible(false);
     //pbRemove->setVisible(false);
 }
+
 
 QAbstractItemModel *CodeDialog::modelFromFileTree(const QStringList &list)
 {
@@ -404,7 +410,8 @@ QAbstractItemModel *CodeDialog::modelFromFileTree(const QStringList &list)
 
     return model;
 }
-
+*/
+/*
 bool CodeDialog::openFile()
 {
     if(machineScene->isChanged())
@@ -497,24 +504,28 @@ bool CodeDialog::generateFile()
         machineScene->saveFile(s, leFunctionName->text(), 1);
     }
 }
-
+*/
 void CodeDialog::done(int r)
 {
-    qDebug()<<"oooooooooooooorrrrrrrrrrrrrrrrroooooooooooooooooooo";
-    autocompletionTextEdit->testValid();
-    if(isShowList() && isCorrect() == false)
-    {
-        autocompletionTextEdit->showMessage();
-        autocompletionTextEdit->setFocus();
-        return;
-    }
-    else
-    {
-        QDialog::done(r);
-        return;
-    }
-}
+    // All function code should be checked here
+    // as local memory could have been changed
+    QDialog::done(r);
 
+//    qDebug()<<"oooooooooooooorrrrrrrrrrrrrrrrroooooooooooooooooooo";
+//    autocompletionTextEdit->testValid();
+//    if(isShowList() && isCorrect() == false)
+//    {
+//        autocompletionTextEdit->showMessage();
+//        autocompletionTextEdit->setFocus();
+//        return;
+//    }
+//    else
+//    {
+//        QDialog::done(r);
+//        return;
+//    }
+}
+/*
 void CodeDialog::check_click()
 {
     //QStringList identifierList;
@@ -569,7 +580,7 @@ void CodeDialog::generate_click()
 {
     generateFile();
 }
-
+*/
 void CodeDialog::add_click()
 {
     variablesDeclared->insertRow(1);
@@ -586,18 +597,86 @@ void CodeDialog::remove_click()
     pbRemove->setEnabled(false);
 }
 
-void CodeDialog::currentRowChanged(const QItemSelection &selected, const QItemSelection &deselected)
+void CodeDialog::currentRowChanged(const QItemSelection &selected, const QItemSelection /*&deselected*/)
 {
     pbRemove->setEnabled(selected.indexes().count() > 0);
 }
-
+/*
 void CodeDialog::showMainMenu()
 {
-    if(!(isShowSelectItem() || isShowList()))
-        saveAction->setEnabled(machineScene->isChanged());
+    //if(!(isShowSelectItem() || isShowList()))
+    //    saveAction->setEnabled(machineScene->isChanged());
 }
-
-void CodeDialog::textChanged(const QString &s)
+*/
+/*void CodeDialog::textChanged(const QString &s)
 {
     machineScene->setSelectItemText(s);
+}*/
+/*
+void CodeDialog::edit(FEGraphicsItem *item) {
+    qDebug() << "my edit " << item->getName();
 }
+
+void CodeDialog::setShowList(bool b) {
+    showList = b;
+    //label->setVisible(b);
+    //autocompletionTextEdit->setVisible(b);
+    //pbCheck->setVisible(b);
+    //pbRemove->setVisible(b);
+    if(b){
+        //autocompletionTextEdit->setFocus();
+        //autocompletionTextEdit->setType(machineScene->itemType());
+        QStringList *list = machineScene->getAssignmentList();
+        if(list != 0){
+            //autocompletionTextEdit->setAssignments(*list);
+        }
+    }
+    else {
+        QStringList *list = machineScene->getAssignmentList();
+        if(list != 0)
+            list->clear();
+        //QStringList l = autocompletionTextEdit->getAssignments();
+//            for(int i=0;i<l.count();i++)
+//                list->append(QString(l[i]));
+//            if(list !=0 && list->count() == 0 && (machineScene->itemType() == ConditionWhile || machineScene->itemType() == ConditionFor))
+//                machineScene->changeCondition(ConditionWhileFor);
+    }
+}
+
+bool CodeDialog::getShowSelectItem() const{
+    return showSelectItem;
+}
+
+void CodeDialog::setShowSelectItem(bool b){
+    showSelectItem = b;
+    //lName->setVisible(b);
+    //leName->setVisible(b);
+//        if(b && autocompletionTextEdit->isVisible() == false)
+//            leName->setFocus();
+
+    openAction->setEnabled(!b);
+    saveAction->setEnabled(!b);
+    saveAsAction->setEnabled(!b);
+    saveGenerateAction->setEnabled(!b);
+    generateAction->setEnabled(!b);
+
+#ifdef debug_on
+    pbSaveXML->setVisible(!b);
+    pbSaveC->setVisible(!b);
+    pbReadXML->setVisible(!b);
+#endif
+}
+*/
+
+/*void CodeDialog::setSelectItem(QString s, QString t){
+//        lName->setText(s);
+//        leName->setText(t);
+}*/
+
+/*void CodeDialog::setFunctionName(QString s) {
+    leFunctionName->setText(s);
+}
+
+bool CodeDialog::getShowList() const{
+    return showList;
+}*/

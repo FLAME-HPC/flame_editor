@@ -10,7 +10,7 @@ class GraphicsGrup
 {
 public:
     GraphicsGrup();
-    GraphicsGrup(bool b);
+    GraphicsGrup(bool);
     GraphicsGrup(FEGraphicsItem *item);
     ~GraphicsGrup();
 
