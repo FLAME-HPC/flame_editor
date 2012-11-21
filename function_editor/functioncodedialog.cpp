@@ -1,9 +1,11 @@
 #include <QtGui>
 #include "functioncodedialog.h"
 
-FunctionCodeDialog::FunctionCodeDialog(FEGraphicsItem *i, QWidget *parent) : QDialog(parent), item_(i)
+FunctionCodeDialog::FunctionCodeDialog(FEGraphicsItem *i, QStringList variableNames, QWidget *parent) : QDialog(parent), item_(i)
 {
     setupUi(this);
+
+    setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowTitleHint);
 
     lineEdit->setText(item_->getName());
     if(item_->mytype == State || item_->mytype == FinalState)
@@ -20,15 +22,10 @@ FunctionCodeDialog::FunctionCodeDialog(FEGraphicsItem *i, QWidget *parent) : QDi
     connect(lineEdit, SIGNAL(textChanged(QString)), this, SLOT(nameChanged(QString)));
 
     autocompletionTextEdit->setWordWrapMode(QTextOption::NoWrap);
-    //autocompletionTextEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    //autocompletionTextEdit->setMinimumSize(50, 10);
-    //autocompletionTextEdit->setMaximumSize(500, 150);
     completer = new TreeModelCompleter(this);
     completer->setSeparator(".");
     //completer->setModel(modelFromFileList(":/resources/wordlist.txt"));
-    QStringList list;
-    list<<"pooo"<<"poo";
-    completer->setModel(modelFromFileTree(list));
+    completer->setModel(modelFromFileTree(variableNames));
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setWrapAround(false);
@@ -84,4 +81,9 @@ QAbstractItemModel* FunctionCodeDialog::modelFromFileTree(const QStringList &lis
 #endif
 
     return model;
+}
+
+void FunctionCodeDialog::on_pushButton_clicked()
+{
+    qDebug() << autocompletionTextEdit->isCorrect();
 }

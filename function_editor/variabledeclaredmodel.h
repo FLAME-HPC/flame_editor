@@ -30,7 +30,7 @@ public:
 
     void replaceValue(int index, double value);
     void addVariable(QString type, QString name, double i);
-
+    QStringList getVariableNames();
 
 private:
     QList<VariableDeclared> variables;

@@ -78,7 +78,7 @@ void GraphicsGrup::add(GraphicsGrup &grupLeft, GraphicsGrup &grupRight)
     QRectF r2 = grupRight.boundingRect();
     qreal yLeft = r1.height() < r2.height()?(r2.height()-r1.height())/2.0:0;
     qreal yRight = r2.height() < r1.height()?(r1.height()-r2.height())/2.0:0;
-    qDebug()<<myBoundingRect.bottom();
+    //qDebug()<<myBoundingRect.bottom();
     x1 = x - r1.right() - gapy;
     y1 = y + grupLeft.graphicsList->first()->boundingRect().height() * 2 + yLeft;
     x2 = x + gapy;

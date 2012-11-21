@@ -57,6 +57,9 @@ class MainWindow : public QMainWindow {
     void machineTreeClicked(QModelIndex);
     void machineTreeContextMenu(QPoint);
     void repositionView(float x, float y);
+    void machineSelected(Machine *);
+    void functionSelected(Transition *);
+    void functionDoubleClicked(Transition *);
 
   private slots:
     void on_pushButton_viewModel_clicked();
@@ -69,6 +72,7 @@ class MainWindow : public QMainWindow {
     Ui::MainWindowClass *ui;
     void handleNewAndOpenedModel(Machine * m);
     void defaultGuiSettings();
+    void handleMachineSelected(Machine * m);
     SimulationThread * simulationThread;
     QToolBar * fileToolBar;
     MachineTree * machineTree;

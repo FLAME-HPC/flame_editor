@@ -9,15 +9,18 @@
 #include "./mpostdelegate.h"
 #include "function_editor/codedialog.h"
 #include "./mpost.h"
+#include "machinemodel.h"
 
-MpostDelegate::MpostDelegate(MemoryModel * m, QObject *parent)
+MpostDelegate::MpostDelegate(MemoryModel * m, MachineModel *t, QObject *parent)
     : QItemDelegate(parent) {
     memory = m;
+    machine = t;
 }
 
 QWidget *MpostDelegate::createEditor(QWidget */*parent*/,
     const QStyleOptionViewItem &/*option*/,
     const QModelIndex &/*index*/) const {
+
     CodeDialog *editor = new CodeDialog(memory);
 
     connect(editor, SIGNAL(accepted()), this, SLOT(commitAndCloseEditor()));
@@ -56,6 +59,9 @@ void MpostDelegate::setEditorData(QWidget *editor,
         //QTextEdit * textEdit = static_cast<QTextEdit*>(editor);
         // lineEdit->setText(mpost.getText());
         // textEdit->setText(mpost.getText());
+        CodeDialog *dialog = static_cast<CodeDialog*>(editor);
+        dialog->setMpost(mpost);
+        dialog->setName(machine->getRowName(index));
     } else {
          QItemDelegate::setEditorData(editor, index);
     }
@@ -64,11 +70,8 @@ void MpostDelegate::setEditorData(QWidget *editor,
 void MpostDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                    const QModelIndex &index) const {
     if (qVariantCanConvert<Mpost>(index.data())) {
-        /*QTextEdit *textEdit = static_cast<QTextEdit*>(editor);
-        Mpost mpost;
-        mpost.setMemory(this->memory);
-        mpost.setText(textEdit->toPlainText());  // lineEdit->text());
-        model->setData(index, qVariantFromValue(mpost));*/
+        CodeDialog *dialog = static_cast<CodeDialog*>(editor);
+        model->setData(index, qVariantFromValue(dialog->getMpost()));
     } else {
          QItemDelegate::setModelData(editor, model, index);
     }

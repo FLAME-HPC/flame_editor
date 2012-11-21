@@ -1,5 +1,6 @@
 #include "codedialog.h"
 #include "./assignmentdialog.h"
+#include "functioncodedialog.h"
 #include <QDebug>
 #include <QCompleter>
 #include <QFile>
@@ -13,7 +14,7 @@
 #include <stdlib.h>
 
 CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
-    QDialog(parent)
+    QDialog(parent), agentMemory(m)
 {
     setupUi(this);
 
@@ -21,27 +22,16 @@ CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
     machineScene = new FEMachineScene(this);
     // Set the graphics view to use the machine scene object
     graphicsView->setScene(machineScene);
-    //connect(machineScene, SIGNAL(myedit(FEGraphicsItem*)), this, SLOT(edit(FEGraphicsItem*)));
+    // If item edit selected then start function code dialog
+    connect(machineScene, SIGNAL(functionCodeDialog(FEGraphicsItem*)),
+            this, SLOT(functionCodeDialog(FEGraphicsItem*)));
 
-    this->setMinimumSize(500, 500);
+    functionName->setEnabled(false);
 
-    //autocompletionTextEdit->setEnabled(false);
-    //leName->setEnabled(false);
-    //pbCheck->setEnabled(false);
-
-    //leFunctionName->setText("Function Name");
-
-    //memory = new FEMemoryModel;
-    //m->setEditable(false);
+    //this->setMinimumSize(500, 500);
     tableViewMemory->verticalHeader()->hide();
-    tableViewMemory->setModel(m);
+    tableViewMemory->setModel(agentMemory);
     tableViewMemory->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    //memory->insertRow(1);
-    //memory->insertRow(1);
-    //memory->insertRow(1);
-    //memory->insertRow(1);
-
     tableViewMemory->resizeColumnsToContents();
     tableViewMemory->resizeRowsToContents();
     tableViewMemory->update();
@@ -51,19 +41,6 @@ CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
     tableViewVariables->verticalHeader()->hide();
     tableViewVariables->setModel(variablesDeclared);
     selectionModel = tableViewVariables->selectionModel();
-
-    //showList = false;
-    //showSelectItem = false;
-
-    //isAfterShowMessageBox = false;
-
-    //QStringList l;
-    //l << "add" << "ok";
-    //QCompleter *c = new QCompleter(l);
-    //leName->setCompleter(c);
-
-    //setShowSelectItem(false);
-    //setShowList(false);
 
     pbRemove->setEnabled(false);
 
@@ -92,6 +69,7 @@ CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
 CodeDialog::~CodeDialog()
 {
     //delete machineScene;
+    commitAndCloseEditor();
 }
 
 void CodeDialog::hideEvent(QHideEvent */*e*/)
@@ -186,6 +164,39 @@ bool CodeDialog::eventFilter(QObject *o, QEvent *e)
     */
     return QDialog::eventFilter(o, e);
 }
+
+void CodeDialog::functionCodeDialog(FEGraphicsItem *item) {
+    QStringList variableNames;
+
+    // Get variable names
+    variableNames.append(agentMemory->getNames());
+    variableNames.append(variablesDeclared->getNames());
+
+    FunctionCodeDialog *editor = new FunctionCodeDialog(item, variableNames);
+    connect(editor, SIGNAL(accepted()), this, SLOT(commitAndCloseEditor()));
+    editor->setModal(true);
+    editor->show();
+}
+
+void CodeDialog::commitAndCloseEditor() {
+    //FunctionCodeDialog *editor = qobject_cast<FunctionCodeDialog *>(sender());
+    //emit commitData(editor);
+    //emit closeEditor(editor);
+    qDebug() << "Close FunctionCodeDialog";
+}
+
+void CodeDialog::setMpost(Mpost c) {
+    mpost = c;
+}
+
+Mpost CodeDialog::getMpost() {
+    return mpost;
+}
+
+void CodeDialog::setName(QString n) {
+    functionName->setText(n);
+}
+
 /*
 void CodeDialog::setUI()
 {

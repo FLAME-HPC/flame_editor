@@ -18,6 +18,9 @@
 #include "./texteditdelegate.h"
 #include "./machinetreedelegate.h"
 #include "./modelxmlreader.h"
+//#include "function_editor/codedialog.h"
+
+class CodeDialog;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindowClass) {
@@ -31,6 +34,10 @@ MainWindow::MainWindow(QWidget *parent)
     #endif
 
     currentMachine = 0;
+
+    // Make stategraph twice as large as data column
+    ui->splitter_2->setStretchFactor(0, 2);
+    ui->splitter_2->setStretchFactor(1, 1);
 
     QAction * newAction = new QAction(tr("&New"), this);
     newAction->setShortcut(QKeySequence::New);
@@ -52,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableViewMachine->setVerticalScrollMode(
             QAbstractItemView::ScrollPerPixel);
     ui->tableViewMachine->verticalHeader()->hide();
+    ui->tableViewMachine->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     /* Memory table */
     ui->tableViewMemory->setModel(0);
@@ -338,7 +346,7 @@ void addRestOfModel(Machine * m, Machine * selected) {
                     for (int j = 0; j < transitions.count(); j++) {
                         Transition * t = transitions.at(j);
                         selected->machineScene->addTransitionTransition(
-                                m->child(i)->name, t, foreign, editable);
+                                m->child(i)->name, t, foreign, editable, m->child(i));
                     }
                 }
             }
@@ -349,7 +357,36 @@ void addRestOfModel(Machine * m, Machine * selected) {
         }
 }
 
+void MainWindow::functionDoubleClicked(Transition * t) {
+    ui->tableViewMachine->edit(
+                currentMachine->machineModel->index(currentMachine->machineModel->getIndex(t).row(), 4, QModelIndex()));
+}
+
+void MainWindow::functionSelected(Transition * t) {
+    if (t) {  // If transition
+        //ui->tableViewMachine->selectionModel()->setCurrentIndex(
+        //            currentMachine->machineModel->getIndex(t), QItemSelectionModel::ClearAndSelect);
+        ui->tableViewMachine->selectRow(currentMachine->machineModel->getIndex(t).row());
+        ui->pushButtonSceneDelete->setEnabled(true);
+    } else {  // If no transition
+        ui->tableViewMachine->clearSelection();
+        ui->pushButtonSceneDelete->setEnabled(false);
+    }
+}
+
+void MainWindow::machineSelected(Machine * m) {
+    ui->treeView_machines->selectionModel()->setCurrentIndex(
+                machineTree->getIndex(m), QItemSelectionModel::ClearAndSelect);
+    handleMachineSelected(m);
+}
+
 void MainWindow::machineTreeClicked(QModelIndex index) {
+    // Get the machine that was clicked on
+    Machine * m = static_cast<Machine*>(index.internalPointer());
+    handleMachineSelected(m);
+}
+
+void MainWindow::handleMachineSelected(Machine * m) {
     // Disconnect buttons from current machineScene
     if (currentMachine != 0)
         if (currentMachine->machineScene != 0)
@@ -358,8 +395,7 @@ void MainWindow::machineTreeClicked(QModelIndex index) {
                     currentMachine->machineScene,
                     SLOT(deleteSelectedFunction()));
 
-    // Get the machine that was clicked on
-    Machine * m = static_cast<Machine*>(index.internalPointer());
+
     // Make the currentMachine equal to the selected machine
     currentMachine = m;
 
@@ -387,6 +423,44 @@ void MainWindow::machineTreeClicked(QModelIndex index) {
         ui->pushButtonSave->setEnabled(false);
         // Reset the window title
         setWindowTitle("FLAME Editor");
+    }
+
+    // Set up labels and name lineedits
+    if (m->type == 0) {  // If model
+        ui->stagegraphNameLabel->setText("Model name:");
+        ui->stagegraphNameLabelLineEdit->setText(m->name);
+        ui->stagegraphNameLabelLineEdit->show();
+        ui->label_memory->setText("Model details");
+    } else if (m->type == 1) {  // If agent
+        ui->stagegraphNameLabel->setText("Agent name:");
+        ui->stagegraphNameLabelLineEdit->setText(m->name);
+        ui->stagegraphNameLabelLineEdit->show();
+        ui->label_memory->setText("Agent memory");
+    } else if (m->type == 2) {  // If message
+        ui->stagegraphNameLabel->setText("");
+        ui->stagegraphNameLabelLineEdit->setText("");
+        ui->stagegraphNameLabelLineEdit->hide();
+        ui->label_memory->setText("Message memory");
+    } else if (m->type == 3) {  // If environment
+        ui->stagegraphNameLabel->setText("");
+        ui->stagegraphNameLabelLineEdit->setText("");
+        ui->stagegraphNameLabelLineEdit->hide();
+        ui->label_memory->setText("Environment constants");
+    } else if (m->type == 4) {  // If timeunit
+        ui->stagegraphNameLabel->setText("");
+        ui->stagegraphNameLabelLineEdit->setText("");
+        ui->stagegraphNameLabelLineEdit->hide();
+        ui->label_memory->setText("");
+    } else if (m->type == 5) {  // If datatype
+        ui->stagegraphNameLabel->setText("");
+        ui->stagegraphNameLabelLineEdit->setText("");
+        ui->stagegraphNameLabelLineEdit->hide();
+        ui->label_memory->setText("Datatype variables");
+    } else if (m->type == 6) {  // If functionFiles
+        ui->stagegraphNameLabel->setText("");
+        ui->stagegraphNameLabelLineEdit->setText("");
+        ui->stagegraphNameLabelLineEdit->hide();
+        ui->label_memory->setText("");
     }
 
     // Set up memory table for
@@ -440,7 +514,7 @@ void MainWindow::machineTreeClicked(QModelIndex index) {
         ui->tableViewMachine->setItemDelegateForColumn(3,
                 new LineEditDelegate());
         ui->tableViewMachine->setItemDelegateForColumn(4,
-                new MpostDelegate(m->memoryModel));
+                new MpostDelegate(m->memoryModel, m->machineModel));
         ui->tableViewMachine->setItemDelegateForColumn(5,
                 new CommDelegate(m));
         ui->tableViewMachine->setItemDelegateForColumn(6,
@@ -480,11 +554,16 @@ void MainWindow::machineTreeClicked(QModelIndex index) {
         ui->graphicsView->show();
 
         if (m->type == 1) {  // if agent
-            connect(m->machineScene, SIGNAL(functionSelected(bool)),
-                    ui->pushButtonSceneDelete, SLOT(setEnabled(bool)));
+            connect(m->machineScene, SIGNAL(functionSelected(Transition*)),
+                    this, SLOT(functionSelected(Transition*)));
             connect(ui->pushButtonSceneDelete, SIGNAL(clicked()),
                     m->machineScene, SLOT(deleteSelectedFunction()));
         }
+
+        connect(m->machineScene, SIGNAL(machineSelected(Machine*)),
+                this, SLOT(machineSelected(Machine*)));
+        connect(m->machineScene, SIGNAL(functionDoubleClicked(Transition*)),
+                this, SLOT(functionDoubleClicked(Transition*)));
 
         // Enable/disable graph buttons
         ui->pushButtonSceneDelete->setEnabled(false);

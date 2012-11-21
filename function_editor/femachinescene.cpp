@@ -27,10 +27,10 @@ FEMachineScene::FEMachineScene(QObject *parent)
     namePosition = -1;
 
     editAction = new QAction(tr("Edit"), this);
-    connect(editAction,SIGNAL(triggered()), this, SLOT(edit()));
+    connect(editAction, SIGNAL(triggered()), this, SLOT(edit()));
 
     splitAction = new QAction(tr("Split"), this);
-    connect(splitAction,SIGNAL(triggered()), this, SLOT(split()));
+    connect(splitAction, SIGNAL(triggered()), this, SLOT(split()));
 
     /* Set a size for the scene */
     //setSceneRect(0, 0, 500, 500);
@@ -402,7 +402,7 @@ void FEMachineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
                 m->addAction(editAction);
             if(itemSelect->mytype == Transition && itemSelect->getAssignmentList()->count() == 0)
                 m->addAction(splitAction);
-            qDebug()<<"QMenu iiiiiiiiiiooooooooooop[[[oooooooooooooo";
+            //qDebug()<<"QMenu iiiiiiiiiiooooooooooop[[[oooooooooooooo";
         }
     }
     QAction *a = m->exec(event->screenPos());
@@ -456,9 +456,8 @@ void FEMachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                     } else if(itemToMove != itemSelect){
                         itemSelect = itemToMove;
                     }
-                    emit(myedit(itemSelect));
+                    //emit(myedit(itemSelect));
             }
-
         }
         else if(itemSelect != 0){
             //if(cd->getShowList())
@@ -495,6 +494,18 @@ void FEMachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                     addItem(arc);
                 }
             }
+        }
+    }
+}
+
+void FEMachineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) {
+    QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
+    if (qitem) {
+        if (qgraphicsitem_cast<FEGraphicsItem *>(qitem)) {
+            FEGraphicsItem * sitem =
+                qgraphicsitem_cast<FEGraphicsItem *>(qitem);
+            itemSelect = sitem;
+            emit functionCodeDialog(sitem);
         }
     }
 }
@@ -816,7 +827,7 @@ FEGraphicsItem* FEMachineScene::arrangeGraphicsItem(GraphicsGrup &item, FEGraphi
             if(map->contains(state))
             {
                 int i = map->value(state);
-                qDebug()<<map->contains(state)<<i;
+                //qDebug()<<map->contains(state)<<i;
                 if(i > 0)
                 {
                     {
@@ -832,7 +843,7 @@ FEGraphicsItem* FEMachineScene::arrangeGraphicsItem(GraphicsGrup &item, FEGraphi
                 b = false;
             }
         }
-        qDebug()<<state->countGraphicsItem();
+        //qDebug()<<state->countGraphicsItem();
         if(b)
         {
             if(state->mytype == ConditionIf)
@@ -894,7 +905,7 @@ FEGraphicsItem* FEMachineScene::arrangeGraphicsItem(GraphicsGrup &item, FEGraphi
 
 void FEMachineScene::edit()
 {
-    functionCodeDialog();
+    emit functionCodeDialog(itemSelect);
 
     /*if(itemSelect != 0){
         CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
@@ -1104,18 +1115,4 @@ void FEMachineScene::split()
     changed = true;
     //arrangeGraphicsItem();invalidate();
     qDebug()<<"split";
-}
-
-void FEMachineScene::functionCodeDialog() {
-    FunctionCodeDialog *editor = new FunctionCodeDialog(itemSelect);
-    connect(editor, SIGNAL(accepted()), this, SLOT(commitAndCloseEditor()));
-    editor->setModal(true);
-    editor->show();
-}
-
-void FEMachineScene::commitAndCloseEditor() {
-    //FunctionCodeDialog *editor = qobject_cast<FunctionCodeDialog *>(sender());
-    //emit commitData(editor);
-    //emit closeEditor(editor);
-    qDebug() << "Close FunctionCodeDialog";
 }

@@ -10,7 +10,7 @@ class FunctionCodeDialog : public QDialog, public Ui::FunctionCodeDialog
     Q_OBJECT
 
 public:
-    FunctionCodeDialog(FEGraphicsItem *i, QWidget *parent = 0);
+    FunctionCodeDialog(FEGraphicsItem *i, QStringList variableNames, QWidget *parent = 0);
 
 private:
     QAbstractItemModel *modelFromFileTree(const QStringList& fileName);
@@ -19,6 +19,7 @@ private:
 
 private slots:
     void nameChanged(const QString &s);
+    void on_pushButton_clicked();
 };
 
 #endif // FUNCTIONCODEDIALOG_H

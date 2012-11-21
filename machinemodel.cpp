@@ -142,6 +142,10 @@ QVariant MachineModel::data(const QModelIndex &index, int role) const {
      return QVariant();
 }
 
+QString MachineModel::getRowName(const QModelIndex &index) {
+    return transitions.at(index.row())->name();
+}
+
 QVariant MachineModel::headerData(int section, Qt::Orientation orientation,
                                       int role) const {
      if (role != Qt::DisplayRole)
@@ -310,3 +314,12 @@ void MachineModel::deleteTransition(Transition *t) {
     removeRows(transitions.indexOf(t), 1);
 }
 
+const QModelIndex MachineModel::getIndex(Transition * t) {
+
+    for (int i = 0; i < transitions.size(); i++) {
+        if (t == transitions.at(i)) {
+            return this->index(i, 0);
+        }
+    }
+    return QModelIndex();
+}

@@ -48,6 +48,8 @@ class MachineModel : public QAbstractTableModel {
     void addMessageToTransition(Transition * t,
         bool isInput, QString messageType);
     QList<Transition *> transitions;
+    QString getRowName(const QModelIndex &index);
+    const QModelIndex getIndex(Transition * t);
 
   signals:
      void updateStateName(State * s);

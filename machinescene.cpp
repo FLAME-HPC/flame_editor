@@ -178,6 +178,24 @@ void MachineScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     QGraphicsScene::mouseMoveEvent(mouseEvent);
 }
 
+void MachineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) {
+    /* Find item at mouse location */
+    QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
+    /* If there is a qgraphics item at the location */
+    if (qitem != 0) {
+        /* Try and cast qgraphics item to graphics item */
+        if (qgraphicsitem_cast<GraphicsItem *>(qitem)) {
+            /* Cast qgraphics item qitem to graphics item sitem */
+            GraphicsItem * sitem = qgraphicsitem_cast<GraphicsItem *>(qitem);
+            // If function
+            if (sitem->mytype == 1) {
+                // qDebug() << "double click on " << sitem->getName();
+                emit functionDoubleClicked(sitem->transition);
+            }
+        }
+    }
+}
+
 void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     /* Pointer to possible graphics item */
     GraphicsItem * sitem;
@@ -187,20 +205,26 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     /* Clear any selected graphics items */
     clearSelection();
     /* Emit signal to say no function is selected */
-    emit(functionSelected(false));
+    emit(functionSelected(0));
 
-    /* If the machine for this graph is an agent (not a model) */
-    if (rootMachine->type == 1) {
-        /* Find item at mouse location */
-        QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
-        /* If there is a qgraphics item at the location */
-        if (qitem != 0) {
-            /* Set qgraphics item to be selected */
-            qitem->setSelected(true);
-            /* Try and cast qgraphics item to graphics item */
-            if (qgraphicsitem_cast<GraphicsItem *>(qitem)) {
-                /* Cast qgraphics item qitem to graphics item sitem */
-                sitem = qgraphicsitem_cast<GraphicsItem *>(qitem);
+
+    /* Find item at mouse location */
+    QGraphicsItem * qitem = itemAt(mouseEvent->scenePos());
+    /* If there is a qgraphics item at the location */
+    if (qitem != 0) {
+        /* Set qgraphics item to be selected */
+        qitem->setSelected(true);
+        /* Try and cast qgraphics item to graphics item */
+        if (qgraphicsitem_cast<GraphicsItem *>(qitem)) {
+            /* Cast qgraphics item qitem to graphics item sitem */
+            sitem = qgraphicsitem_cast<GraphicsItem *>(qitem);
+
+            // If sitem machine is different from current one
+            if (sitem->machine != rootMachine)
+                emit machineSelected(sitem->machine);
+
+            /* If the machine for this graph is an agent (not a model) */
+            if (rootMachine->type == 1) {
 
                 /* If left mouse click proceed with event,
                  * which is passed to scene items to select/move them */
@@ -209,7 +233,7 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                        emit signal */
                     if (sitem->mytype == 1 && !sitem->foreign) {
                         selectedFunction = sitem;
-                        emit(functionSelected(true));
+                        emit functionSelected(sitem->transition);
                     }
                     /* If state then set selectedState */
                     if (sitem->mytype == 0) selectedState = sitem;
@@ -330,9 +354,9 @@ void MachineScene::addMessageCommunication(GraphicsItem *t, MessageComm * m,
 }
 
 void MachineScene::addTransitionTransition(QString agentName,
-        Transition * t, int isForeign, int isEditable) {
+        Transition * t, int isForeign, int isEditable, Machine *m) {
     GraphicsItem * func = addTransitionString(
-                agentName, t, isForeign, isEditable);
+                agentName, t, isForeign, isEditable, m);
 
     if (!isForeign) {
         Q_ASSERT(func != 0);
@@ -351,7 +375,7 @@ void MachineScene::addTransitionTransition(QString agentName,
 }
 
 GraphicsItem * MachineScene::addTransitionString(QString agentName,
-        Transition * t, int flag, int isEditable) {
+        Transition * t, int flag, int isEditable, Machine * m) {
     QString csn = t->currentState()->name();
     QString n = t->name();
     QString nsn = t->nextState()->name();
@@ -386,6 +410,7 @@ GraphicsItem * MachineScene::addTransitionString(QString agentName,
         addState(state);
         if (flag == 1) state->foreign = true;
         if (isEditable == 0) state->editable = false;
+        state->machine = m;
     } else {
         if (flag == 0) cs->foreign = false;
         if (isEditable == 1) cs->editable = true;
@@ -398,6 +423,7 @@ GraphicsItem * MachineScene::addTransitionString(QString agentName,
         addState(state);
         if (flag == 1) state->foreign = true;
         if (isEditable == 0) state->editable = false;
+        state->machine = m;
     } else {
         if (flag == 0) ns->foreign = false;
         if (isEditable == 1) ns->editable = true;
@@ -407,6 +433,7 @@ GraphicsItem * MachineScene::addTransitionString(QString agentName,
         func = new GraphicsItem;
         func->setTransition(t);
         func->agentName = agentName;
+        func->machine = m;
         if (flag == 1) func->foreign = true;
         if (isEditable == 0) func->editable = false;
         addTransition(func);
@@ -683,7 +710,7 @@ void MachineScene::deleteSelectedFunction() {
         removeTransitionFunction(selectedFunction);
         // Reset selected function variable
         selectedFunction = 0;
-        emit(functionSelected(false));
+        emit(functionSelected(0));
     }
 }
 

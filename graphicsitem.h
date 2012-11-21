@@ -13,8 +13,10 @@
 #include "./state.h"
 #include "./transition.h"
 #include "./messagecomm.h"
+//#include "machine.h"
 
 class Arrow;
+class Machine;
 
 class GraphicsItem : public QObject, public QGraphicsItem {
     Q_OBJECT
@@ -59,6 +61,7 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     QString postState;
     Transition * transition;
     MessageComm * message;
+    Machine * machine;
 
   private:
     void setBoundingRect();

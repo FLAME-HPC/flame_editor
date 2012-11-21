@@ -203,7 +203,7 @@
 
  void AutocompletionTextEdit::focusInEvent(QFocusEvent *e)
  {
-     qDebug()<<"            innnnnnnnn";
+     //qDebug()<<"            innnnnnnnn";
 
      showMessageBox = false;
 
@@ -214,12 +214,12 @@
 
  void AutocompletionTextEdit::focusOutEvent(QFocusEvent */*e*/)
  {
-     qDebug()<<"           paaaaaaaaa";
+     //qDebug()<<"           paaaaaaaaa";
      if(showMessageBox == false){
-         qDebug()<<"pa";
+         //qDebug()<<"pa";
          QTextCursor tc = textCursor();
-         qDebug()<<tc.blockNumber()<<"  "<<tc.block().text();
-         qDebug()<<"ok";
+         //qDebug()<<tc.blockNumber()<<"  "<<tc.block().text();
+         //qDebug()<<"ok";
          if(tc.block().text() != "")
              valid(tc.block().text());
          else
@@ -288,7 +288,7 @@
          testMoveCursor(0, tc, "");
      //qDebug()<<tc.blockNumber()<<"  "<<tc.block().text();
      if(cursor.blockNumber() != tc.blockNumber()){
-         qDebug()<<"ok";
+         //qDebug()<<"ok";
          if(cursor.block().text() =="")
              setTextCursor(cursor);
          if(valid(cursor.block().text()) == false){
@@ -339,13 +339,13 @@
              sm.append("</b>");
              messageText = tr("Incorrect token in text appears in at the beginning bold part ") + "\"" + sm + "\"";
              correct = false;
-             qDebug()<<i<<" "<<es;
+             //qDebug()<<i<<" "<<es;
              return false;
          }
 
          QStringList list = CodeParser::getIdentifierList(s);
-         for(int i=0; i < list.length();i++)
-             qDebug()<<list[i];
+         //for(int i=0; i < list.length();i++)
+         //    qDebug()<<list[i];
 
          return true;
  }
@@ -362,7 +362,7 @@
              max = positions[ii+1];
              i = ii + 1;
          }
-     qDebug()<<min<<tc.position()<<max;
+     //qDebug()<<min<<tc.position()<<max;
      if(positions.count() == 0)
          b = true;
      else if(min == -1)
@@ -451,7 +451,7 @@
      }
 
      QTextCursor tc = textCursor();
-     qDebug()<<tc.position()<<e->text();
+     //qDebug()<<tc.position()<<e->text();
 
      if(multiAssignments == false)
      {

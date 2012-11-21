@@ -12,6 +12,7 @@
 #include "./graphicsitem.h"
 #include "./arrow.h"
 #include "./machinemodel.h"
+#include "transition.h"
 
 class Machine;
 
@@ -28,12 +29,14 @@ class MachineScene : public QGraphicsScene {
     void selectTransition(QString n);
     void selectState(QString n);
     void addTransitionTransition(QString agentName,
-        Transition * t, int isForeign = 0, int isEditable = 1);
+        Transition * t, int isForeign = 0, int isEditable = 1, Machine * m = 0);
     void setGraphicsView(QGraphicsView * g) { myGraphicsView = g; }
     void clearAll();
 
   signals:
-    void functionSelected(bool b);
+    void functionSelected(Transition *);
+    void machineSelected(Machine *);
+    void functionDoubleClicked(Transition *);
 
   public slots:
     void updateStateName(State * s);
@@ -46,13 +49,14 @@ class MachineScene : public QGraphicsScene {
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
     void wheelEvent(QGraphicsSceneWheelEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
 
   private:
     GraphicsItem * addTransitionString(QString agentName,
-        Transition * t, int flag, int isEditable);
+        Transition * t, int flag, int isEditable, Machine *m);
     void addMessageCommunication(GraphicsItem *t,
         MessageComm * m, bool isInput);
     void removeTransitionFunction(GraphicsItem * t);

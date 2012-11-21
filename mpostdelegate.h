@@ -12,12 +12,13 @@
 #include <QModelIndex>
 #include <QObject>
 #include "./memorymodel.h"
+#include "./machinemodel.h"
 
 class MpostDelegate : public QItemDelegate {
     Q_OBJECT
 
   public:
-    MpostDelegate(MemoryModel * m = 0, QObject *parent = 0);
+    MpostDelegate(MemoryModel * m = 0, MachineModel * t = 0, QObject *parent = 0);
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
                 const QModelIndex &index) const;
@@ -36,6 +37,7 @@ class MpostDelegate : public QItemDelegate {
 
   private:
     MemoryModel * memory;
+    MachineModel * machine;
 };
 
 #endif  // MPOSTDELEGATE_H_

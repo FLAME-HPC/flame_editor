@@ -35,7 +35,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="leFunctionName"/>
+           <widget class="QLineEdit" name="functionName"/>
           </item>
          </layout>
         </item>

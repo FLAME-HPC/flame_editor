@@ -55,9 +55,9 @@ class Arrow : public QGraphicsLineItem {
     void setTransition(Transition * t) { myTransition = t; }
     void drawHead(bool b) { showHead = b; }
 
-    int number;             /**< \brief . */
-    int total;              /**< \brief . */
-    double offset;          /**< \brief . */
+    int number;             /**< \brief  */
+    int total;              /**< \brief  */
+    double offset;          /**< \brief  */
     /*! \brief flag for local to current model or foreign. */
     bool foreign;
     /*! \brief flag for state transition or communication arrows. */
@@ -73,14 +73,14 @@ class Arrow : public QGraphicsLineItem {
                QWidget *widget = 0);
 
   private:
-    QString name;               /**< \brief . */
+    QString name;               /**< \brief  */
     GraphicsItem *myStartItem;  /**< \brief the tail graphics item. */
     GraphicsItem *myEndItem;    /**< \brief the head graphics item. */
     QColor myColor;             /**< \brief the arrow colour. */
     /*! \brief the polygon representation of the arrow head. */
     QPolygonF arrowHead;
     Mpre mpre;                  /**< \brief any associated condition. */
-    Mpost mpost;                /**< \brief . */
+    Mpost mpost;                /**< \brief  */
     bool showHead;              /**< \brief flag to show the arrow head. */
     /*! \brief any associated function transition. */
     Transition * myTransition;

@@ -72,7 +72,6 @@ SOURCES += main.cpp \
     function_editor/xmlfile.cpp \
     function_editor/filetype.cpp \
     function_editor/cfile.cpp \
-    function_editor/fememorymodel.cpp \
     function_editor/variabledeclared.cpp \
     function_editor/variabledeclaredmodel.cpp \
     function_editor/variabledeclareddelegate.cpp \
@@ -131,7 +130,6 @@ HEADERS += mainwindow.h \
     function_editor/xmlfile.h \
     function_editor/filetype.h \
     function_editor/cfile.h \
-    function_editor/fememorymodel.h \
     function_editor/variabledeclared.h \
     function_editor/variabledeclaredmodel.h \
     function_editor/variabledeclareddelegate.h \

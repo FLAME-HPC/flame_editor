@@ -15,14 +15,14 @@
 #include <QItemSelectionModel>
 #include "autocompletiontextedit.h"
 #include "treemodelcompleter.h"
-#include "./fememorymodel.h"
 #include "./variabledeclaredmodel.h"
 #include "./variabledeclareddelegate.h"
 #include "ui_codedialog.h"
 #include "./fegraphicsitem.h"
 #include "../memorymodel.h"
+#include "../mpost.h"
 
-#define debug_onn
+//#define debug_onn
 
 class CodeDialog : public QDialog, public Ui::CodeDialog
 {
@@ -31,6 +31,9 @@ class CodeDialog : public QDialog, public Ui::CodeDialog
 public:
     explicit CodeDialog(MemoryModel * m, QWidget *parent = 0);
     ~CodeDialog();
+    void setMpost(Mpost c);
+    Mpost getMpost();
+    void setName(QString n);
 
 protected:
     void hideEvent(QHideEvent *);
@@ -39,17 +42,20 @@ protected:
 
 private:
     FEMachineScene *machineScene;
-    FEMemoryModel *memory;
+    MemoryModel *agentMemory;
     QItemSelectionModel *selectionModel;
     VariableDeclaredModel *variablesDeclared;
+    Mpost mpost;
 
 public slots:
     void done(int r);
+    void functionCodeDialog(FEGraphicsItem* item);
 
 private slots:
     void add_click();
     void remove_click();
     void currentRowChanged (const QItemSelection & selected, const QItemSelection );
+    void commitAndCloseEditor();
 };
 
 #endif // CODEDIALOG_H

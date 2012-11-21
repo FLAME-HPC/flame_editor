@@ -71,7 +71,7 @@ class FEMachineScene : public QGraphicsScene {
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-    //void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
     void keyReleaseEvent(QKeyEvent *event);
 
@@ -89,8 +89,6 @@ class FEMachineScene : public QGraphicsScene {
     void addWHILEorFOR(FEGraphicsItem *state);
     bool testIF(FEGraphicsItem *stateStart, FEGraphicsItem *stateStop);
     bool testWHILE(FEGraphicsItem *stateStart);
-
-    void functionCodeDialog();
 
     QAction *editAction;
     QAction *splitAction;
@@ -126,12 +124,11 @@ class FEMachineScene : public QGraphicsScene {
     bool changed;
 
 private slots:
-    void edit();
     void split();
-    void commitAndCloseEditor();
+    void edit();
 
 signals:
-  void myedit(FEGraphicsItem*);
+    void functionCodeDialog(FEGraphicsItem*);
 };
 
 
