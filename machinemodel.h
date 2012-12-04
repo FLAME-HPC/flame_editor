@@ -50,6 +50,7 @@ class MachineModel : public QAbstractTableModel {
     QList<Transition *> transitions;
     QString getRowName(const QModelIndex &index);
     const QModelIndex getIndex(Transition * t);
+    void removeState(State * s);
 
   signals:
      void updateStateName(State * s);

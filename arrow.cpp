@@ -36,6 +36,29 @@ Arrow::Arrow(GraphicsItem *startItem, GraphicsItem *endItem,
     isCommunication = false;
     myTransition = 0;
     editable = true;
+    temp = false;
+}
+
+Arrow::Arrow(QLineF l,
+             QGraphicsItem *parent, QGraphicsScene *scene)
+        : QGraphicsLineItem(parent, scene) {
+    temp = true;
+    setLine(l);
+
+    myStartItem = 0;
+    myEndItem = 0;
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    myColor = Qt::black;
+    setPen(QPen(myColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    offset = 0;
+    number = 1;
+    total = 1;
+    foreign = false;
+    showHead = true;
+    isCommunication = false;
+    myTransition = 0;
+    editable = true;
+    setSelected(false);
 }
 
 /*!
@@ -85,7 +108,7 @@ void Arrow::updatePosition() {
 
 void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
           QWidget *) {
-    if (myStartItem->collidesWithItem(myEndItem))
+    if (!temp) if (myStartItem->collidesWithItem(myEndItem))
         return;
 
     QPen myPen = pen();
@@ -94,37 +117,41 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     painter->setPen(myPen);
 
     if (foreign) painter->setPen(Qt::gray);
+    else if (isCommunication)
+        painter->setPen(isSelected()&&editable ? Qt::darkGreen : Qt::green);
+    else if (temp) painter->setPen(Qt::black);
     else
         painter->setPen(isSelected()&&editable ? Qt::red : Qt::black);
-    if (isCommunication)
-        painter->setPen(isSelected()&&editable ? Qt::darkGreen : Qt::green);
+
     painter->setRenderHint(QPainter::Antialiasing);
 
+    //if (temp) qDebug() << isSelected() << editable << painter->pen().color();
+
     // new
-    QPainterPath endPath = myEndItem->shape();
-    float dif = 0.1;
-    QPointF intersectionPoint;
-    QPointF ip;
-    QLineF centerLine2(myStartItem->scenePos(), myEndItem->scenePos());
+    if (!temp) {
+        QPainterPath endPath = myEndItem->shape();
+        float dif = 0.1;
+        QPointF intersectionPoint;
+        QPointF ip;
+        QLineF line(myStartItem->scenePos(), myEndItem->scenePos());
 
-
-
-    for (float i = 0; i < 1.0; i+=dif) {
-        float e = i+dif;
-        if (e > 0.99) e = 0;
-        QLineF myLine(endPath.pointAtPercent(i), endPath.pointAtPercent(e));
-        QLineF myLine2(myLine.x1()+centerLine2.x2(),
-                        myLine.y1()+centerLine2.y2(),
-                        myLine.x2()+centerLine2.x2(),
-                        myLine.y2()+centerLine2.y2());
-        int rc = centerLine2.intersect(myLine2, &ip);
-        if (rc == QLineF::BoundedIntersection) {
-            intersectionPoint = ip;
-            break;
+        for (float i = 0; i < 1.0; i+=dif) {
+            float e = i+dif;
+            if (e > 0.99) e = 0;
+            QLineF myLine(endPath.pointAtPercent(i), endPath.pointAtPercent(e));
+            QLineF myLine2(myLine.x1()+line.x2(),
+                            myLine.y1()+line.y2(),
+                            myLine.x2()+line.x2(),
+                            myLine.y2()+line.y2());
+            int rc = line.intersect(myLine2, &ip);
+            if (rc == QLineF::BoundedIntersection) {
+                intersectionPoint = ip;
+                break;
+            }
         }
-    }
 
-    setLine(QLineF(intersectionPoint, myStartItem->pos()));
+        setLine(QLineF(intersectionPoint, line.p1()));
+    }
 
 
 
@@ -179,6 +206,7 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         if (isCommunication)
             painter->setBrush(
                         isSelected()&&editable ? Qt::darkGreen : Qt::green);
+        if (temp) painter->setBrush(Qt::black);
         painter->drawPolygon(arrowHead);
 
         /*if(myTransition != 0)

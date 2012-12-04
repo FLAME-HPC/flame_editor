@@ -39,16 +39,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->splitter_2->setStretchFactor(0, 2);
     ui->splitter_2->setStretchFactor(1, 1);
 
-    QAction * newAction = new QAction(tr("&New"), this);
-    newAction->setShortcut(QKeySequence::New);
-    newAction->setStatusTip(tr("Create a new machine"));
-
     /* Machine tree */
     machineTree = new MachineTree();
     ui->treeView_machines->setModel(machineTree);
     ui->treeView_machines->header()->setStretchLastSection(true);
     ui->treeView_machines->setItemDelegate(new MachineTreeDelegate());
     ui->treeView_machines->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->treeView_machines->setContextMenuPolicy(Qt::CustomContextMenu);
 
     /* Transition table */
     ui->tableViewMachine->setModel(0);
@@ -73,24 +70,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableViewMemory->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     /* Simulation */
-    simulationThread = new SimulationThread();
+    //simulationThread = new SimulationThread();
 
     defaultGuiSettings();
-
-    connect(ui->pushButtonNew, SIGNAL(clicked()), this, SLOT(newModel()));
-    connect(ui->pushButtonOpen, SIGNAL(clicked()), this, SLOT(openModel()));
-    connect(ui->pushButtonSave, SIGNAL(clicked()), this, SLOT(saveModel()));
-    connect(ui->pushButtonAddMemory, SIGNAL(clicked()),
-            this, SLOT(insertMemory()));
-    connect(ui->pushButtonDeleteMemory, SIGNAL(clicked()),
-            this, SLOT(deleteMemory()));
-    connect(ui->treeView_machines, SIGNAL(clicked(QModelIndex)),
-            this, SLOT(machineTreeClicked(QModelIndex)));
-    ui->treeView_machines->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->treeView_machines, SIGNAL(customContextMenuRequested(QPoint)),
-            this, SLOT(machineTreeContextMenu(QPoint)));
-    connect(ui->pushButton_update, SIGNAL(clicked()),
-            this, SLOT(reload_scene()));
 
     /* For testing */
     openModel_internal("/Users/stc/workspace/temp/temp.xml", false);
@@ -116,7 +98,7 @@ QGraphicsView * MainWindow::getGraphicsViewWidget() {
 {
     //ui->label->setText(QString("transitionChanged r: %1 c: %2").arg(topLeft.row(), topLeft.column()));
 
-    emit( updateScene() );
+    //emit( updateScene() );
 
     // If mpre was updated
     if(topLeft.column() == 2)
@@ -141,47 +123,6 @@ QGraphicsView * MainWindow::getGraphicsViewWidget() {
     }
 }*/
 
-void MainWindow::startModel() {
-    // Check for a valid start state
-    int flag = 0;  // machine->checkValidStartState();
-    if (flag == 0) {
-        emit(clearSceneSelection());
-        // if(machine->getStartState() != 0)
-        //    machine->getStartState()->setSelected(true);
-
-        // ui->pushButtonPause->setEnabled(true);
-        // ui->pushButtonStop->setEnabled(true);
-        /*ui->treeWidget->setEnabled(false);
-        ui->graphicsView->setEnabled(false);
-        ui->tableViewMachine->setEnabled(false);
-        ui->tableViewMemory->setEnabled(false);*/
-
-        simulationThread->startSim();
-        // ui->label->setText("Model started");
-    }
-/*  else if(flag == 1)
-    ui->label->setText("Error: More than one start state possible");
-    else if(flag == 2)
-    ui->label->setText("Error: No start states found");*/
-}
-
-void MainWindow::pauseModel() {
-    // ui->label->setText("Model paused");
-}
-
-void MainWindow::stopModel() {
-    // ui->label->setText("Model stopped");
-
-    // emit( clearSceneSelection() );
-
-    // ui->pushButtonPause->setEnabled(false);
-    // ui->pushButtonStop->setEnabled(false);
-    /*ui->treeWidget->setEnabled(true);
-    ui->graphicsView->setEnabled(true);
-    ui->tableViewMachine->setEnabled(true);
-    ui->tableViewMemory->setEnabled(true);*/
-}
-
 void MainWindow::selectTransition(QString n) {
     for (int i = 0;
         i < currentMachine->machineModel->getTransitions().size(); i++) {
@@ -193,49 +134,6 @@ void MainWindow::selectTransition(QString n) {
 
 void MainWindow::selectState(QString n) {
     currentMachine->machineScene->selectState(n);
-}
-
-void MainWindow::updateStatusLabel(QString /*s*/) {
-    // ui->label->setText(s);
-}
-
-void MainWindow::insertMemory() {
-    currentMachine->memoryModel->insertRow(
-        currentMachine->memoryModel->rowCount());
-}
-
-void MainWindow::deleteMemory() {
-    QModelIndexList indexList =
-        ui->tableViewMemory->selectionModel()->selectedRows();
-
-    while (indexList.count() > 0) {
-        currentMachine->memoryModel->removeRow(indexList.at(0).row());
-        indexList = ui->tableViewMemory->selectionModel()->selectedRows();
-    }
-}
-
-void MainWindow::newModel() {
-    // Add new machine to the machine tree
-    Machine * m = machineTree->addMachine();
-    // Select file for model
-    // Provide dialog to select file
-    QString filepath =
-        QFileDialog::getSaveFileName(this,
-            tr("Choose file to save model to..."), "");
-
-    if (filepath.isEmpty()) {
-        machineTree->removeMachine(m);
-        return;
-    }
-
-    // Get file directory and file name from file info
-    QFileInfo finfo(filepath);
-    m->fileDirectory = finfo.absolutePath();  // File directory
-    m->fileDirectory.append("/");  // Append directory slash
-    m->fileName      = finfo.fileName();     // File name
-
-    // Organise the tree view in the gui
-    handleNewAndOpenedModel(m);
 }
 
 int MainWindow::openModel_internal(QString fileName, bool test) {
@@ -274,87 +172,62 @@ int MainWindow::openModel_internal(QString fileName, bool test) {
     }
 }
 
-void MainWindow::openModel() {
-    QString fileName =
-             QFileDialog::getOpenFileName(this, tr("Open model"),
-                                          "",
-                                          tr("XML Files (*.xml)"));
-     if (fileName.isEmpty())
-         return;
-
-     openModel_internal(fileName, false);
+void addRestOfModel(Machine * m) {
+    // For each child
+    for (int i = 0; i < m->childCount(); i++) {
+        if (m->child(i)->type == 1) {  // If child is agent
+            QList<Transition*> transitions =
+                    m->child(i)->machineModel->getTransitions();
+            for (int j = 0; j < transitions.count(); j++)
+                m->rootModel()->machineScene->addTransitionTransition(
+                        m->child(i), transitions.at(j));
+        } else if (m->child(i)->type == 0) {  // If child is model
+            addRestOfModel(m->child(i));
+        }
+    }
 }
 
 void MainWindow::handleNewAndOpenedModel(Machine *m) {
+    rootMachine = m;
     // Organise model tree view
     ui->treeView_machines->expandToDepth(0);
     ui->treeView_machines->resizeColumnToContents(0);
     // Select opened model
     ui->treeView_machines->setCurrentIndex(machineTree->getIndex(m));
     // React as if it had been clicked by the user
-    machineTreeClicked(machineTree->getIndex(m));
-}
+    on_treeView_machines_clicked(machineTree->getIndex(m));
+    // Set up graph view
+    // Set up graphics scene for
+    // models, agents
+    /* Clear a scene of all items */
+    //m->machineScene->clearAll();
+    /* Populate scene */
+    addRestOfModel(m);
 
-void MainWindow::saveModel() {
-    QString fileName;
-    fileName.append(currentMachine->fileDirectory);
-    // Qt will translate these directory separators to the native OS
-    fileName.append("/");
-    fileName.append(currentMachine->fileName);
+    // Set up graphics view
+    ui->graphicsView->setScene(m->machineScene);
+    m->machineScene->setGraphicsView(ui->graphicsView);
+    m->machineScene->calcLayers();
+    ui->graphicsView->setAlignment(Qt::AlignTop);
+    ui->graphicsView->verticalScrollBar()->setValue(0);
+    ui->graphicsView->show();
 
-    QFile file(fileName);
-    if (!file.open(QFile::WriteOnly | QFile::Text)) {
-        QMessageBox::warning(this, tr("FLAME Editor"),
-                          tr("Cannot write file %1:\n%2.")
-                          .arg(fileName)
-                          .arg(file.errorString()));
-        return;
-    }
-
-    if (currentMachine->writeModelXML(&file))
-        statusBar()->showMessage(tr("File saved"), 2000);
-}
-
-void addRestOfModel(Machine * m, Machine * selected) {
-    // , int foreign, int editable) {
-        // For each child
-        for (int i = 0; i < m->childCount(); i++) {
-            // If child is agent
-            if (m->child(i)->type == 1) {
-                QList<Transition*> transitions =
-                        m->child(i)->machineModel->getTransitions();
-
-                /* Add agent transitions as local and editable */
-                int foreign = 1;
-                int editable = 0;
-                bool included = true;
-                /* If child is selected agent */
-                if (selected == m->child(i)) {
-                    foreign = 0;
-                    editable = 1;
-                }
-                /* If machine is selected model */
-                if (selected == m) {
-                    foreign = 0;
-                    editable = 0;
-                }
-                /* If selected is agent and child is not called the same */
-                if (selected->type == 1 && selected->name != m->child(i)->name)
-                    included = false;
-
-                if (included) {
-                    for (int j = 0; j < transitions.count(); j++) {
-                        Transition * t = transitions.at(j);
-                        selected->machineScene->addTransitionTransition(
-                                m->child(i)->name, t, foreign, editable, m->child(i));
-                    }
-                }
-            }
-            // If child is model
-            if (m->child(i)->type == 0) {
-                addRestOfModel(m->child(i), selected);
-            }
-        }
+    connect(m->machineScene, SIGNAL(functionSelected(Transition*)),
+            this, SLOT(functionSelected(Transition*)));
+    connect(ui->pushButtonSceneDelete, SIGNAL(clicked()),
+            m->machineScene, SLOT(deleteSelectedFunction()));
+    connect(m->machineScene, SIGNAL(machineSelected(Machine*)),
+            this, SLOT(machineSelected(Machine*)));
+    connect(m->machineScene, SIGNAL(functionDoubleClicked(Transition*)),
+            this, SLOT(functionDoubleClicked(Transition*)));
+    connect(ui->pushButton_minus, SIGNAL(pressed()),
+            m->machineScene, SLOT(zoomOut()));
+    connect(ui->pushButton_plus, SIGNAL(pressed()),
+            m->machineScene, SLOT(zoomIn()));
+    connect(this, SIGNAL(machineSelectedSignal(Machine*)),
+            m->machineScene, SLOT(machineSelectedSlot(Machine*)));
+    connect(this, SIGNAL(edit()), m->machineScene, SLOT(edit()));
+    connect(this, SIGNAL(move()), m->machineScene, SLOT(move()));
 }
 
 void MainWindow::functionDoubleClicked(Transition * t) {
@@ -380,22 +253,7 @@ void MainWindow::machineSelected(Machine * m) {
     handleMachineSelected(m);
 }
 
-void MainWindow::machineTreeClicked(QModelIndex index) {
-    // Get the machine that was clicked on
-    Machine * m = static_cast<Machine*>(index.internalPointer());
-    handleMachineSelected(m);
-}
-
 void MainWindow::handleMachineSelected(Machine * m) {
-    // Disconnect buttons from current machineScene
-    if (currentMachine != 0)
-        if (currentMachine->machineScene != 0)
-            disconnect(ui->pushButtonDeleteMemory,
-                    SIGNAL(clicked()),
-                    currentMachine->machineScene,
-                    SLOT(deleteSelectedFunction()));
-
-
     // Make the currentMachine equal to the selected machine
     currentMachine = m;
 
@@ -404,62 +262,32 @@ void MainWindow::handleMachineSelected(Machine * m) {
     ui->tableViewMemory->update();
     ui->tableViewMachine->setModel(0);
     ui->tableViewMachine->update();
-    ui->graphicsView->setScene(0);
-    ui->graphicsView->update();
+    //ui->graphicsView->setScene(0);
+    //ui->graphicsView->update();
 
     // Set up buttons for models
     if (m->type == 0) {
-        // If the model is a root model then it can be closed
-        if (m->rootModel() == m) ui->pushButtonClose->setEnabled(true);
-        else
-            ui->pushButtonClose->setEnabled(false);
-        // Models and sub models can be saved
-        ui->pushButtonSave->setEnabled(true);
         // Put the file location as the window title
         setWindowTitle(QString("FLAME Editor - ").append(m->filePath()));
     } else {
-        // Only models can be closed and saved
-        ui->pushButtonClose->setEnabled(false);
-        ui->pushButtonSave->setEnabled(false);
         // Reset the window title
         setWindowTitle("FLAME Editor");
     }
 
     // Set up labels and name lineedits
     if (m->type == 0) {  // If model
-        ui->stagegraphNameLabel->setText("Model name:");
-        ui->stagegraphNameLabelLineEdit->setText(m->name);
-        ui->stagegraphNameLabelLineEdit->show();
         ui->label_memory->setText("Model details");
     } else if (m->type == 1) {  // If agent
-        ui->stagegraphNameLabel->setText("Agent name:");
-        ui->stagegraphNameLabelLineEdit->setText(m->name);
-        ui->stagegraphNameLabelLineEdit->show();
         ui->label_memory->setText("Agent memory");
     } else if (m->type == 2) {  // If message
-        ui->stagegraphNameLabel->setText("");
-        ui->stagegraphNameLabelLineEdit->setText("");
-        ui->stagegraphNameLabelLineEdit->hide();
         ui->label_memory->setText("Message memory");
     } else if (m->type == 3) {  // If environment
-        ui->stagegraphNameLabel->setText("");
-        ui->stagegraphNameLabelLineEdit->setText("");
-        ui->stagegraphNameLabelLineEdit->hide();
         ui->label_memory->setText("Environment constants");
     } else if (m->type == 4) {  // If timeunit
-        ui->stagegraphNameLabel->setText("");
-        ui->stagegraphNameLabelLineEdit->setText("");
-        ui->stagegraphNameLabelLineEdit->hide();
         ui->label_memory->setText("");
     } else if (m->type == 5) {  // If datatype
-        ui->stagegraphNameLabel->setText("");
-        ui->stagegraphNameLabelLineEdit->setText("");
-        ui->stagegraphNameLabelLineEdit->hide();
         ui->label_memory->setText("Datatype variables");
     } else if (m->type == 6) {  // If functionFiles
-        ui->stagegraphNameLabel->setText("");
-        ui->stagegraphNameLabelLineEdit->setText("");
-        ui->stagegraphNameLabelLineEdit->hide();
         ui->label_memory->setText("");
     }
 
@@ -536,49 +364,177 @@ void MainWindow::handleMachineSelected(Machine * m) {
         connect(m->machineModel, SIGNAL(communicationChanged()),
                 ui->tableViewMachine, SLOT(resizeRowsToContents()));
     }
+}
 
-    // Set up graphics scene for
-    // models, agents
-    if (m->type == 0 || m->type == 1) {
-        /* Clear a scene of all items */
-        m->machineScene->clearAll();
-        /* Populate scene */
-        addRestOfModel(m->rootModel(), m);
+void MainWindow::repositionView(float x, float y) {
+    ui->graphicsView->centerOn(x, y);
+}
 
-        // Set up graphics view
-        ui->graphicsView->setScene(m->machineScene);
-        m->machineScene->setGraphicsView(ui->graphicsView);
-        m->machineScene->calcLayers();
-        ui->graphicsView->setAlignment(Qt::AlignTop);
-        ui->graphicsView->verticalScrollBar()->setValue(0);
-        ui->graphicsView->show();
+void MainWindow::on_pushButton_viewModel_clicked() {
+    QGraphicsView * modelView = new QGraphicsView(rootMachine->machineScene);
+    rootMachine->machineScene->setGraphicsView(modelView);
+    modelView->show();
+    modelView->fitInView(rootMachine->machineScene->sceneRect(),
+        Qt::KeepAspectRatioByExpanding);
+}
 
-        if (m->type == 1) {  // if agent
-            connect(m->machineScene, SIGNAL(functionSelected(Transition*)),
-                    this, SLOT(functionSelected(Transition*)));
-            connect(ui->pushButtonSceneDelete, SIGNAL(clicked()),
-                    m->machineScene, SLOT(deleteSelectedFunction()));
-        }
+void MainWindow::defaultGuiSettings() {
+    /* Disable gui features */
+    ui->tableViewMemory->setModel(0);
+    ui->tableViewMemory->update();
+    ui->tableViewMachine->setModel(0);
+    ui->tableViewMachine->update();
+    ui->graphicsView->setScene(0);
+    ui->graphicsView->update();
+    //ui->pushButton_viewModel->setEnabled(false);
+    ui->pushButtonAddMemory->setEnabled(false);
+    ui->pushButtonDeleteMemory->setEnabled(false);
+    ui->pushButtonSceneDelete->setEnabled(false);
+    //ui->pushButton_update->setEnabled(false);
+}
 
-        connect(m->machineScene, SIGNAL(machineSelected(Machine*)),
-                this, SLOT(machineSelected(Machine*)));
-        connect(m->machineScene, SIGNAL(functionDoubleClicked(Transition*)),
-                this, SLOT(functionDoubleClicked(Transition*)));
+void MainWindow::on_actionHelp_triggered() {
+    QTextBrowser *help = new QTextBrowser(this);
+    help->setWindowFlags(Qt::Dialog);
+    help->setReadOnly(true);
+    help->setAutoFormatting(QTextEdit::AutoNone);
+    help->setOpenExternalLinks(true);
+    QString helpText;
+    helpText.append("<h1>FLAME Editor Help</h1>");
+    helpText.append("<a href=\"http://www.flame.ac.uk/docs/flameeditor/v1\">");
+    helpText.append("Follow this link to the online help page.</a>");
 
-        // Enable/disable graph buttons
-        ui->pushButtonSceneDelete->setEnabled(false);
-        ui->pushButton_viewModel->setEnabled(true);
-        ui->pushButton_update->setEnabled(true);
-    } else {
-        // Disable graph buttons
-        ui->pushButton_viewModel->setEnabled(false);
-        ui->pushButton_update->setEnabled(false);
+    help->setGeometry(50, 50, 600, 400);
+    help->insertHtml(helpText);
+    help->moveCursor(QTextCursor::Start);
+    help->show();
+}
+
+void MainWindow::on_actionAbout_triggered() {
+    QTextEdit *about = new QTextEdit(this);
+    about->setWindowFlags(Qt::Dialog);
+    about->setReadOnly(true);
+    about->setAutoFormatting(QTextEdit::AutoNone);
+
+    QString aboutText;
+    aboutText.append("<h1>FLAME Editor</h1>");
+    aboutText.append("<h3>Simon Coakley</h3>");
+    aboutText.append("<h2>Version 1</h2>");
+    aboutText.append("<h3>Changelog</h3>");
+    /* Add new release notes here */
+    aboutText.append("<h4>Version 1 (released 2012-01-13)</h4>");
+    aboutText.append("<ul><li>Beta first release</li></ul>");
+
+    about->setGeometry(50, 50, 600, 400);
+    about->insertHtml(aboutText);
+    about->moveCursor(QTextCursor::Start);
+    about->show();
+}
+
+void MainWindow::on_pushButton_update_clicked()
+{
+    rootMachine->machineScene->calcLayers();
+}
+
+
+void MainWindow::on_toolButton_edit_clicked()
+{
+    ui->toolButton_move->setChecked(false);
+    emit edit();
+}
+
+void MainWindow::on_toolButton_move_clicked()
+{
+    ui->toolButton_edit->setChecked(false);
+    emit move();
+}
+
+void MainWindow::on_actionNew_triggered() {
+    // Add new machine to the machine tree
+    Machine * m = machineTree->addMachine();
+    // Select file for model
+    // Provide dialog to select file
+    QString filepath =
+        QFileDialog::getSaveFileName(this,
+            tr("Choose file to save model to..."), "");
+
+    if (filepath.isEmpty()) {
+        machineTree->removeMachine(m);
+        return;
+    }
+
+    // Get file directory and file name from file info
+    QFileInfo finfo(filepath);
+    m->fileDirectory = finfo.absolutePath();  // File directory
+    m->fileDirectory.append("/");  // Append directory slash
+    m->fileName      = finfo.fileName();     // File name
+
+    // Organise the tree view in the gui
+    handleNewAndOpenedModel(m);
+}
+
+void MainWindow::on_actionOpen_triggered() {
+    QString fileName =
+             QFileDialog::getOpenFileName(this, tr("Open model"),
+                                          "",
+                                          tr("XML Files (*.xml)"));
+     if (fileName.isEmpty())
+         return;
+
+     openModel_internal(fileName, false);
+}
+
+void MainWindow::on_actionSave_triggered() {
+    QString fileName;
+    fileName.append(currentMachine->fileDirectory);
+    // Qt will translate these directory separators to the native OS
+    fileName.append("/");
+    fileName.append(currentMachine->fileName);
+
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        QMessageBox::warning(this, tr("FLAME Editor"),
+                          tr("Cannot write file %1:\n%2.")
+                          .arg(fileName)
+                          .arg(file.errorString()));
+        return;
+    }
+
+    if (currentMachine->writeModelXML(&file))
+        statusBar()->showMessage(tr("File saved"), 2000);
+}
+
+void MainWindow::on_actionClose_triggered() {
+    if (currentMachine == 0) return;
+    machineTree->removeMachine(currentMachine);
+    defaultGuiSettings();
+}
+
+void MainWindow::on_pushButtonAddMemory_clicked() {
+    currentMachine->memoryModel->insertRow(
+        currentMachine->memoryModel->rowCount());
+}
+
+void MainWindow::on_pushButtonDeleteMemory_clicked() {
+    QModelIndexList indexList =
+        ui->tableViewMemory->selectionModel()->selectedRows();
+
+    while (indexList.count() > 0) {
+        currentMachine->memoryModel->removeRow(indexList.at(0).row());
+        indexList = ui->tableViewMemory->selectionModel()->selectedRows();
     }
 }
 
-void MainWindow::machineTreeContextMenu(QPoint p) {
-    QPoint globalPos = ui->treeView_machines->mapToGlobal(p);
-    QModelIndex index = ui->treeView_machines->indexAt(p);
+void MainWindow::on_treeView_machines_clicked(const QModelIndex &index) {
+    // Get the machine that was clicked on
+    Machine * m = static_cast<Machine*>(index.internalPointer());
+    emit machineSelectedSignal(m);
+    handleMachineSelected(m);
+}
+
+void MainWindow::on_treeView_machines_customContextMenuRequested(const QPoint &pos) {
+    QPoint globalPos = ui->treeView_machines->mapToGlobal(pos);
+    QModelIndex index = ui->treeView_machines->indexAt(pos);
     Machine * m = static_cast<Machine*>(index.internalPointer());
 
     QMenu myMenu;
@@ -640,9 +596,11 @@ void MainWindow::machineTreeContextMenu(QPoint p) {
                     if (modelm->child(i)->type == 1) count++;
                 m1->name = QString("agent_%1").arg(QString::number(count-1));
                 // Add a starting transition
-                m1->addTransitionString("transition_0", "start", "end",
+                Transition * t = m1->addTransitionString("transition_0", "start", "end",
                         Condition(), Mpost(),
                         Communication(), Communication(), "");
+                m->rootModel()->machineScene->addTransitionTransition(m1, t);
+                m->rootModel()->machineScene->calcLayers();
             } else if (newType == 2) {  // Message
                 int count = 0;
                 // Count number of agents
@@ -682,7 +640,7 @@ void MainWindow::machineTreeContextMenu(QPoint p) {
             QModelIndex index = machineTree->getIndex(m1);  // Get its index
             ui->treeView_machines->scrollTo(index);  // Scroll to it
             ui->treeView_machines->setCurrentIndex(index);  // Select it
-            emit(machineTreeClicked(index));  // Act like it has been clicked
+            on_treeView_machines_clicked(index);  // Act like it has been clicked
         } else if (selectedItem->text().startsWith("Delete") ||
                 selectedItem->text().startsWith("Remove")) {
             QMessageBox msgBox;
@@ -712,86 +670,4 @@ void MainWindow::machineTreeContextMenu(QPoint p) {
         // nothing was chosen
         // qDebug() << "nothing chosen";
     }
-}
-
-void MainWindow::repositionView(float x, float y) {
-    ui->graphicsView->centerOn(x, y);
-}
-
-void MainWindow::on_pushButton_viewModel_clicked() {
-    QGraphicsView * modelView = new QGraphicsView(currentMachine->machineScene);
-    currentMachine->machineScene->setGraphicsView(modelView);
-    modelView->show();
-    modelView->fitInView(currentMachine->machineScene->sceneRect(),
-        Qt::KeepAspectRatioByExpanding);
-}
-
-int MainWindow::closeModel_internal() {
-    if (currentMachine == 0) return 1;
-    machineTree->removeMachine(currentMachine);
-    defaultGuiSettings();
-    return 0;
-}
-
-void MainWindow::on_pushButtonClose_clicked() {
-    closeModel_internal();
-}
-
-void MainWindow::defaultGuiSettings() {
-    /* Disable gui features */
-    ui->tableViewMemory->setModel(0);
-    ui->tableViewMemory->update();
-    ui->tableViewMachine->setModel(0);
-    ui->tableViewMachine->update();
-    ui->graphicsView->setScene(0);
-    ui->graphicsView->update();
-    ui->pushButton_viewModel->setEnabled(false);
-    ui->pushButtonAddMemory->setEnabled(false);
-    ui->pushButtonClose->setEnabled(false);
-    ui->pushButtonDeleteMemory->setEnabled(false);
-    ui->pushButtonSave->setEnabled(false);
-    ui->pushButtonSceneDelete->setEnabled(false);
-    ui->pushButton_update->setEnabled(false);
-}
-
-void MainWindow::on_actionHelp_triggered() {
-    QTextBrowser *help = new QTextBrowser(this);
-    help->setWindowFlags(Qt::Dialog);
-    help->setReadOnly(true);
-    help->setAutoFormatting(QTextEdit::AutoNone);
-    help->setOpenExternalLinks(true);
-    QString helpText;
-    helpText.append("<h1>FLAME Editor Help</h1>");
-    helpText.append("<a href=\"http://www.flame.ac.uk/docs/flameeditor/v1\">");
-    helpText.append("Follow this link to the online help page.</a>");
-
-    help->setGeometry(50, 50, 600, 400);
-    help->insertHtml(helpText);
-    help->moveCursor(QTextCursor::Start);
-    help->show();
-}
-
-void MainWindow::on_actionAbout_triggered() {
-    QTextEdit *about = new QTextEdit(this);
-    about->setWindowFlags(Qt::Dialog);
-    about->setReadOnly(true);
-    about->setAutoFormatting(QTextEdit::AutoNone);
-
-    QString aboutText;
-    aboutText.append("<h1>FLAME Editor</h1>");
-    aboutText.append("<h3>Simon Coakley</h3>");
-    aboutText.append("<h2>Version 1</h2>");
-    aboutText.append("<h3>Changelog</h3>");
-    /* Add new release notes here */
-    aboutText.append("<h4>Version 1 (released 2012-01-13)</h4>");
-    aboutText.append("<ul><li>Beta first release</li></ul>");
-
-    about->setGeometry(50, 50, 600, 400);
-    about->insertHtml(aboutText);
-    about->moveCursor(QTextCursor::Start);
-    about->show();
-}
-
-void MainWindow::reload_scene() {
-    currentMachine->machineScene->calcLayers();
 }

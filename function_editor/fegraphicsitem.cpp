@@ -12,7 +12,7 @@
 #include "./fegraphicsitem.h"
 
 FEGraphicsItem::FEGraphicsItem(ItemType ItemType, QString n, QGraphicsItem *parent, QGraphicsScene *scene)
-    : mytype(ItemType) ,QGraphicsItem(parent, scene) {
+    : QGraphicsItem(parent, scene), mytype(ItemType) {
     /* Set GraphicsItem flags */
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -33,6 +33,12 @@ FEGraphicsItem::FEGraphicsItem(ItemType ItemType, QString n, QGraphicsItem *pare
         case ConditionWhileFor: conditionName = "while / for"; break;
         case ConditionWhile: conditionName = "while"; break;
         case ConditionFor: conditionName = "for"; break;
+        case State: break;
+        case Message: break;
+        case EmptyState: break;
+        case SolidState: break;
+        case FinalState: break;
+        case Transition: break;
     }
 
     if(mytype == EmptyState || mytype == SolidState)

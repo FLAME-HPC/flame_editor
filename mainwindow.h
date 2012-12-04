@@ -33,51 +33,45 @@ class MainWindow : public QMainWindow {
     QTreeView * getMachineTreeWidget();
     QTableView * getMemoryTableWidget();
     QGraphicsView * getGraphicsViewWidget();
-    int openModel_internal(QString fileName, bool test);
-    int closeModel_internal();
 
   signals:
-    void clearSceneSelection();
-    void updateScene();
-    void startSimulation();
-    void pauseSimulation();
+    void machineSelectedSignal(Machine *);
+    void edit();
+    void move();
 
   public slots:
-    void startModel();
-    void pauseModel();
-    void stopModel();
     void selectTransition(QString n);
     void selectState(QString n);
-    void updateStatusLabel(QString s);
-    void insertMemory();
-    void deleteMemory();
-    void newModel();
-    void openModel();
-    void saveModel();
-    void machineTreeClicked(QModelIndex);
-    void machineTreeContextMenu(QPoint);
     void repositionView(float x, float y);
     void machineSelected(Machine *);
     void functionSelected(Transition *);
     void functionDoubleClicked(Transition *);
 
   private slots:
-    void on_pushButton_viewModel_clicked();
-    void on_pushButtonClose_clicked();
     void on_actionHelp_triggered();
     void on_actionAbout_triggered();
-    void reload_scene();
+    void on_actionNew_triggered();
+    void on_actionOpen_triggered();
+    void on_actionSave_triggered();
+    void on_actionClose_triggered();
+    void on_pushButton_viewModel_clicked();
+    void on_pushButton_update_clicked();
+    void on_pushButtonAddMemory_clicked();
+    void on_pushButtonDeleteMemory_clicked();
+    void on_toolButton_edit_clicked();
+    void on_toolButton_move_clicked();
+    void on_treeView_machines_clicked(const QModelIndex &index);
+    void on_treeView_machines_customContextMenuRequested(const QPoint &pos);
 
-  private:
+private:
     Ui::MainWindowClass *ui;
     void handleNewAndOpenedModel(Machine * m);
     void defaultGuiSettings();
     void handleMachineSelected(Machine * m);
-    SimulationThread * simulationThread;
-    QToolBar * fileToolBar;
+    int openModel_internal(QString fileName, bool test);
     MachineTree * machineTree;
-    QList<Machine *> machines;
     Machine * currentMachine;
+    Machine * rootMachine;
 };
 
 #endif  // MAINWINDOW_H_

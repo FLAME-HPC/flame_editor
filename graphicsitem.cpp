@@ -19,6 +19,9 @@ GraphicsItem::GraphicsItem(QGraphicsItem *parent, QGraphicsScene *scene)
     sansFont = new QFont("Helvetica", 12);
     foreign = false;
     editable = true;
+    currentState_ = 0;
+    nextState_ = 0;
+    highlighted_ = false;
 }
 
 void GraphicsItem::setState(State *s) {
@@ -144,6 +147,14 @@ int GraphicsItem::width() {
     return myBoundingRect.width();
 }
 
+void GraphicsItem::setHighlighted(bool b) {
+    // Update only if changed
+    if (b != highlighted_) {
+        highlighted_ = b;
+        update();
+    }
+}
+
 void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         QWidget *) {
     // Body
@@ -154,9 +165,9 @@ void GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
     painter->setBrush(Qt::white);
     if (foreign) painter->setPen(Qt::gray);
     else
-        painter->setPen(isSelected()&&editable ? Qt::red : Qt::black);
+        painter->setPen((isSelected()||highlighted_)&&editable ? Qt::red : Qt::black);
     if (mytype == 2) painter->setPen(
-                isSelected()&&editable ? Qt::darkGreen : Qt::green);
+                (isSelected()||highlighted_)&&editable ? Qt::darkGreen : Qt::green);
     // painter->drawEllipse(-20, -10, 40, 20);
     if (mytype == 0) painter->drawEllipse(myNameRect);
     if (mytype == 1) painter->drawRect(myNameRect);

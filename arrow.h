@@ -31,7 +31,10 @@ class Arrow : public QGraphicsLineItem {
 
     Arrow(GraphicsItem *startItem, GraphicsItem *endItem,
       QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+    Arrow(QLineF l,
+          QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
 
+    //QLineF line() const { return line; }
     int type() const
         { return Type; }
     QRectF boundingRect() const;
@@ -64,6 +67,9 @@ class Arrow : public QGraphicsLineItem {
     bool isCommunication;
     /*! \brief flag for being editable. */
     bool editable;
+    GraphicsItem *myStartItem;  /**< \brief the tail graphics item. */
+    GraphicsItem *myEndItem;    /**< \brief the head graphics item. */
+    QColor myColor;             /**< \brief the arrow colour. */
 
   public slots:
     void updatePosition();
@@ -74,9 +80,8 @@ class Arrow : public QGraphicsLineItem {
 
   private:
     QString name;               /**< \brief  */
-    GraphicsItem *myStartItem;  /**< \brief the tail graphics item. */
-    GraphicsItem *myEndItem;    /**< \brief the head graphics item. */
-    QColor myColor;             /**< \brief the arrow colour. */
+
+
     /*! \brief the polygon representation of the arrow head. */
     QPolygonF arrowHead;
     Mpre mpre;                  /**< \brief any associated condition. */
@@ -84,6 +89,7 @@ class Arrow : public QGraphicsLineItem {
     bool showHead;              /**< \brief flag to show the arrow head. */
     /*! \brief any associated function transition. */
     Transition * myTransition;
+    bool temp;
 };
 
 #endif  // ARROW_H_

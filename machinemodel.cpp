@@ -27,7 +27,7 @@ Transition * MachineModel::addTransition(QString name, State *current,
 //    State * pcs = 0;
 //    State * pns = 0;
 
-    this->insertRows(0, 1);
+    //this->insertRows(0, 1);
 
     // Search for and add states
 /*    for(int i = 0; i < states.size(); i ++)
@@ -50,9 +50,15 @@ Transition * MachineModel::addTransition(QString name, State *current,
         pns = s;
     }
 */
+
+    beginInsertRows(QModelIndex(), 0, 0);
+
     Transition * transition = new Transition(current, name, next);
     transitions.append(transition);
 //    t->transition = transition;
+
+    endInsertRows();
+
     return transition;
 
     // connect(a, SIGNAL(updateMpre(Arrow*)), this,
@@ -322,4 +328,9 @@ const QModelIndex MachineModel::getIndex(Transition * t) {
         }
     }
     return QModelIndex();
+}
+
+void MachineModel::removeState(State * s) {
+    states.removeOne(s);
+    delete s;
 }

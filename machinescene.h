@@ -28,8 +28,7 @@ class MachineScene : public QGraphicsScene {
     void setMachineModel(MachineModel * m) { machineModel = m; }
     void selectTransition(QString n);
     void selectState(QString n);
-    void addTransitionTransition(QString agentName,
-        Transition * t, int isForeign = 0, int isEditable = 1, Machine * m = 0);
+    void addTransitionTransition(Machine * m, Transition * t);
     void setGraphicsView(QGraphicsView * g) { myGraphicsView = g; }
     void clearAll();
 
@@ -44,6 +43,11 @@ class MachineScene : public QGraphicsScene {
     void updateInput(Transition * t);
     void updateOutput(Transition * t);
     void deleteSelectedFunction();
+    void zoomIn();
+    void zoomOut();
+    void machineSelectedSlot(Machine *);
+    void edit();
+    void move();
 
   protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -55,32 +59,36 @@ class MachineScene : public QGraphicsScene {
     void keyReleaseEvent(QKeyEvent *event);
 
   private:
-    GraphicsItem * addTransitionString(QString agentName,
-        Transition * t, int flag, int isEditable, Machine *m);
+    GraphicsItem * addTransitionString(Machine *m, Transition * t);
     void addMessageCommunication(GraphicsItem *t,
         MessageComm * m, bool isInput);
     void removeTransitionFunction(GraphicsItem * t);
-    void zoomIn();
-    void zoomOut();
+    void removeState(GraphicsItem * s);
     void addState(GraphicsItem * s);
     void addTransition(GraphicsItem * s);
     void addArrow(Arrow * t);
     qreal scaleFactor;
     Mode myMode;
-    QGraphicsLineItem *line;
+    Arrow *line;
     int num_states;
     int num_transitions;
     int num_messages;
     MachineModel * machineModel;
     int mytype;
     Machine * rootMachine;
+    Machine * selectedMachine;
     QStringList agentNames;
     bool zoomOn;
     QGraphicsView * myGraphicsView;
+    QList<GraphicsItem *> states_;
+    QList<GraphicsItem *> transitions_;
     QList<GraphicsItem *> statesAndTransitions;
     QList<GraphicsItem *> messages;
     GraphicsItem * selectedFunction;
     GraphicsItem * selectedState;
+    GraphicsItem * highlightedState_;
+    bool edit_;
+    bool move_;
 };
 
 #endif  // MACHINESCENE_H_

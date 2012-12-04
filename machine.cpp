@@ -72,14 +72,16 @@ void Machine::insertChild(Machine *m, int index) {
     //machineItem->setText(0, n);
 }*/
 
-void Machine::addTransitionString(QString fname, QString cs, QString ns,
+Transition * Machine::addTransitionString(QString fname, QString cs, QString ns,
         Condition c, Mpost mpost, Communication input, Communication output,
         QString desc) {
     Transition * t =
             machineModel->addTransitionString(fname, cs, ns, c,
                     mpost, input, output, desc);
     // machineScene->addTransitionString(name, cs, fname, ns, 0);
-    machineScene->addTransitionTransition(name, t);
+    //machineScene->addTransitionTransition(name, t);
+
+    return t;
 }
 
 void Machine::appendChild(Machine *item) {

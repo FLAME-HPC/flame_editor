@@ -50,6 +50,7 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     QList<Arrow *> getTransitionArrows() const { return transitionArrows; }
     QList<Arrow *> getMessageArrows() const { return messageArrows; }
     int width();
+    void setHighlighted(bool b);
     int layer;
     int layered;
     bool foreign;
@@ -62,6 +63,8 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     Transition * transition;
     MessageComm * message;
     Machine * machine;
+    GraphicsItem * currentState_;
+    GraphicsItem * nextState_;
 
   private:
     void setBoundingRect();
@@ -81,6 +84,7 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     State * myState;
     QPainterPath myPath;
     Condition condition;
+    bool highlighted_;
 };
 
 #endif  // GRAPHICSITEM_H_

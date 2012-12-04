@@ -35,7 +35,7 @@ class Machine {
     Machine *parent();
     void removeChild(Machine * m);
     void insertChild(Machine * m, int index);
-    void addTransitionString(QString name, QString cs, QString ns,
+    Transition * addTransitionString(QString name, QString cs, QString ns,
         Condition c, Mpost mpost,
         Communication input, Communication output, QString desc);
 
