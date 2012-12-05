@@ -152,6 +152,11 @@ QString MachineModel::getRowName(const QModelIndex &index) {
     return transitions.at(index.row())->name();
 }
 
+void MachineModel::setRowName(const QModelIndex &index, QString name) {
+    transitions.at(index.row())->setName(name);
+    emit(updateTransitionName(transitions.at(index.row())));
+}
+
 QVariant MachineModel::headerData(int section, Qt::Orientation orientation,
                                       int role) const {
      if (role != Qt::DisplayRole)
@@ -200,8 +205,11 @@ bool MachineModel::setData(const QModelIndex &index,
             transitions.at(index.row())->setName(value.toString());
             emit(updateTransitionName(transitions.at(index.row())));
         }
-        if (index.column() == 4) transitions.at(index.row())->
+        if (index.column() == 4) {
+            transitions.at(index.row())->
                 setMpost(qVariantValue<Mpost>(value));
+            //qDebug() << "MachineModel::setData Mpost";
+        }
         if (index.column() == 5) {
             transitions.at(index.row())->
                     setOutput(qVariantValue<Communication>(value));
@@ -214,7 +222,10 @@ bool MachineModel::setData(const QModelIndex &index,
         }
         if (index.column() == 7) transitions.at(index.row())->
                 setDescription(value.toString());
+
+        //qDebug() << "MachineModel::setData 1";
         emit dataChanged(index, index);
+        //qDebug() << "MachineModel::setData 2";
         return true;
      }
      return false;

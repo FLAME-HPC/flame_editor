@@ -26,7 +26,9 @@ CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
     connect(machineScene, SIGNAL(functionCodeDialog(FEGraphicsItem*)),
             this, SLOT(functionCodeDialog(FEGraphicsItem*)));
 
-    functionName->setEnabled(false);
+    //functionName->setEnabled(false);
+    splitter_editor->setEnabled(false);
+    checkBoxEnableEditor->setChecked(false);
 
     //this->setMinimumSize(500, 500);
     tableViewMemory->verticalHeader()->hide();
@@ -64,12 +66,22 @@ CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
     connect(mainMenu, SIGNAL(aboutToShow()), this, SLOT(showMainMenu()));*/
 
 //    machineScene->installEventFilter(this);
+
+    //functionName->setCursorPosition(0);
+
+    // When window is shown set focus to function name line edit
+    QTimer::singleShot(0, this, SLOT(initialise()));
 }
 
 CodeDialog::~CodeDialog()
 {
     //delete machineScene;
-    commitAndCloseEditor();
+    //commitAndCloseEditor();
+}
+
+void CodeDialog::initialise() {
+    functionName->setFocus();
+    functionName->selectAll();
 }
 
 void CodeDialog::hideEvent(QHideEvent */*e*/)
@@ -194,7 +206,13 @@ Mpost CodeDialog::getMpost() {
 }
 
 void CodeDialog::setName(QString n) {
+    //qDebug() << "setName" << n;
     functionName->setText(n);
+}
+
+QString CodeDialog::getName() {
+    //qDebug() << "getName" << functionName->text();
+    return functionName->text();
 }
 
 /*
@@ -691,3 +709,8 @@ void CodeDialog::setShowSelectItem(bool b){
 bool CodeDialog::getShowList() const{
     return showList;
 }*/
+
+void CodeDialog::on_checkBoxEnableEditor_clicked(bool checked)
+{
+    splitter_editor->setEnabled(checked);
+}

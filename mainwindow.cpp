@@ -363,6 +363,10 @@ void MainWindow::handleMachineSelected(Machine * m) {
                 ui->tableViewMachine, SLOT(resizeRowsToContents()));
         connect(m->machineModel, SIGNAL(communicationChanged()),
                 ui->tableViewMachine, SLOT(resizeRowsToContents()));
+        connect(m->machineModel, SIGNAL(updateTransitionName(Transition*)),
+                rootMachine->machineScene, SLOT(updateTransitionName(Transition*)));
+        connect(m->machineModel, SIGNAL(updateStateName(State*)),
+                rootMachine->machineScene, SLOT(updateStateName(State*)));
     }
 }
 

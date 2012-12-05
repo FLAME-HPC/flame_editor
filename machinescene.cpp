@@ -40,7 +40,7 @@ void MachineScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
         if (selectedState) {
             selectedState->setZValue(0.0);
             if(highlightedState_) {
-                qDebug() << "merge " << highlightedState_->getName() << " and " << selectedState->getName();
+                //qDebug() << "merge " << highlightedState_->getName() << " and " << selectedState->getName();
                 // Move all arrows into and out of selected state in highlighted state
                 QList<Arrow *> arrows = selectedState->getTransitionArrows();
                 QList<Arrow *>::iterator it;
@@ -266,10 +266,26 @@ void MachineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                 // qDebug() << "double click on " << sitem->getName();
                 emit functionDoubleClicked(sitem->transition);
             }
+            // If state
+            if (sitem->mytype == 0) {
+                stateEditor = new StateDialog();
+                stateEditor->setStateName(sitem->state()->name());
+
+                connect(stateEditor, SIGNAL(accepted()), this, SLOT(commitAndCloseStateEditor()));
+
+                stateEditor->show();
+            }
         }
     }
 
     QGraphicsScene::mouseDoubleClickEvent(mouseEvent);
+}
+
+void MachineScene::commitAndCloseStateEditor() {
+    selectedState->state()->setName(stateEditor->getStateName());
+    selectedState->nameChanged();
+    stateEditor->close();
+    delete stateEditor;
 }
 
 void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {

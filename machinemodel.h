@@ -49,6 +49,7 @@ class MachineModel : public QAbstractTableModel {
         bool isInput, QString messageType);
     QList<Transition *> transitions;
     QString getRowName(const QModelIndex &index);
+    void setRowName(const QModelIndex &index, QString name);
     const QModelIndex getIndex(Transition * t);
     void removeState(State * s);
 

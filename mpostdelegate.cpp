@@ -54,6 +54,7 @@ void MpostDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 
 void MpostDelegate::setEditorData(QWidget *editor,
                                     const QModelIndex &index) const {
+    //qDebug() << "MpostDelegate::setEditorData";
     if (qVariantCanConvert<Mpost>(index.data())) {
         Mpost mpost = qVariantValue<Mpost>(index.data());
         //QTextEdit * textEdit = static_cast<QTextEdit*>(editor);
@@ -69,12 +70,19 @@ void MpostDelegate::setEditorData(QWidget *editor,
 
 void MpostDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                    const QModelIndex &index) const {
-    if (qVariantCanConvert<Mpost>(index.data())) {
+    //qDebug() << "MpostDelegate::setModelData";
+    //if (qVariantCanConvert<Mpost>(index.data())) {
+        //qDebug() << "1";
         CodeDialog *dialog = static_cast<CodeDialog*>(editor);
-        model->setData(index, qVariantFromValue(dialog->getMpost()));
-    } else {
-         QItemDelegate::setModelData(editor, model, index);
-    }
+        //qDebug() << "2";
+        machine->setRowName(index, dialog->getName());
+        model->setData(index, qVariantFromValue(dialog->getMpost()), Qt::EditRole);
+        //qDebug() << "3";
+        //model->setData(machine->index(index.row(), 3), qVariantFromValue(dialog->getName()));
+        //qDebug() << "4";
+    //} else {
+    //     QItemDelegate::setModelData(editor, model, index);
+    //}
 }
 
 void MpostDelegate::updateEditorGeometry(QWidget *editor,

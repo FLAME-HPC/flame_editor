@@ -13,6 +13,7 @@
 #include "./arrow.h"
 #include "./machinemodel.h"
 #include "transition.h"
+#include "statedialog.h"
 
 class Machine;
 
@@ -49,6 +50,9 @@ class MachineScene : public QGraphicsScene {
     void edit();
     void move();
 
+  private slots:
+    void commitAndCloseStateEditor();
+
   protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -59,6 +63,7 @@ class MachineScene : public QGraphicsScene {
     void keyReleaseEvent(QKeyEvent *event);
 
   private:
+    StateDialog * stateEditor;
     GraphicsItem * addTransitionString(Machine *m, Transition * t);
     void addMessageCommunication(GraphicsItem *t,
         MessageComm * m, bool isInput);

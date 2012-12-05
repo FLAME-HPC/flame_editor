@@ -34,6 +34,7 @@ public:
     void setMpost(Mpost c);
     Mpost getMpost();
     void setName(QString n);
+    QString getName();
 
 protected:
     void hideEvent(QHideEvent *);
@@ -56,6 +57,8 @@ private slots:
     void remove_click();
     void currentRowChanged (const QItemSelection & selected, const QItemSelection );
     void commitAndCloseEditor();
+    void on_checkBoxEnableEditor_clicked(bool checked);
+    void initialise();
 };
 
 #endif // CODEDIALOG_H
