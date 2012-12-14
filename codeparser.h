@@ -33,6 +33,7 @@ public:
     static QStringList getIdentifierList(QString s);
     static int setParseToTest(QString s);
     static QString getToken();
+    static int getResult();
 
 private:
     XMLFile *xml;

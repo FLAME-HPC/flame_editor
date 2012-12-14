@@ -13,6 +13,7 @@ XMLFile::XMLFile(QString fileName, QString FunctionName) : FileType(fileName, Fu
 {
     docToWrite = 0;
     docToRead = 0;
+    variables = 0;
 }
 
 XMLFile::~XMLFile()
@@ -30,6 +31,11 @@ XMLFile::~XMLFile()
 
     if(docToRead != 0)
         delete docToRead;
+    if(variables != 0)
+    {
+        variables->clear();
+        delete variables;
+    }
 }
 
 bool XMLFile::containsOperator(QString o)
@@ -102,6 +108,32 @@ bool XMLFile::openToWrite()
 
     return true;
 
+}
+
+void XMLFile::writeDeclarations(QList<VariableDeclared> *list)
+{
+    if(list->count() > 0)
+    {
+        docToWrite->writeStartElement(XMLConstants::SDECLARATIONS);
+        for(int i = 0;i < list->count();i++)
+            writeVariable(list->at(i));
+        docToWrite->writeEndElement();
+    }
+}
+
+void XMLFile::writeVariable(VariableDeclared v)
+{
+    docToWrite->writeStartElement(XMLConstants::SVARIABLE);
+    docToWrite->writeTextElement(XMLConstants::STYPE, v.getType());
+    docToWrite->writeTextElement(XMLConstants::SNAME, v.getName());
+    if(v.getExpression() != "")
+    {
+        CodeParser cc(this);
+        docToWrite->writeStartElement(XMLConstants::STATEMENT);
+        cc.execute(v.getExpression());
+        docToWrite->writeEndElement();
+    }
+    docToWrite->writeEndElement();
 }
 
 void XMLFile::writeState(GraphicsItem *g)
@@ -262,6 +294,10 @@ void XMLFile::read(QList<GraphicsItem *> &itemsList)
     {
         QDomNode r = root.firstChild();
         sFunctionName = readTextElement(r, XMLConstants::SFUNCTIONNAME);
+        variables = new QList<VariableDeclared>();
+        QDomNode dnDeclarations = r.namedItem(XMLConstants::SDECLARATIONS);
+        if(!dnDeclarations.isNull())
+            readDeclarations(dnDeclarations);
         qDebug()<<r.nodeName();
         QList<GraphicsItem*> items;
         read(itemsList, items, r, 0);
@@ -651,4 +687,30 @@ QString XMLFile::readTextElement(QDomNode node)
         return s;
     }
     return "";
+}
+
+void XMLFile::readDeclarations(QDomNode node)
+{
+    QDomNode n = node.firstChild();
+    QString name;
+    while(!n.isNull())
+    {
+        name = n.nodeName();
+        if(name == XMLConstants::SVARIABLE)
+        {
+            VariableDeclared v = readVariable(n);
+            if(v.getType() != "" && v.getName() != "")
+                variables->append(v);
+        }
+        n = n.nextSibling();
+    }
+}
+
+VariableDeclared XMLFile::readVariable(QDomNode node)
+{
+    QString t = readTextElement(node, XMLConstants::STYPE);
+    QString n = readTextElement(node, XMLConstants::SNAME);
+    QString e = readTextElement(node, XMLConstants::STATEMENT);
+    VariableDeclared v(t, n, e);
+    return v;
 }

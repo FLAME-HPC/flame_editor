@@ -11,7 +11,10 @@ class VariableDeclaredModel  : public QAbstractTableModel
 
 public:
     VariableDeclaredModel(QObject *parent = 0)
-            : QAbstractTableModel(parent) { } //count = 0; }
+            : QAbstractTableModel(parent)
+    {
+        memoryVariableNames = 0;
+    } //count = 0; }
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -29,11 +32,25 @@ public:
     QStringList getNames(); // { return stringListName; }
 
     void replaceValue(int index, double value);
-    void addVariable(QString type, QString name, double i);
+    void addVariable();
+
+    QList<VariableDeclared> getVariables() const { return variables;}
+    void setVariables(QList<VariableDeclared> *list);
+
+    void setMemoryVariableNames(QStringList s)
+    {
+        if(memoryVariableNames != 0)
+        {
+            memoryVariableNames->clear();
+            memoryVariableNames = 0;
+        }
+        memoryVariableNames = new QStringList(s);
+    }
 
 
 private:
     QList<VariableDeclared> variables;
+    QStringList *memoryVariableNames;
 };
 
 #endif // VARIABLEDECLAREDMODEL_H

@@ -148,6 +148,13 @@ void MemoryModel::addVariable(QString t, QString n, double i)
     variables[(rowCount()-1)].dvalue = i;
 }
 
+QStringList MemoryModel::getMemoryNames()
+{
+    QStringList list;
+    for(int i = 0;i < variables.count();i++)
+        list.append(variables[i].name);
+}
+
 QStringList MemoryModel::getNames()
 {
     QStringList names;

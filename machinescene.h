@@ -19,6 +19,7 @@
 #include "./xmlfile.h"
 #include "./graphicsarcitem.h"
 #include "./graphicsgrup.h"
+#include "./variabledeclared.h"
 
 class MachineScene : public QGraphicsScene {
     Q_OBJECT
@@ -60,8 +61,8 @@ class MachineScene : public QGraphicsScene {
     void changeCondition(ItemType item) { itemSelect->changeCondition(item);}
 
     bool check();
-    bool readFile(QString fileName);
-    bool saveFile(QString fileName, QString sFunctionName, int type);
+    bool readFile(QString fileName, QList<VariableDeclared> &variables);
+    bool saveFile(QString fileName, QList<VariableDeclared> *variables, QString sFunctionName, int type);
     void arrangeGraphicsItem();
 
     bool isChanged() const { return changed;}

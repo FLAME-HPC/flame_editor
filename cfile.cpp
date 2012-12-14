@@ -53,6 +53,27 @@ bool CFile::open(OpenMode om)
         return false;
 }
 
+void CFile::writeDeclarations(QList<VariableDeclared> *list)
+{
+    if(list->count() > 0)
+    {
+        for(int i = 0;i < list->count();i++)
+            writeVariable(list->at(i));
+        add(list->count());
+    }
+}
+
+void CFile::writeVariable(VariableDeclared v)
+{
+    QString s(v.getType());
+    s.append(" " + v.getName());
+    if(v.getExpression() != "")
+        s.append(" = " + v.getExpression() + ";");
+    else
+        s.append(";");
+    assignmentList.append(indentationText + s);
+}
+
 void CFile::writeState(GraphicsItem *g)
 {
 }

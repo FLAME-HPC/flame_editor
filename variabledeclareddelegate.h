@@ -9,6 +9,7 @@
 #include <QDoubleSpinBox>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QTableView>
 
 class VariableDeclaredDelegate : public QItemDelegate
 {
@@ -26,6 +27,33 @@ public:
 
     void updateEditorGeometry(QWidget *editor,
         const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    bool isBadIndex() const { return badIndex != 0;}
+    QModelIndex getBadIndex() const { return *badIndex;}
+
+    void setMemoryVariableNames(QStringList s)
+    {
+        if(memoryVariableNames != 0)
+        {
+            memoryVariableNames->clear();
+            memoryVariableNames = 0;
+        }
+        memoryVariableNames = new QStringList(s);
+    }
+    void setVariableNames(QStringList s)
+    {
+        if(variableNames != 0)
+        {
+            variableNames->clear();
+            variableNames = 0;
+        }
+        variableNames = new QStringList(s);
+    }
+    bool isEditMode() const { return editMode;}
+private:
+    mutable QModelIndex *badIndex;
+    QStringList *memoryVariableNames;
+    mutable QStringList *variableNames;
+    mutable bool editMode;
 };
 
 #endif // VARIABLEDECLAREDDELEGATE_H

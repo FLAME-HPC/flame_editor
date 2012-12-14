@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "./graphicsitem.h"
+#include "./variabledeclared.h"
 
 enum OpenMode{
     Read,
@@ -16,6 +17,7 @@ public:
     virtual ~FileType();
 
     virtual bool open(OpenMode om) = 0;
+    virtual void writeDeclarations(QList<VariableDeclared> *list) = 0;
     virtual void writeState(GraphicsItem *g) = 0;
     virtual void writeTransition(GraphicsItem *g) = 0;
     virtual void writeStartIF(GraphicsItem *g) = 0;

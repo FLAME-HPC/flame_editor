@@ -34,7 +34,8 @@ SOURCES += \
     variable.cpp \
     variabledeclared.cpp \
     variabledeclaredmodel.cpp \
-    variabledeclareddelegate.cpp
+    variabledeclareddelegate.cpp \
+    lineedit.cpp
 
 HEADERS  += \
     machinescene.h \
@@ -56,7 +57,8 @@ HEADERS  += \
     variable.h \
     variabledeclared.h \
     variabledeclaredmodel.h \
-    variabledeclareddelegate.h
+    variabledeclareddelegate.h \
+    lineedit.h
 
 FORMS    +=
 

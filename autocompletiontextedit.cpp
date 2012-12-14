@@ -332,6 +332,7 @@
  {
      correct = true;
          int i = CodeParser::setParseToTest(s);
+         qDebug()<<"yy = "<<CodeParser::getResult();
          if(i!=0){
              QString es(CodeParser::getToken());
              QString sm(s);

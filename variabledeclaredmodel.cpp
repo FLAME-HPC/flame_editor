@@ -79,8 +79,12 @@ bool VariableDeclaredModel::insertRows(int position, int rows, const QModelIndex
      beginInsertRows(QModelIndex(), position, position+rows-1);
      for (int row = 0; row < rows; ++row)
      {
-         QString s = "name_";
-         s.append(QString("%1").arg(this->rowCount()));
+         QStringList list(getNames());
+         QString s;
+         int i = this->rowCount();
+         do{
+             s = QString("variable_%1").arg(i++);
+         }while(memoryVariableNames->contains(s) || list.contains(s));
 
          variables.insert(position, VariableDeclared("int", s, ""));
      }
@@ -118,13 +122,21 @@ void VariableDeclaredModel::replaceValue(int i, double value)
 //    emit( this->dataChanged(myIndex, myIndex) );
 }
 
-void VariableDeclaredModel::addVariable(QString t, QString n, double i)
+void VariableDeclaredModel::addVariable()
 {
     insertRow(rowCount());
-//    variables[(rowCount()-1)].type = t;
-//    variables[(rowCount()-1)].name = n;
-//    variables[(rowCount()-1)].ivalue = (int)i;
-//    variables[(rowCount()-1)].dvalue = i;
+}
+
+void VariableDeclaredModel::setVariables(QList<VariableDeclared> *list)
+{
+    beginResetModel();
+    variables.clear();
+    while(list->count() > 0)
+    {
+        variables.append(list->at(0));
+        list->removeAt(0);
+    }
+    endResetModel();
 }
 
 QStringList VariableDeclaredModel::getNames()

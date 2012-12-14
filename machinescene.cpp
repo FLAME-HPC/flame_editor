@@ -569,7 +569,7 @@ bool MachineScene::check()
     return ok;
 }
 
-bool MachineScene::readFile(QString fileName)
+bool MachineScene::readFile(QString fileName, QList<VariableDeclared> &variables)
 {
     XMLFile *x = new XMLFile(fileName);
     bool ok = false;
@@ -586,6 +586,7 @@ bool MachineScene::readFile(QString fileName)
         }
         QList<GraphicsItem*> itemsList;
         x->read(itemsList);
+        variables.append(*x->getVariables());
         CodeDialog *cd = qobject_cast<CodeDialog *>(codeDialog);
         cd->setFunctionName(x->getFunctionName());
         num_states = 0;
@@ -673,7 +674,7 @@ GraphicsItem *MachineScene::check(GraphicsItem *g)
     return state;
 }
 
-bool MachineScene::saveFile(QString fileName, QString sFunctionName, int type)
+bool MachineScene::saveFile(QString fileName, QList<VariableDeclared> *variables, QString sFunctionName, int type)
 {
     FileType *x = 0;
     if(type == 0)
@@ -687,6 +688,7 @@ bool MachineScene::saveFile(QString fileName, QString sFunctionName, int type)
         bool b = true;
         GraphicsItem *state = itemStart;
         map = new QMap<GraphicsItem *, int>();
+        x->writeDeclarations(variables);
         saveFile(itemStart, x);
         delete map;
         if(type == 0)

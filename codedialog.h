@@ -94,6 +94,10 @@ public:
 
     void setFunctionName(QString s) { leFunctionName->setText(s);}
 
+    static QAbstractItemModel *modelFromFileTree(const QStringList& fileName, QCompleter& completer);
+
+    VariableDeclaredModel* getModel() const { return variablesDeclared;}
+
 protected:
     void hideEvent(QHideEvent *e);
     void closeEvent(QCloseEvent *e);
@@ -101,8 +105,6 @@ protected:
 
 private:
     void setUI();
-
-    QAbstractItemModel *modelFromFileTree(const QStringList& fileName);
 
     QGraphicsView *graphicsView;
     MachineScene *machineScene;
@@ -116,6 +118,7 @@ private:
     QTableView *tableViewMemory;
     MemoryModel *memory;
     QTableView *tableViewVariables;
+    VariableDeclaredDelegate *variableDeclaredDelegate;
     QItemSelectionModel *selectionModel;
     VariableDeclaredModel *variablesDeclared;
     QPushButton *pbAdd;
@@ -136,6 +139,8 @@ private:
     bool showSelectItem;
 
     bool isAfterShowMessageBox;
+
+    bool changed;
 
     QMenuBar *menuBar;
 
@@ -173,6 +178,7 @@ private slots:
     void add_click();
     void remove_click();
     void currentRowChanged ( const QItemSelection & selected, const QItemSelection & deselected );
+    void closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint );
 
     void showMainMenu();
 

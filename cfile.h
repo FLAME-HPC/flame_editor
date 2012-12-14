@@ -19,6 +19,7 @@ public:
     CFile(QString fileName, QString FunctionName);
     ~CFile();
     bool open(OpenMode om);
+    void writeDeclarations(QList<VariableDeclared> *list);
     void writeState(GraphicsItem *g);
     void writeTransition(GraphicsItem *g);
     void writeStartIF(GraphicsItem *g);
@@ -72,6 +73,7 @@ private:
     void creatIndentationText(int n);
     void add(int n);
     void append(QString s);
+    void writeVariable(VariableDeclared v);
 };
 
 

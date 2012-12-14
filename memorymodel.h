@@ -32,6 +32,8 @@ public:
     void replaceValue(int index, double value);
     void addVariable(QString type, QString name, double i);
 
+    QStringList getMemoryNames();
+
 
 private:
     QList<Variable> variables;

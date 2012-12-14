@@ -143,3 +143,8 @@ QString CodeParser::getToken()
 {
     return QString(yytext);
 }
+
+int CodeParser::getResult()
+{
+    return yylval;
+}

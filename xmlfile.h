@@ -35,6 +35,9 @@ namespace XMLConstants{
     const QString SPARENTHESIS("parenthesis");
     const QString SNUMBER("number");
     const QString SFUNCTIONNAME("functionName");
+    const QString SDECLARATIONS("declarations");
+    const QString SVARIABLE("variable");
+    const QString STYPE("type");
 }
 
 class XMLFile : public FileType
@@ -47,6 +50,7 @@ public:
     bool containsOperator(QString o);
     QString getOperators(QString o);
     bool open(OpenMode om);
+    void writeDeclarations(QList<VariableDeclared> *list);
     void writeState(GraphicsItem *g);
     void writeTransition(GraphicsItem *g);
     void writeStartIF(GraphicsItem *g);
@@ -67,6 +71,7 @@ public:
     void read(QList<GraphicsItem*> &itemsList);
 
     QString getFunctionName() const { return sFunctionName;}
+    QList<VariableDeclared>* getVariables() { return variables;}
 
 private:
     QXmlStreamWriter *docToWrite;
@@ -75,11 +80,15 @@ private:
     //QString _fileName;
     QMap<QString, QString> operators;
 
+    QList<VariableDeclared> *variables;
+
     void setOperators();
     void reverseOperators();
 
     bool openToWrite();
     bool openToRead();
+
+    void writeVariable(VariableDeclared v);
 
     void read(QList<GraphicsItem*> &itemsList, QList<GraphicsItem*> &items, QDomNode node, int level);
     GraphicsItem* readIF(QList<GraphicsItem*> &itemsList, QList<GraphicsItem*> &items, QDomNode node, int level);
@@ -91,6 +100,8 @@ private:
     void readStatement(QDomNode node, QString &statement);
     QString readTextElement(QDomNode node, QString name);
     QString readTextElement(QDomNode node);
+    void readDeclarations(QDomNode node);
+    VariableDeclared readVariable(QDomNode node);
 };
 
 

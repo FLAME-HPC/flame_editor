@@ -1,13 +1,25 @@
 #include "variabledeclareddelegate.h"
+#include <QAbstractItemView>
+#include <QMessageBox>
+#include "./codedialog.h"
+#include "./lineedit.h"
+#include "./treemodelcompleter.h"
+#include "./codeparser.h"
+#include "./variabledeclaredmodel.h"
 
 VariableDeclaredDelegate::VariableDeclaredDelegate(QObject *parent)
 {
+    memoryVariableNames = 0;
+    variableNames = 0;
+    badIndex = 0;
 }
 
 QWidget *VariableDeclaredDelegate::createEditor(QWidget *parent,
     const QStyleOptionViewItem &option,
     const QModelIndex &index) const
 {
+    badIndex = 0;
+    editMode = true;
     if(index.column() == 0)
     {
         QComboBox *editor = new QComboBox(parent);
@@ -23,7 +35,20 @@ QWidget *VariableDeclaredDelegate::createEditor(QWidget *parent,
     }
     else if(index.column() == 2)
     {
-        QLineEdit *editor = new QLineEdit(parent);
+        LineEdit *editor = new LineEdit(parent);
+        TreeModelCompleter *completer;
+        completer = new TreeModelCompleter(editor);
+        completer->setSeparator(".");
+        QStringList list(*memoryVariableNames);
+        qDebug()<<index.row();
+        int m = index.row() < variableNames->count()?index.row():variableNames->count();
+        for(int i = 0;i < m;i++)
+            list.append(variableNames->at(i));
+        completer->setModel(CodeDialog::modelFromFileTree(list, *completer));
+        completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        completer->setWrapAround(false);
+        editor->setCompleter(completer);
         return editor;
     }
     else return QItemDelegate::createEditor(parent, option, index);
@@ -46,7 +71,6 @@ void VariableDeclaredDelegate::setEditorData(QWidget *editor,
     else if(index.column() == 1)
     {
         QString value = index.data().toString();
-
         QLineEdit * lineEdit = static_cast<QLineEdit*>(editor);
         lineEdit->setText(value);
     }
@@ -66,6 +90,7 @@ void VariableDeclaredDelegate::setEditorData(QWidget *editor,
 void VariableDeclaredDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                    const QModelIndex &index) const
 {
+    editMode = false;
     if(index.column() == 0)
     {
             QComboBox *comboBox = static_cast<QComboBox*>(editor);
@@ -78,14 +103,42 @@ void VariableDeclaredDelegate::setModelData(QWidget *editor, QAbstractItemModel 
         QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
         QString value = lineEdit->text();
 
-        model->setData(index, value, Qt::EditRole);
+        QStringList list(*memoryVariableNames);
+        qDebug()<<index.row();
+        for(int i = 0;i < variableNames->count();i++)
+            if(i != index.row())
+                list.append(variableNames->at(i));
+        if(list.contains(value, Qt::CaseInsensitive))
+        {
+            QString messageText = tr("Variable '%1' is already declared!").arg(value);
+            QMessageBox::warning(qobject_cast<QWidget*>( this->parent()), tr(""), messageText);
+        }
+        else
+            model->setData(index, value, Qt::EditRole);
     }
     else if(index.column() == 2)
     {
         QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
         QString value = lineEdit->text();
 
-        model->setData(index, value, Qt::EditRole);
+        if(value == "")
+            model->setData(index, value, Qt::EditRole);
+        else
+        {
+            int i = CodeParser::setParseToTest(value);
+            if(i!=0){
+                QString es(CodeParser::getToken());
+                QString sm(value);
+                sm = sm.insert(i-1, "<b>");
+                sm.append("</b>");
+                QString messageText = tr("Incorrect token in text appears in at the beginning bold part ") + "\"" + sm + "\"";
+                badIndex = new QModelIndex(index);
+                model->setData(index, value, Qt::EditRole);
+                QMessageBox::warning(qobject_cast<QWidget*>( this->parent()), tr(""), messageText);
+            }
+            else
+                model->setData(index, value, Qt::EditRole);
+        }
     }
     else
     {

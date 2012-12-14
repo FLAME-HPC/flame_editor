@@ -36,7 +36,10 @@ CodeDialog::CodeDialog(QWidget *parent) :
     memory->insertRow(1);
 
     variablesDeclared = new VariableDeclaredModel;
-    tableViewVariables->setItemDelegate(new VariableDeclaredDelegate);
+    variablesDeclared->setMemoryVariableNames(memory->getNames());
+    variableDeclaredDelegate = new VariableDeclaredDelegate();
+    variableDeclaredDelegate->setMemoryVariableNames(memory->getNames());
+    tableViewVariables->setItemDelegate(variableDeclaredDelegate);
     tableViewVariables->verticalHeader()->hide();
     tableViewVariables->setModel(variablesDeclared);
     selectionModel = tableViewVariables->selectionModel();
@@ -45,6 +48,8 @@ CodeDialog::CodeDialog(QWidget *parent) :
     showSelectItem = false;
 
     isAfterShowMessageBox = false;
+
+    changed = false;
 
     //QStringList l;
     //l << "add" << "ok";
@@ -59,6 +64,9 @@ CodeDialog::CodeDialog(QWidget *parent) :
     pbRemove->setEnabled(false);
 
     connect(selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(currentRowChanged(QItemSelection,QItemSelection)));
+
+    connect(variableDeclaredDelegate, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), this,
+            SLOT(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)));
 
     connect(pbAdd, SIGNAL(clicked()), this, SLOT(add_click()));
 
@@ -103,6 +111,9 @@ void CodeDialog::closeEvent(QCloseEvent *e)
 {
     qDebug()<<"pppppppppppppppppppppp";
     autocompletionTextEdit->testValid();
+    if(variableDeclaredDelegate->isEditMode())
+        e->ignore();
+    else
     if(isShowList() && isCorrect() == false)
     {
         e->ignore();
@@ -110,7 +121,7 @@ void CodeDialog::closeEvent(QCloseEvent *e)
         autocompletionTextEdit->setFocus();
     }
     else
-        if(machineScene->isChanged())
+        if(machineScene->isChanged() || changed)
         {
             QString sm = "Current project is not saved! You want to save?";
             QMessageBox::StandardButton sb = QMessageBox::warning(this, this->windowTitle(), sm,
@@ -127,6 +138,45 @@ void CodeDialog::closeEvent(QCloseEvent *e)
         }
         else
             e->accept();
+}
+
+void CodeDialog::done(int r)
+{
+    qDebug()<<"oooooooooooooorrrrrrrrrrrrrrrrroooooooooooooooooooo";
+    autocompletionTextEdit->testValid();
+    if(isShowList() && isCorrect() == false)
+    {
+        autocompletionTextEdit->showMessage();
+        autocompletionTextEdit->setFocus();
+        return;
+    }
+    else
+        if(machineScene->isChanged() || changed)
+        {
+            QString sm = "Current project is not saved! You want to save?";
+            QMessageBox::StandardButton sb = QMessageBox::warning(this, this->windowTitle(), sm,
+                                                                  QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+            if(sb == QMessageBox::Yes)
+                if(saveFile() == false)
+                    return;
+                else
+                {
+                    QDialog::done(r);
+                    return;
+                }
+            else if(sb == QMessageBox::Cancel)
+                return;
+            else if(sb == QMessageBox::No)
+            {
+                QDialog::done(r);
+                return;
+            }
+        }
+        else
+        {
+            QDialog::done(r);
+            return;
+        }
 }
 
 bool CodeDialog::eventFilter(QObject *o, QEvent *e)
@@ -238,7 +288,7 @@ void CodeDialog::setUI()
 
     gridLayoutTableMemory->addWidget(tableViewMemory, 1, 0, 2, 2);
 
-    gridLayout->addLayout(gridLayoutTableMemory, 0, 0, 1, 1, Qt::AlignRight);
+    gridLayout->addLayout(gridLayoutTableMemory, 0, 0, 1, 1, Qt::AlignLeft);
 
     QGridLayout *gridLayoutTableVariables = new QGridLayout;
 
@@ -258,16 +308,25 @@ void CodeDialog::setUI()
     pbAdd = new QPushButton("Add");
     pbAdd->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pbAdd->setMinimumSize(50, 25);
+    pbAdd->setDefault(false);
+    pbAdd->setAutoDefault(false);
 
     gridLayoutTableVariables->addWidget(pbAdd, 2, 0, Qt::AlignLeft);
 
     pbRemove = new QPushButton("Remove");
     pbRemove->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     pbRemove->setMinimumSize(50, 25);
+    pbRemove->setAutoDefault(false);
 
     gridLayoutTableVariables->addWidget(pbRemove, 2, 1, Qt::AlignRight);
 
     gridLayout->addLayout(gridLayoutTableVariables, 0, 1, 1, 1, Qt::AlignLeft);
+
+    //gridLayout->setColumnMinimumWidth(1, 10);
+    //gridLayout->setColumnStretch(1, 0);
+    //gridLayout->setColumnStretch(0, 0);
+    //gridLayout->setColumnStretch(2, 0);
+    //gridLayout->setSpacing(10);
 
     mainLayout->addLayout(gridLayout);
 
@@ -319,13 +378,14 @@ void CodeDialog::setUI()
     //completer->setModel(modelFromFileList(":/resources/wordlist.txt"));
     QStringList list;
     list<<"pooo"<<"poo";
-    completer->setModel(modelFromFileTree(list));
+    completer->setModel(modelFromFileTree(list, *completer));
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     completer->setWrapAround(false);
     autocompletionTextEdit->setCompleter(completer);
     listLayout->addWidget(autocompletionTextEdit);
 
+    //leFunctionName->setCompleter(completer);
 
     QHBoxLayout *h = new QHBoxLayout();
 
@@ -359,14 +419,14 @@ void CodeDialog::setUI()
     //pbRemove->setVisible(false);
 }
 
-QAbstractItemModel *CodeDialog::modelFromFileTree(const QStringList &list)
+QAbstractItemModel *CodeDialog::modelFromFileTree(const QStringList &list, QCompleter &completer)
 {
 
 #ifndef QT_NO_CURSOR
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 #endif
 
-    QStandardItemModel *model = new QStandardItemModel(completer);
+    QStandardItemModel *model = new QStandardItemModel(&completer);
     QVector<QStandardItem *> parents(10);
     parents[0] = model->invisibleRootItem();
 
@@ -407,7 +467,7 @@ QAbstractItemModel *CodeDialog::modelFromFileTree(const QStringList &list)
 
 bool CodeDialog::openFile()
 {
-    if(machineScene->isChanged())
+    if(machineScene->isChanged() || changed)
     {
         QString sm = "Current project is not saved! You want to save?";
         QMessageBox::StandardButton sb = QMessageBox::warning(this, this->windowTitle(), sm,
@@ -424,7 +484,9 @@ bool CodeDialog::openFile()
         QFileInfo f(s);
         qDebug()<<s<<f.filePath();
         fileName = s;
-        machineScene->readFile(fileName);
+        QList<VariableDeclared> variables;
+        machineScene->readFile(fileName, variables);
+        variablesDeclared->setVariables(&variables);
         return true;
     }
     return false;
@@ -435,8 +497,9 @@ bool CodeDialog::saveFile()
 {
     if(fileName != "")
     {
-        machineScene->saveFile(fileName, leFunctionName->text(), 0);
+        machineScene->saveFile(fileName, &variablesDeclared->getVariables(), leFunctionName->text(), 0);
         machineScene->arrangeGraphicsItem();
+        changed = false;
         return true;
     }
     else
@@ -449,8 +512,9 @@ bool CodeDialog::saveAsFile()
     if(s != "")
     {
         fileName = s;
-        machineScene->saveFile(fileName, leFunctionName->text(), 0);
+        machineScene->saveFile(fileName, &variablesDeclared->getVariables(), leFunctionName->text(), 0);
         machineScene->arrangeGraphicsItem();
+        changed = false;
         return true;
     }
     return false;
@@ -458,7 +522,7 @@ bool CodeDialog::saveAsFile()
 
 bool CodeDialog::saveGenerateFile()
 {
-    if(machineScene->isChanged())
+    if(machineScene->isChanged() || changed)
     {
         QString sm = "Current project is not saved! You want to save?";
         QMessageBox::StandardButton sb = QMessageBox::warning(this, this->windowTitle(), sm,
@@ -473,7 +537,7 @@ bool CodeDialog::saveGenerateFile()
     {
         QString s = fileName.left(fileName.lastIndexOf(".") + 1) + "c";
         qDebug()<<s;
-        machineScene->saveFile(s, leFunctionName->text(), 1);
+        machineScene->saveFile(s, &variablesDeclared->getVariables(), leFunctionName->text(), 1);
     }
 }
 
@@ -494,24 +558,7 @@ bool CodeDialog::generateFile()
     {
         QString s = fileName.left(fileName.lastIndexOf(".") + 1) + "c";
         qDebug()<<s;
-        machineScene->saveFile(s, leFunctionName->text(), 1);
-    }
-}
-
-void CodeDialog::done(int r)
-{
-    qDebug()<<"oooooooooooooorrrrrrrrrrrrrrrrroooooooooooooooooooo";
-    autocompletionTextEdit->testValid();
-    if(isShowList() && isCorrect() == false)
-    {
-        autocompletionTextEdit->showMessage();
-        autocompletionTextEdit->setFocus();
-        return;
-    }
-    else
-    {
-        QDialog::done(r);
-        return;
+        machineScene->saveFile(s, &variablesDeclared->getVariables(), leFunctionName->text(), 1);
     }
 }
 
@@ -531,18 +578,24 @@ void CodeDialog::check_click()
 void CodeDialog::saveXML_click()
 {
     //if(machineScene->check())
-    machineScene->saveFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.xml", leFunctionName->text(), 0);
+    machineScene->saveFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.xml",
+                           &variablesDeclared->getVariables(),
+                           leFunctionName->text(), 0);
     machineScene->arrangeGraphicsItem();
 }
 
 void CodeDialog::saveC_click()
 {
-    machineScene->saveFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.txt", leFunctionName->text(), 1);
+    machineScene->saveFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.txt",
+                           &variablesDeclared->getVariables(),
+                           leFunctionName->text(), 1);
 }
 
 void CodeDialog::readXML_click()
 {
-    machineScene->readFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.xml");
+    QList<VariableDeclared> variables;
+    machineScene->readFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.xml", variables);
+    variablesDeclared->setVariables(&variables);
 }
 
 void CodeDialog::open_click()
@@ -572,7 +625,8 @@ void CodeDialog::generate_click()
 
 void CodeDialog::add_click()
 {
-    variablesDeclared->insertRow(1);
+    variablesDeclared->addVariable();
+    changed = true;
 }
 
 void CodeDialog::remove_click()
@@ -582,6 +636,7 @@ void CodeDialog::remove_click()
     {
         variablesDeclared->removeRow(index.row());
         selectionModel->clearSelection();
+        changed = true;
     }
     pbRemove->setEnabled(false);
 }
@@ -589,6 +644,16 @@ void CodeDialog::remove_click()
 void CodeDialog::currentRowChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
     pbRemove->setEnabled(selected.indexes().count() > 0);
+    //qDebug()<<"ikloe";
+    variableDeclaredDelegate->setVariableNames(variablesDeclared->getNames());
+}
+
+void CodeDialog::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
+{
+    qDebug()<<"yuuuuuuuuuuuuuuuuuuuuuuuuu";
+    changed = true;
+    if(variableDeclaredDelegate->isBadIndex())
+        tableViewVariables->edit(variableDeclaredDelegate->getBadIndex());
 }
 
 void CodeDialog::showMainMenu()
