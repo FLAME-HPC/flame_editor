@@ -1,13 +1,13 @@
 #include <QtGui/QApplication>
 #include <QWidget>
-#include "codedialog.h"
-#include "assignmentdialog.h"
+#include "cecodedialog.h"
+#include "ceassignmentdialog.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    CodeDialog cd;
+    CECodeDialog cd;
     cd.exec();
 
     //AssignmentDialog ad;
