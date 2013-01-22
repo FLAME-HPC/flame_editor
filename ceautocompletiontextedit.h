@@ -42,7 +42,7 @@
  #define CEAUTOCOMPLETIONTEXTEDIT_H
 
  #include <QTextEdit>
- #include <./cegraphicsitem.h>
+#include "./cegraphicsitem.h"
 
  class QCompleter;
 
