@@ -2,7 +2,7 @@
 #define FUNCTIONCODEDIALOG_H
 
 #include <QDialog>
-#include "treemodelcompleter.h"
+#include "cetreemodelcompleter.h"
 #include "ui_functioncodedialog.h"
 
 class FunctionCodeDialog : public QDialog, public Ui::FunctionCodeDialog
@@ -10,12 +10,12 @@ class FunctionCodeDialog : public QDialog, public Ui::FunctionCodeDialog
     Q_OBJECT
 
 public:
-    FunctionCodeDialog(FEGraphicsItem *i, QStringList variableNames, QWidget *parent = 0);
+    FunctionCodeDialog(CEGraphicsItem *i, QStringList variableNames, QWidget *parent = 0);
 
 private:
     QAbstractItemModel *modelFromFileTree(const QStringList& fileName);
-    FEGraphicsItem *item_;
-    TreeModelCompleter *completer;
+    CEGraphicsItem *item_;
+    CETreeModelCompleter *completer;
 
 private slots:
     void nameChanged(const QString &s);

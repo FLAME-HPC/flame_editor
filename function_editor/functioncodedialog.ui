@@ -29,7 +29,7 @@
     </layout>
    </item>
    <item>
-    <widget class="AutocompletionTextEdit" name="autocompletionTextEdit"/>
+    <widget class="CEAutocompletionTextEdit" name="autocompletionTextEdit"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -69,9 +69,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>AutocompletionTextEdit</class>
+   <class>CEAutocompletionTextEdit</class>
    <extends>QTextEdit</extends>
-   <header>function_editor/autocompletiontextedit.h</header>
+   <header>function_editor/ceautocompletiontextedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

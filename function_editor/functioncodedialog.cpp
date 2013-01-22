@@ -1,7 +1,7 @@
 #include <QtGui>
 #include "functioncodedialog.h"
 
-FunctionCodeDialog::FunctionCodeDialog(FEGraphicsItem *i, QStringList variableNames, QWidget *parent) : QDialog(parent), item_(i)
+FunctionCodeDialog::FunctionCodeDialog(CEGraphicsItem *i, QStringList variableNames, QWidget *parent) : QDialog(parent), item_(i)
 {
     setupUi(this);
 
@@ -22,9 +22,9 @@ FunctionCodeDialog::FunctionCodeDialog(FEGraphicsItem *i, QStringList variableNa
     connect(lineEdit, SIGNAL(textChanged(QString)), this, SLOT(nameChanged(QString)));
 
     autocompletionTextEdit->setWordWrapMode(QTextOption::NoWrap);
-    completer = new TreeModelCompleter(this);
+    completer = new CETreeModelCompleter(this);
     completer->setSeparator(".");
-    //completer->setModel(modelFromFileList(":/resources/wordlist.txt"));
+//    completer->setModel(modelFromFileList(":/resources/wordlist.txt"));
     completer->setModel(modelFromFileTree(variableNames));
     completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
     completer->setCaseSensitivity(Qt::CaseInsensitive);

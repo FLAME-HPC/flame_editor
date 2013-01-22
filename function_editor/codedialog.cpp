@@ -1,5 +1,5 @@
 #include "codedialog.h"
-#include "./assignmentdialog.h"
+#include "./ceassignmentdialog.h"
 #include "functioncodedialog.h"
 #include <QDebug>
 #include <QCompleter>
@@ -10,7 +10,7 @@
 #include <QStringList>
 #include <QMessageBox>
 
-#include "./linkedlist.h"
+#include "./celinkedlist.h"
 #include <stdlib.h>
 
 CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
@@ -19,12 +19,12 @@ CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
     setupUi(this);
 
     // Create the machine scene object
-    machineScene = new FEMachineScene(this);
+    machineScene = new CEMachineScene(this);
     // Set the graphics view to use the machine scene object
     graphicsView->setScene(machineScene);
     // If item edit selected then start function code dialog
-    connect(machineScene, SIGNAL(functionCodeDialog(FEGraphicsItem*)),
-            this, SLOT(functionCodeDialog(FEGraphicsItem*)));
+    connect(machineScene, SIGNAL(functionCodeDialog(CEGraphicsItem*)),
+            this, SLOT(functionCodeDialog(CEGraphicsItem*)));
 
     //functionName->setEnabled(false);
     splitter_editor->setEnabled(false);
@@ -38,8 +38,8 @@ CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
     tableViewMemory->resizeRowsToContents();
     tableViewMemory->update();
 
-    variablesDeclared = new VariableDeclaredModel;
-    tableViewVariables->setItemDelegate(new VariableDeclaredDelegate);
+    variablesDeclared = new CEVariableDeclaredModel;
+    tableViewVariables->setItemDelegate(new CEVariableDeclaredDelegate);
     tableViewVariables->verticalHeader()->hide();
     tableViewVariables->setModel(variablesDeclared);
     selectionModel = tableViewVariables->selectionModel();
@@ -177,7 +177,7 @@ bool CodeDialog::eventFilter(QObject *o, QEvent *e)
     return QDialog::eventFilter(o, e);
 }
 
-void CodeDialog::functionCodeDialog(FEGraphicsItem *item) {
+void CodeDialog::functionCodeDialog(CEGraphicsItem *item) {
     QStringList variableNames;
 
     // Get variable names
@@ -612,7 +612,7 @@ void CodeDialog::generate_click()
 */
 void CodeDialog::add_click()
 {
-    variablesDeclared->insertRow(1);
+    variablesDeclared->addVariable();
 }
 
 void CodeDialog::remove_click()

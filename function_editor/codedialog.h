@@ -2,7 +2,7 @@
 #define CODEDIALOG_H
 
 #include <QDialog>
-#include "./femachinescene.h"
+#include "./cemachinescene.h"
 #include <QGraphicsView>
 #include <QVBoxLayout>
 #include <QListWidget>
@@ -13,12 +13,12 @@
 #include <QTableView>
 #include <QModelIndex>
 #include <QItemSelectionModel>
-#include "autocompletiontextedit.h"
-#include "treemodelcompleter.h"
-#include "./variabledeclaredmodel.h"
-#include "./variabledeclareddelegate.h"
+#include "ceautocompletiontextedit.h"
+#include "cetreemodelcompleter.h"
+#include "./cevariabledeclaredmodel.h"
+#include "./cevariabledeclareddelegate.h"
 #include "ui_codedialog.h"
-#include "./fegraphicsitem.h"
+#include "./cegraphicsitem.h"
 #include "../memorymodel.h"
 #include "../mpost.h"
 
@@ -42,15 +42,15 @@ protected:
     bool eventFilter(QObject *o, QEvent *e);
 
 private:
-    FEMachineScene *machineScene;
+    CEMachineScene *machineScene;
     MemoryModel *agentMemory;
     QItemSelectionModel *selectionModel;
-    VariableDeclaredModel *variablesDeclared;
+    CEVariableDeclaredModel *variablesDeclared;
     Mpost mpost;
 
 public slots:
     void done(int r);
-    void functionCodeDialog(FEGraphicsItem* item);
+    void functionCodeDialog(CEGraphicsItem* item);
 
 private slots:
     void add_click();
