@@ -56,26 +56,28 @@ SOURCES += main.cpp \
     graphicsitem.cpp \
     modelxmlwriter.cpp \
     calculatelayers.cpp \
-    function_editor/assignmentdialog.cpp \
-    function_editor/femachinescene.cpp \
-    function_editor/fegraphicsitem.cpp \
-    function_editor/fearrow.cpp \
+    function_editor/ceassignmentdialog.cpp \
+    function_editor/cemachinescene.cpp \
+    function_editor/cegraphicsitem.cpp \
+    function_editor/cearrow.cpp \
     function_editor/codedialog.cpp \
-    function_editor/autocompletiontextedit.cpp \
+    function_editor/ceautocompletiontextedit.cpp \
     function_editor/parser/y.tab.c \
     function_editor/parser/lex.yy.c \
-    function_editor/treemodelcompleter.cpp \
-    function_editor/linkedlist.cpp \
-    function_editor/codeparser.cpp \
-    function_editor/graphicsarcitem.cpp \
-    function_editor/graphicsgrup.cpp \
-    function_editor/xmlfile.cpp \
-    function_editor/filetype.cpp \
-    function_editor/cfile.cpp \
-    function_editor/variabledeclared.cpp \
-    function_editor/variabledeclaredmodel.cpp \
-    function_editor/variabledeclareddelegate.cpp \
+    function_editor/cetreemodelcompleter.cpp \
+    function_editor/celinkedlist.cpp \
+    function_editor/cecodeparser.cpp \
+    function_editor/cegraphicsarcitem.cpp \
+    function_editor/cegraphicsgrup.cpp \
+    function_editor/cexmlfile.cpp \
+    function_editor/cefiletype.cpp \
+    function_editor/cecfile.cpp \
+    function_editor/cevariabledeclared.cpp \
+    function_editor/cevariabledeclaredmodel.cpp \
+    function_editor/cevariabledeclareddelegate.cpp \
     function_editor/functioncodedialog.cpp \
+    function_editor/celineedit.cpp \
+    function_editor/cevariable.cpp \
     statedialog.cpp
 HEADERS += mainwindow.h \
     machinescene.h \
@@ -116,25 +118,27 @@ HEADERS += mainwindow.h \
     timeunitdialog.h \
     texteditdelegate.h \
     graphicsitem.h \
-    function_editor/femachinescene.h \
-    function_editor/fegraphicsitem.h \
-    function_editor/fearrow.h \
+    function_editor/cemachinescene.h \
+    function_editor/cearrow.h \
     function_editor/codedialog.h \
-    function_editor/assignmentdialog.h \
-    function_editor/autocompletiontextedit.h \
+    function_editor/ceassignmentdialog.h \
+    function_editor/ceautocompletiontextedit.h \
     function_editor/parser/y.tab.h \
-    function_editor/treemodelcompleter.h \
-    function_editor/linkedlist.h \
-    function_editor/codeparser.h \
-    function_editor/graphicsarcitem.h \
-    function_editor/graphicsgrup.h \
-    function_editor/xmlfile.h \
-    function_editor/filetype.h \
-    function_editor/cfile.h \
-    function_editor/variabledeclared.h \
-    function_editor/variabledeclaredmodel.h \
-    function_editor/variabledeclareddelegate.h \
+    function_editor/cetreemodelcompleter.h \
+    function_editor/celinkedlist.h \
+    function_editor/cecodeparser.h \
+    function_editor/cegraphicsarcitem.h \
+    function_editor/cegraphicsgrup.h \
+    function_editor/cegraphicsitem.h \
+    function_editor/celineedit.h \
+    function_editor/cexmlfile.h \
+    function_editor/cefiletype.h \
+    function_editor/cecfile.h \
+    function_editor/cevariabledeclared.h \
+    function_editor/cevariabledeclaredmodel.h \
+    function_editor/cevariabledeclareddelegate.h \
     function_editor/functioncodedialog.h \
+    function_editor/cevariable.h \
     statedialog.h
 FORMS += mainwindow.ui \
     conditiondialog.ui \
