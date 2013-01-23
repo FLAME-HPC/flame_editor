@@ -358,6 +358,11 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 
 void MachineScene::machineSelectedSlot(Machine * m) {
     QList<GraphicsItem*>::iterator it;
+
+    /* Clear any selected graphics items */
+    clearSelection();
+
+    // if machine is root model
     if (m == rootMachine) {
         // every item is foreign
         for (it = transitions_.begin(); it != transitions_.end(); ++it) {
@@ -369,7 +374,7 @@ void MachineScene::machineSelectedSlot(Machine * m) {
                 arrow->foreign = true;
             }
         }
-    } else {
+    } else if (m->type == 1) {  // if machine is an agent
         // first not machine
         for (it = transitions_.begin(); it != transitions_.end(); ++it) {
             if ((*it)->machine != m) {
@@ -392,6 +397,13 @@ void MachineScene::machineSelectedSlot(Machine * m) {
                     Arrow * arrow = (*it)->getTransitionArrows()[i];
                     arrow->foreign = false;
                 }
+            }
+        }
+    } else if (m->type == 2) {  // if machine is a message
+        for (it = messages_.begin(); it != messages_.end(); ++it) {
+            if ((*it)->machine == m) {
+                GraphicsItem * g = (*it);
+                g->setSelected(true);
             }
         }
     }
@@ -467,32 +479,57 @@ void MachineScene::addMessageCommunication(GraphicsItem *t, MessageComm * m,
         bool isInput) {
     // Find the associated message state item if not make one
     GraphicsItem * message = 0;
-    for (int j = 0; j < messages.size(); j++) {
-        GraphicsItem * sitem1 = messages.at(j);
+    for (int j = 0; j < messages_.size(); j++) {
+        GraphicsItem * sitem1 = messages_.at(j);
         if (sitem1->mytype == 2 && sitem1->getName() == m->messageType)
             message = sitem1;
     }
     if (message == 0) {
-        message = new GraphicsItem;
+        qDebug() << "Error: " << m->messageType << " item does not exist";
+        // cannot make one as need link to Machine
+
+        /*message = new GraphicsItem;
         message->setMessage(m);
         addItem(message);
         messages.append(message);
         num_messages++;
         int shift = 40;
         if (isInput) shift *= -1;
-        message->setPos(t->x(), t->y()+shift);
+        message->setPos(t->x(), t->y()+shift);*/
+    } else {
+        //Q_ASSERT(message != 0);
+
+        Arrow * arrow;
+        if (isInput) arrow = new Arrow(message, t);
+        else
+            arrow = new Arrow(t, message);
+        arrow->isCommunication = true;
+        message->addMessageArrow(arrow);
+        t->addMessageArrow(arrow);
+        addArrow(arrow);
     }
+}
 
-    Q_ASSERT(message != 0);
-
-    Arrow * arrow;
-    if (isInput) arrow = new Arrow(message, t);
-    else
-        arrow = new Arrow(t, message);
-    arrow->isCommunication = true;
-    message->addMessageArrow(arrow);
-    t->addMessageArrow(arrow);
-    addArrow(arrow);
+void MachineScene::addMessage(Machine * m) {
+    // Find the associated message state item if not make one
+    GraphicsItem * message = 0;
+    for (int j = 0; j < messages_.size(); j++) {
+        GraphicsItem * sitem1 = messages_.at(j);
+        if (sitem1->mytype == 2 && sitem1->getName() == m->name)
+            message = sitem1;
+    }
+    if (message == 0) {
+        //qDebug() << "New message item: " << m->name;
+        message = new GraphicsItem;
+        message->machine = m;
+        message->setMessage(m->name);
+        addItem(message);
+        messages_.append(message);
+        num_messages++;
+        //int shift = 40;
+        //if (isInput) shift *= -1;
+        //message->setPos(t->x(), t->y()+shift);
+    }
 }
 
 void MachineScene::addTransitionTransition(Machine *m, Transition * t) {
@@ -670,11 +707,11 @@ void MachineScene::updateInput(Transition *t) {
                         // remove arrow from message
                         messageItem->removeMessageArrow(arrow);
                         // Check to see if the message state item is redundant
-                        if (messageItem->getMessageArrows().size() == 0) {
+                        /*if (messageItem->getMessageArrows().size() == 0) {
                             removeItem(messageItem);
                             messages.removeOne(messageItem);
                             delete messageItem;
-                        }
+                        }*/
                     }
                 }
             }
@@ -739,11 +776,11 @@ void MachineScene::updateOutput(Transition *t) {
                         // remove arrow from message
                         messageItem->removeMessageArrow(arrow);
                         // Check to see if the message state item is redundant
-                        if (messageItem->getMessageArrows().size() == 0) {
+                        /*if (messageItem->getMessageArrows().size() == 0) {
                             removeItem(messageItem);
                             messages.removeOne(messageItem);
                             delete messageItem;
-                        }
+                        }*/
                     }
                 }
             }
@@ -851,7 +888,7 @@ void MachineScene::clearAll() {
     /* Clear all lists */
     agentNames.clear();
     statesAndTransitions.clear();
-    messages.clear();
+    messages_.clear();
     /* Clear all items */
     clear();
 }

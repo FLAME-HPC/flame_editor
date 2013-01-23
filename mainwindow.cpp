@@ -173,6 +173,12 @@ int MainWindow::openModel_internal(QString fileName, bool test) {
 }
 
 void addRestOfModel(Machine * m) {
+    // Add messages first
+    for (int i = 0; i < m->childCount(); i++) {
+        if (m->child(i)->type == 2) {  // If child is message
+            m->rootModel()->machineScene->addMessage(m->child(i));
+        }
+    }
     // For each child
     for (int i = 0; i < m->childCount(); i++) {
         if (m->child(i)->type == 1) {  // If child is agent
@@ -611,6 +617,8 @@ void MainWindow::on_treeView_machines_customContextMenuRequested(const QPoint &p
                 for (int i = 0; i < modelm->childCount(); i++)
                     if (modelm->child(i)->type == 2) count++;
                 m1->name = QString("message_%1").arg(QString::number(count-1));
+                m->rootModel()->machineScene->addMessage(m1);
+                m->rootModel()->machineScene->calcLayers();
             } else if (newType == 4) {  // Time unit
                 // Name the time unit as it can be used
                 // straight away as a variable type

@@ -11,6 +11,7 @@ Transition::Transition() {
     myName = "";
     myCurrentState = 0;
     myNextState = 0;
+    enabled_ = false;
 }
 
 Transition::Transition(State * cs, QString n, State * ns) {
@@ -19,6 +20,7 @@ Transition::Transition(State * cs, QString n, State * ns) {
     myName = n;
     myMpost = Mpost();
     myNextState = ns;
+    enabled_ = false;
 }
 
 Transition::Transition(State * cs, Communication i, Mpre pre, QString n,
@@ -30,6 +32,7 @@ Transition::Transition(State * cs, Communication i, Mpre pre, QString n,
     myMpost = post;
     myOutput = o;
     myNextState = ns;
+    enabled_ = false;
 }
 
 bool Transition::passesCondition(MemoryModel* memory) {

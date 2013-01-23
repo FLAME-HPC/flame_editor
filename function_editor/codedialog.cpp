@@ -39,6 +39,7 @@ CodeDialog::CodeDialog(MemoryModel *m, QWidget *parent) :
     tableViewMemory->update();
 
     variablesDeclared = new CEVariableDeclaredModel;
+    variablesDeclared->setMemoryVariableNames(agentMemory->getNames());
     tableViewVariables->setItemDelegate(new CEVariableDeclaredDelegate);
     tableViewVariables->verticalHeader()->hide();
     tableViewVariables->setModel(variablesDeclared);

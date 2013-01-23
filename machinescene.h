@@ -30,6 +30,7 @@ class MachineScene : public QGraphicsScene {
     void selectTransition(QString n);
     void selectState(QString n);
     void addTransitionTransition(Machine * m, Transition * t);
+    void addMessage(Machine * m);
     void setGraphicsView(QGraphicsView * g) { myGraphicsView = g; }
     void clearAll();
 
@@ -88,7 +89,7 @@ class MachineScene : public QGraphicsScene {
     QList<GraphicsItem *> states_;
     QList<GraphicsItem *> transitions_;
     QList<GraphicsItem *> statesAndTransitions;
-    QList<GraphicsItem *> messages;
+    QList<GraphicsItem *> messages_;
     GraphicsItem * selectedFunction;
     GraphicsItem * selectedState;
     GraphicsItem * highlightedState_;

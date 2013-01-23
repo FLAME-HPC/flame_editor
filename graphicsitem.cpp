@@ -39,10 +39,9 @@ void GraphicsItem::setTransition(Transition *t) {
     postState = t->nextState()->name();
 }
 
-void GraphicsItem::setMessage(MessageComm *m) {
-    message = m;
+void GraphicsItem::setMessage(QString name) {
     mytype = 2;
-    setName(m->messageType);
+    setName(name);
 }
 
 QString GraphicsItem::getName() {

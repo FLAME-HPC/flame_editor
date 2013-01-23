@@ -41,6 +41,8 @@ class Transition {
     Condition condition() const { return myCondition; }
     void setDescription(QString s) { myDescription = s; }
     QString description() const { return myDescription; }
+    void setEnabled(bool b) { enabled_ = b; }
+    bool enabled() const { return enabled_; }
 
     bool passesCondition(MemoryModel * memory);
     void updateMemory(MemoryModel * memory);
@@ -55,6 +57,7 @@ class Transition {
     State * myNextState;
     Condition myCondition;
     QString myDescription;
+    bool enabled_;
 };
 
 #endif  // TRANSITION_H_

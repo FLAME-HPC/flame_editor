@@ -46,7 +46,7 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     void setState(State * s);
     State * state() { return myState; }
     void setTransition(Transition * t);
-    void setMessage(MessageComm * m);
+    void setMessage(QString name);
     QList<Arrow *> getTransitionArrows() const { return transitionArrows; }
     QList<Arrow *> getMessageArrows() const { return messageArrows; }
     int width();

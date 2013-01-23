@@ -49,9 +49,9 @@ void MachineScene::calcLayers() {
         statesAndTransitions[i]->layer = -1;
         statesAndTransitions[i]->layered = -1;
     }
-    for (int i = 0; i < messages.count(); i++) {
-        messages[i]->layer = -1;
-        messages[i]->layered = -1;
+    for (int i = 0; i < messages_.count(); i++) {
+        messages_[i]->layer = -1;
+        messages_[i]->layered = -1;
     }
 
     /* For each agent type */
@@ -340,14 +340,14 @@ void MachineScene::calcLayers() {
         for(int i = 0; i < agentNames.count(); i++)
         agentMessageCount.append(0);*/
 
-        for (int i = 0; i < messages.count(); i++) {
+        for (int i = 0; i < messages_.count(); i++) {
             /*for(int j = 0; j < agentMessageCount.size(); j++)
              * agentMessageCount[j] = 0;*/
             int lastOutputLayer = -1;
             int firstInputLayer = -1;
-            for (int j = 0; j < messages[i]->getMessageArrows().size(); j++) {
-                Arrow * a = messages[i]->getMessageArrows().at(j);
-                if (a->endItem() == messages[i]) {
+            for (int j = 0; j < messages_[i]->getMessageArrows().size(); j++) {
+                Arrow * a = messages_[i]->getMessageArrows().at(j);
+                if (a->endItem() == messages_[i]) {
                     if (lastOutputLayer == -1 ||
                             lastOutputLayer < a->startItem()->layer)
                         lastOutputLayer = a->startItem()->layer;
@@ -355,7 +355,7 @@ void MachineScene::calcLayers() {
                         if(a->startItem()->agentName == agentNames[agent])
                         agentMessageCount[agent]++;*/
                 }
-                if (a->startItem() == messages[i]) {
+                if (a->startItem() == messages_[i]) {
                     if (firstInputLayer == -1 ||
                             firstInputLayer > a->endItem()->layer)
                         firstInputLayer = a->endItem()->layer;
@@ -373,11 +373,11 @@ void MachineScene::calcLayers() {
                 if (firstInputLayer != -1) messageLayer = firstInputLayer-1;
                 else
                     messageLayer = 0;
-            messages[i]->setPos(messageWidth[messageLayer]+10.0+
-                    (messages[i]->width()/2.0), 20.0 +
+            messages_[i]->setPos(messageWidth[messageLayer]+10.0+
+                    (messages_[i]->width()/2.0), 20.0 +
                     ((messageLayer)*layerHeight));
-            messageWidth[messageLayer] += 10.0+messages[i]->width();
-            // statesLayer[messageLayer].append(messages[i]);
+            messageWidth[messageLayer] += 10.0+messages_[i]->width();
+            // statesLayer[messageLayer].append(messages_[i]);
             if (messageWidth[messageLayer] > rollingWidth)
                 rollingWidth = messageWidth[messageLayer];
         }
