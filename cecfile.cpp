@@ -1,8 +1,7 @@
 #include "cecfile.h"
 
-CECFile::CECFile(QString fileName, QString FunctionName) : CEFileType(fileName, FunctionName)
+CECFile::CECFile(QByteArray *stream, QString FunctionName) : CEFileType(stream, FunctionName)
 {
-    file = 0;
     text = 0;
     openBrackets = 0;
     indentationNumber = 0;
@@ -27,30 +26,22 @@ CECFile::~CECFile()
         text->flush();
         delete text;
     }
-    if(file != 0)
-    {
-        file->close();
-        delete file;
-    }
     blocks.clear();
 }
 
 bool CECFile::open(CEOpenMode om)
 {
-    file = new QFile(_fileName);
-    if(file->open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        text = new QTextStream(file);
-        *text << "void " << sFunctionName << "()" << CECFileConstants::NewLine;
-        *text << CECFileConstants::OpenBracket << CECFileConstants::NewLine;
-        openBrackets++;
-        indentationNumber++;
-        creatIndentationText(indentationNumber);
-        blocks.push(Block());
-        return true;
-    }
-    else
-        return false;
+    //file = new QFile(_fileName);
+    //if(file->open(QIODevice::WriteOnly | QIODevice::Text))
+    //{
+    text = new QTextStream(_stream, QIODevice::WriteOnly);
+    *text << "void " << sFunctionName << "()" << CECFileConstants::NewLine;
+    *text << CECFileConstants::OpenBracket << CECFileConstants::NewLine;
+    openBrackets++;
+    indentationNumber++;
+    creatIndentationText(indentationNumber);
+    blocks.push(Block());
+    return true;
 }
 
 void CECFile::writeDeclarations(QList<CEVariableDeclared> *list)

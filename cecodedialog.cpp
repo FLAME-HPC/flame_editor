@@ -2,6 +2,7 @@
 #include "./ceassignmentdialog.h"
 #include <QDebug>
 #include <QCompleter>
+#include <QByteArray>
 #include <QFile>
 #include <QStringListModel>
 #include <QApplication>
@@ -497,9 +498,11 @@ bool CECodeDialog::saveFile()
 {
     if(fileName != "")
     {
-        machineScene->saveFile(fileName, &variablesDeclared->getVariables(), leFunctionName->text(), 0);
+        QByteArray *stream = new QByteArray();
+        machineScene->saveToStream(stream, &variablesDeclared->getVariables(), leFunctionName->text(), 0);
         machineScene->arrangeGraphicsItem();
         changed = false;
+        saveToFile(fileName, stream);
         return true;
     }
     else
@@ -512,9 +515,11 @@ bool CECodeDialog::saveAsFile()
     if(s != "")
     {
         fileName = s;
-        machineScene->saveFile(fileName, &variablesDeclared->getVariables(), leFunctionName->text(), 0);
+        QByteArray *stream = new QByteArray();
+        machineScene->saveToStream(stream, &variablesDeclared->getVariables(), leFunctionName->text(), 0);
         machineScene->arrangeGraphicsItem();
         changed = false;
+        saveToFile(fileName, stream);
         return true;
     }
     return false;
@@ -537,7 +542,9 @@ bool CECodeDialog::saveGenerateFile()
     {
         QString s = fileName.left(fileName.lastIndexOf(".") + 1) + "c";
         qDebug()<<s;
-        machineScene->saveFile(s, &variablesDeclared->getVariables(), leFunctionName->text(), 1);
+        QByteArray *stream = new QByteArray();
+        machineScene->saveToStream(stream, &variablesDeclared->getVariables(), leFunctionName->text(), 1);
+        saveToFile(s, stream);
     }
 }
 
@@ -558,8 +565,21 @@ bool CECodeDialog::generateFile()
     {
         QString s = fileName.left(fileName.lastIndexOf(".") + 1) + "c";
         qDebug()<<s;
-        machineScene->saveFile(s, &variablesDeclared->getVariables(), leFunctionName->text(), 1);
+        QByteArray *stream = new QByteArray();
+        machineScene->saveToStream(stream, &variablesDeclared->getVariables(), leFunctionName->text(), 1);
+        saveToFile(s, stream);
     }
+}
+
+bool CECodeDialog::saveToFile(QString s, QByteArray *stream)
+{
+    QFile f(s);
+    if(f.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        f.write(stream->data());
+        f.close();
+    }
+    return true;
 }
 
 void CECodeDialog::check_click()
@@ -578,17 +598,17 @@ void CECodeDialog::check_click()
 void CECodeDialog::saveXML_click()
 {
     //if(machineScene->check())
-    machineScene->saveFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.xml",
-                           &variablesDeclared->getVariables(),
-                           leFunctionName->text(), 0);
+    QByteArray *stream = new QByteArray();
+    machineScene->saveToStream(stream, &variablesDeclared->getVariables(), leFunctionName->text(), 0);
     machineScene->arrangeGraphicsItem();
+    saveToFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.xml", stream);
 }
 
 void CECodeDialog::saveC_click()
 {
-    machineScene->saveFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.txt",
-                           &variablesDeclared->getVariables(),
-                           leFunctionName->text(), 1);
+    QByteArray *stream = new QByteArray();
+    machineScene->saveToStream(stream, &variablesDeclared->getVariables(), leFunctionName->text(), 1);
+    saveToFile("C:\\Documents and Settings\\Administrator\\Desktop\\Qt\\test.txt", stream);
 }
 
 void CECodeDialog::readXML_click()

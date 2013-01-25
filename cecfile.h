@@ -16,7 +16,7 @@ namespace CECFileConstants{
 class CECFile : public CEFileType
 {
 public:
-    CECFile(QString fileName, QString FunctionName);
+    CECFile(QByteArray *stream, QString FunctionName);
     ~CECFile();
     bool open(CEOpenMode om);
     void writeDeclarations(QList<CEVariableDeclared> *list);
@@ -62,7 +62,6 @@ private:
         }
     };
 
-    QFile *file;
     QTextStream *text;
     int openBrackets;
     int indentationNumber;

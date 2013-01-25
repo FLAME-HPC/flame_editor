@@ -8,6 +8,7 @@
 #include <QDomElement>
 #include <QFile>
 #include <QMap>
+#include <QByteArray>
 #include "./cegraphicsitem.h"
 #include "./cefiletype.h"
 
@@ -45,7 +46,7 @@ class CEXMLFile : public CEFileType
 //    Q_OBJECT
 public:
     CEXMLFile(QString fileName);
-    CEXMLFile(QString fileName, QString FunctionName);
+    CEXMLFile(QByteArray *stream, QString FunctionName);
     ~CEXMLFile();
     bool containsOperator(QString o);
     QString getOperators(QString o);
@@ -77,7 +78,7 @@ private:
     QXmlStreamWriter *docToWrite;
     QDomDocument *docToRead;
     QFile *file;
-    //QString _fileName;
+    QString _fileName;
     QMap<QString, QString> operators;
 
     QList<CEVariableDeclared> *variables;

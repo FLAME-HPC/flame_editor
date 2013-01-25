@@ -3,17 +3,20 @@
 #include "./cecodeparser.h"
 #include "./cearrow.h"
 
-CEXMLFile::CEXMLFile(QString fileName) : CEFileType(fileName, "")
+CEXMLFile::CEXMLFile(QString fileName) : CEFileType(0, "")
 {
     docToWrite = 0;
     docToRead = 0;
+    file = 0;
+    _fileName = fileName;
 }
 
-CEXMLFile::CEXMLFile(QString fileName, QString FunctionName) : CEFileType(fileName, FunctionName)
+CEXMLFile::CEXMLFile(QByteArray *stream, QString FunctionName) : CEFileType(stream, FunctionName)
 {
     docToWrite = 0;
     docToRead = 0;
     variables = 0;
+    file = 0;
 }
 
 CEXMLFile::~CEXMLFile()
@@ -26,8 +29,12 @@ CEXMLFile::~CEXMLFile()
 
         delete docToWrite;
     }
-    file->close();
-    delete file;
+
+    if(file != 0)
+    {
+        file->close();
+        delete file;
+    }
 
     if(docToRead != 0)
         delete docToRead;
@@ -93,11 +100,11 @@ void CEXMLFile::reverseOperators()
 bool CEXMLFile::openToWrite()
 {
     setOperators();
-    file = new QFile(_fileName);
-    file->open(QIODevice::WriteOnly | QIODevice::Text);
+    //file = new QFile(_fileName);
+    //file->open(QIODevice::WriteOnly | QIODevice::Text);
     //qDebug()<<"iiiiiii";
-    docToWrite = new QXmlStreamWriter();
-    docToWrite->setDevice(file);
+    docToWrite = new QXmlStreamWriter(_stream);
+    //docToWrite->setDevice(file);
     docToWrite->setAutoFormatting(true);
 
     docToWrite->writeStartDocument();

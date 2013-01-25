@@ -2,6 +2,7 @@
 #define CEFILETYPE_H
 
 #include <QString>
+#include <QByteArray>
 #include "./cegraphicsitem.h"
 #include "./cevariabledeclared.h"
 
@@ -13,7 +14,7 @@ enum CEOpenMode{
 class CEFileType
 {
 public:
-    CEFileType(QString fileName, QString FunctionName);
+    CEFileType(QByteArray *stream, QString FunctionName);
     virtual ~CEFileType();
 
     virtual bool open(CEOpenMode om) = 0;
@@ -32,7 +33,7 @@ public:
     virtual void writeEndFOR(CEGraphicsItem *g) = 0;
 
 protected:
-    QString _fileName;
+    QByteArray *_stream;
     QString sFunctionName;
 };
 

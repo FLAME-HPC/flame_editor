@@ -1,6 +1,6 @@
 #include "cefiletype.h"
 
-CEFileType::CEFileType(QString fileName, QString FunctionName) : _fileName(fileName), sFunctionName(FunctionName)
+CEFileType::CEFileType(QByteArray *stream, QString FunctionName) : _stream(stream), sFunctionName(FunctionName)
 {
 }
 

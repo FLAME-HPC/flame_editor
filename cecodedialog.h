@@ -159,6 +159,8 @@ private:
     bool saveGenerateFile();
     bool generateFile();
 
+    bool saveToFile(QString s,QByteArray *stream);
+
 public slots:
     void done(int r);
 

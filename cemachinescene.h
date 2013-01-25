@@ -62,7 +62,7 @@ class CEMachineScene : public QGraphicsScene {
 
     bool check();
     bool readFile(QString fileName, QList<CEVariableDeclared> &variables);
-    bool saveFile(QString fileName, QList<CEVariableDeclared> *variables, QString sFunctionName, int type);
+    bool saveToStream(QByteArray *stream, QList<CEVariableDeclared> *variables, QString sFunctionName, int type);
     void arrangeGraphicsItem();
 
     bool isChanged() const { return changed;}
@@ -95,7 +95,7 @@ class CEMachineScene : public QGraphicsScene {
     QAction *splitAction;
 
     CEGraphicsItem *check(CEGraphicsItem *g);
-    CEGraphicsItem *saveFile(CEGraphicsItem *g, CEFileType *x);
+    CEGraphicsItem *saveToFile(CEGraphicsItem *g, CEFileType *x);
 
     CEGraphicsItem *arrangeGraphicsItem(CEGraphicsGrup &item, CEGraphicsItem *g);
 

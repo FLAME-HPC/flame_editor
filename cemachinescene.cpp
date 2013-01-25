@@ -674,13 +674,13 @@ CEGraphicsItem *CEMachineScene::check(CEGraphicsItem *g)
     return state;
 }
 
-bool CEMachineScene::saveFile(QString fileName, QList<CEVariableDeclared> *variables, QString sFunctionName, int type)
+bool CEMachineScene::saveToStream(QByteArray *stream, QList<CEVariableDeclared> *variables, QString sFunctionName, int type)
 {
     CEFileType *x = 0;
     if(type == 0)
-        x = new CEXMLFile(fileName, sFunctionName);
+        x = new CEXMLFile(stream, sFunctionName);
     else
-        x = new CECFile(fileName, sFunctionName);
+        x = new CECFile(stream, sFunctionName);
     bool ok = false;
     if(x->open(Write))
     {
@@ -689,7 +689,7 @@ bool CEMachineScene::saveFile(QString fileName, QList<CEVariableDeclared> *varia
         CEGraphicsItem *state = itemStart;
         map = new QMap<CEGraphicsItem *, int>();
         x->writeDeclarations(variables);
-        saveFile(itemStart, x);
+        saveToFile(itemStart, x);
         delete map;
         if(type == 0)
             changed = false;
@@ -698,7 +698,7 @@ bool CEMachineScene::saveFile(QString fileName, QList<CEVariableDeclared> *varia
     return ok;
 }
 
-CEGraphicsItem *CEMachineScene::saveFile(CEGraphicsItem *g, CEFileType *x)
+CEGraphicsItem *CEMachineScene::saveToFile(CEGraphicsItem *g, CEFileType *x)
 {
     QStack<CEGraphicsItem*> stack;
     bool b = true;
@@ -736,10 +736,10 @@ CEGraphicsItem *CEMachineScene::saveFile(CEGraphicsItem *g, CEFileType *x)
                     CEArrow *a2 = qgraphicsitem_cast<CEArrow *>(state->getGraphicsItem(1));
                     x->writeStartIF(state);
                     x->writeStartTrue();
-                    CEGraphicsItem *r2 = saveFile(a2->getEndItem(), x);
+                    CEGraphicsItem *r2 = saveToFile(a2->getEndItem(), x);
                     x->writeStopTrue();
                     x->writeStartFalse();
-                    CEGraphicsItem *r1 = saveFile(a1->getEndItem(), x);
+                    CEGraphicsItem *r1 = saveToFile(a1->getEndItem(), x);
                     x->writeStopFalse();
                     x->writeStopIF();
                     state = r1;
@@ -752,7 +752,7 @@ CEGraphicsItem *CEMachineScene::saveFile(CEGraphicsItem *g, CEFileType *x)
                 stack.push(a1->getEndItem());
                 CEArrow *a2 = qgraphicsitem_cast<CEArrow *>(state->getGraphicsItem(1));
                 x->writeStartWHILE(state);
-                CEGraphicsItem *r1 = saveFile(a2->getEndItem(), x);
+                CEGraphicsItem *r1 = saveToFile(a2->getEndItem(), x);
                 state = r1;
                 state->setName("while state");
                 x->writeEndWHILE(state);
@@ -765,7 +765,7 @@ CEGraphicsItem *CEMachineScene::saveFile(CEGraphicsItem *g, CEFileType *x)
                 stack.push(a1->getEndItem());
                 CEArrow *a2 = qgraphicsitem_cast<CEArrow *>(state->getGraphicsItem(1));
                 x->writeStartFOR(state);
-                CEGraphicsItem *r1 = saveFile(a2->getEndItem(), x);
+                CEGraphicsItem *r1 = saveToFile(a2->getEndItem(), x);
                 state = r1;
                 state->setName("for state");
                 x->writeEndFOR(state);
