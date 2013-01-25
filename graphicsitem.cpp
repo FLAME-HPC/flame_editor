@@ -51,7 +51,7 @@ QString GraphicsItem::getName() {
 void GraphicsItem::nameChanged() {
     if (mytype == 0) setName(myState->name());
     else if (mytype == 1) setName(transition->name());
-    else if (mytype == 2) setName(message->messageType);
+    else if (mytype == 2) setName(name);
 }
 
 void GraphicsItem::setName(QString n) {

@@ -118,7 +118,8 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
 
     if (foreign) painter->setPen(Qt::gray);
     else if (isCommunication)
-        painter->setPen(isSelected()&&editable ? Qt::darkGreen : Qt::green);
+        painter->setPen(Qt::green);
+                    //isSelected()&&editable ? Qt::darkGreen : Qt::green);
     else if (temp) painter->setPen(Qt::black);
     else
         painter->setPen(isSelected()&&editable ? Qt::red : Qt::black);
@@ -199,14 +200,15 @@ void Arrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         if (showHead) arrowHead << arrowP1 << arrowP2;
 
         // painter->drawLine(line());
-        painter->drawPath(path);
+
         if (foreign) painter->setBrush(Qt::gray);
         else
             painter->setBrush(isSelected()&&editable ? Qt::red : Qt::black);
         if (isCommunication)
-            painter->setBrush(
-                        isSelected()&&editable ? Qt::darkGreen : Qt::green);
-        if (temp) painter->setBrush(Qt::black);
+            painter->setBrush(Qt::green);
+                        //isSelected()&&editable ? Qt::darkGreen : Qt::green);
+        //if (temp) painter->setBrush(Qt::black);
+        painter->drawPath(path);
         painter->drawPolygon(arrowHead);
 
         /*if(myTransition != 0)

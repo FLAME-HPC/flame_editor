@@ -78,7 +78,8 @@ SOURCES += main.cpp \
     function_editor/functioncodedialog.cpp \
     function_editor/celineedit.cpp \
     function_editor/cevariable.cpp \
-    statedialog.cpp
+    statedialog.cpp \
+    messagedialog.cpp
 HEADERS += mainwindow.h \
     machinescene.h \
     arrow.h \
@@ -139,7 +140,8 @@ HEADERS += mainwindow.h \
     function_editor/cevariabledeclareddelegate.h \
     function_editor/functioncodedialog.h \
     function_editor/cevariable.h \
-    statedialog.h
+    statedialog.h \
+    messagedialog.h
 FORMS += mainwindow.ui \
     conditiondialog.ui \
     commdialog.ui \
@@ -147,7 +149,8 @@ FORMS += mainwindow.ui \
     timeunitdialog.ui \
     function_editor/codedialog.ui \
     function_editor/functioncodedialog.ui \
-    statedialog.ui
+    statedialog.ui \
+    messagedialog.ui
 
 
 

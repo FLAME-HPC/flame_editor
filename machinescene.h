@@ -14,6 +14,7 @@
 #include "./machinemodel.h"
 #include "transition.h"
 #include "statedialog.h"
+#include "messagedialog.h"
 
 class Machine;
 
@@ -42,6 +43,7 @@ class MachineScene : public QGraphicsScene {
   public slots:
     void updateStateName(State * s);
     void updateTransitionName(Transition * t);
+    void updateMessageName(Machine * m);
     void updateInput(Transition * t);
     void updateOutput(Transition * t);
     void deleteSelectedFunction();
@@ -53,6 +55,7 @@ class MachineScene : public QGraphicsScene {
 
   private slots:
     void commitAndCloseStateEditor();
+    void commitAndCloseMessageEditor();
 
   protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -65,6 +68,7 @@ class MachineScene : public QGraphicsScene {
 
   private:
     StateDialog * stateEditor;
+    MessageDialog * messageEditor;
     GraphicsItem * addTransitionString(Machine *m, Transition * t);
     void addMessageCommunication(GraphicsItem *t,
         MessageComm * m, bool isInput);
@@ -92,6 +96,7 @@ class MachineScene : public QGraphicsScene {
     QList<GraphicsItem *> messages_;
     GraphicsItem * selectedFunction;
     GraphicsItem * selectedState;
+    GraphicsItem * selectedMessage;
     GraphicsItem * highlightedState_;
     bool edit_;
     bool move_;

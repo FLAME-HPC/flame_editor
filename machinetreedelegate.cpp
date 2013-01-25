@@ -70,7 +70,6 @@ void MachineTreeDelegate::setModelData(QWidget *editor,
             machine->type == 5) {
         QLineEdit *lineEdit = static_cast<QLineEdit*>(editor);
         QString value = lineEdit->text();
-
         model->setData(index, value, Qt::EditRole);
     } else if (machine->type == 6) {  // functionFile
         QFileDialog *fileDialog = static_cast<QFileDialog*>(editor);

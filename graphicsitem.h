@@ -65,10 +65,10 @@ class GraphicsItem : public QObject, public QGraphicsItem {
     Machine * machine;
     GraphicsItem * currentState_;
     GraphicsItem * nextState_;
+    void setName(QString n);
 
   private:
     void setBoundingRect();
-    void setName(QString n);
     QPolygonF myPolygon;
     QRectF myNameRect;
     QRectF myConditionRect;

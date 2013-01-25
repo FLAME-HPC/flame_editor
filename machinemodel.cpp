@@ -235,14 +235,17 @@ void MachineModel::addMessageToTransition(Transition * t, bool isInput,
         QString messageType) {
     if (isInput) {
         t->input().messageModel->addMessage(messageType);
-        emit dataChanged(index(transitions.indexOf(t), 1, QModelIndex()),
-                index(transitions.indexOf(t), 1, QModelIndex()));
+        // don't need this as message is selected so
+        // the transition table is not being used
+        //emit dataChanged(index(transitions.indexOf(t), 1, QModelIndex()),
+        //        index(transitions.indexOf(t), 1, QModelIndex()));
+        //emit(communicationChanged());
     } else {  // output
         t->output().messageModel->addMessage(messageType);
         emit dataChanged(index(transitions.indexOf(t), 5, QModelIndex()),
                 index(transitions.indexOf(t), 5, QModelIndex()));
+        emit(communicationChanged());
     }
-    emit(communicationChanged());
 }
 
 bool MachineModel::insertRows(int position, int rows,

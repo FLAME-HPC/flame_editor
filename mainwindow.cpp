@@ -218,6 +218,8 @@ void MainWindow::handleNewAndOpenedModel(Machine *m) {
     ui->graphicsView->verticalScrollBar()->setValue(0);
     ui->graphicsView->show();
 
+    connect(machineTree, SIGNAL(messageUpdatedSignal(Machine*)),
+            m->machineScene, SLOT(updateMessageName(Machine*)));
     connect(m->machineScene, SIGNAL(functionSelected(Transition*)),
             this, SLOT(functionSelected(Transition*)));
     connect(ui->pushButtonSceneDelete, SIGNAL(clicked()),

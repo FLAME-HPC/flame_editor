@@ -37,6 +37,9 @@ class MachineTree : public QAbstractItemModel {
     void removeMachine(Machine * m);
     const QModelIndex getIndex(Machine * m);
 
+  signals:
+    void messageUpdatedSignal(Machine * m);
+
   private:
     Machine *rootItem;
 };

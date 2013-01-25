@@ -64,9 +64,12 @@ bool MachineTree::setData(const QModelIndex &index, const QVariant &value,
                 item->setEnabled(qVariantValue<bool>(value));
             }
         } else if (index.column() == 1) {
-            if (item->type == 0 || item->type == 1 || item->type == 2 ||
-                    item->type == 5) {
+            if (item->type == 0 || item->type == 1 || item->type == 5) {
                 item->name = value.toString();
+            } else if (item->type == 2) {  // message
+                item->name = value.toString();
+                // todo update graph?
+                emit messageUpdatedSignal(item);
             } else if (item->type == 6) {  // functionFile
                 item->name = value.toString();
             } else if (item->type == 4) {  // timeUnit

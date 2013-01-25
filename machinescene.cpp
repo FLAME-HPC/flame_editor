@@ -23,6 +23,7 @@ MachineScene::MachineScene(Machine * m, QObject *parent)
     scaleFactor = 1.15;  // How fast we zoom
     selectedFunction = 0;
     selectedState = 0;
+    selectedMessage = 0;
     selectedMachine = m;
     edit_ = true;
     move_ = false;
@@ -35,6 +36,7 @@ void MachineScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 
     if (selectedState) selectedState->setZValue(0.0);
     if (selectedFunction) selectedFunction->setZValue(0.0);
+    if (selectedMessage) selectedMessage->setZValue(0.0);
 
     if (move_) {
         if (selectedState) {
@@ -266,7 +268,7 @@ void MachineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                 // qDebug() << "double click on " << sitem->getName();
                 emit functionDoubleClicked(sitem->transition);
             }
-            // If state
+            // if state
             if (sitem->mytype == 0) {
                 stateEditor = new StateDialog();
                 stateEditor->setStateName(sitem->state()->name());
@@ -274,6 +276,15 @@ void MachineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                 connect(stateEditor, SIGNAL(accepted()), this, SLOT(commitAndCloseStateEditor()));
 
                 stateEditor->show();
+            }
+            // if message
+            if (sitem->mytype == 2) {
+                messageEditor = new MessageDialog();
+                messageEditor->setMessageName(sitem->machine->name);
+
+                connect(messageEditor, SIGNAL(accepted()), this, SLOT(commitAndCloseMessageEditor()));
+
+                messageEditor->show();
             }
         }
     }
@@ -288,10 +299,18 @@ void MachineScene::commitAndCloseStateEditor() {
     delete stateEditor;
 }
 
+void MachineScene::commitAndCloseMessageEditor() {
+    selectedMessage->machine->name = messageEditor->getMessageName();
+    selectedMessage->setName(selectedMessage->machine->name);
+    messageEditor->close();
+    delete messageEditor;
+}
+
 void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
     /* Reset selection variables */
     selectedFunction = 0;
     selectedState = 0;
+    selectedMessage = 0;
     /* Clear any selected graphics items */
     clearSelection();
     /* Emit signal to say no function is selected */
@@ -311,11 +330,11 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
              * which is passed to scene items to select/move them */
             //if (mouseEvent->button() == Qt::LeftButton) {
                 // If sitem machine is different from current one
-                if (sitem->machine != selectedMachine) {
+                //if (sitem->machine != selectedMachine) {
                     emit machineSelected(sitem->machine);
                     machineSelectedSlot(sitem->machine);
                     selectedMachine = sitem->machine;
-                }
+                //}
                 /* If function and not foreign then set selectedFunction and
                    emit signal */
                 if (sitem->mytype == 1) {  // && !sitem->foreign) {
@@ -328,6 +347,11 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                     selectedState = sitem;
                     selectedState->setZValue(1.0);
                 }
+                /* If message then set selectedState */
+                if (sitem->mytype == 2) {
+                    selectedMessage = sitem;
+                    selectedMessage->setZValue(1.0);
+                }
             //}
 
             /* If right mouse button start line */
@@ -337,19 +361,21 @@ void MachineScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
                 line = new Arrow(
                         QLineF(mouseEvent->scenePos(),
                                 mouseEvent->scenePos()));
-                //line->setPen(QPen(Qt::black, 1));
+                // If function or message
+                if (sitem->mytype == 1 || sitem->mytype == 2) line->isCommunication = true;
                 line->setZValue(0.9);
                 addItem(line);
             }
     } else {
         // No item selected
-        if (rootMachine != selectedMachine) {
+    //    if (rootMachine != selectedMachine) {
             emit machineSelected(rootMachine);
             machineSelectedSlot(rootMachine);
             selectedMachine = rootMachine;
-        }
+    //    }
         selectedFunction = 0;
         selectedState = 0;
+        selectedMessage = 0;
     }
 
     /* Allow QGraphicsScene to continue processing mouse event */
@@ -400,10 +426,23 @@ void MachineScene::machineSelectedSlot(Machine * m) {
             }
         }
     } else if (m->type == 2) {  // if machine is a message
+        // foreign if not attached to message
+        for (it = transitions_.begin(); it != transitions_.end(); ++it) {
+            (*it)->foreign = true;
+            (*it)->currentState_->foreign = true;
+            (*it)->nextState_->foreign = true;
+            for (int i = 0; i < (*it)->getTransitionArrows().size(); i++) {
+                Arrow * arrow = (*it)->getTransitionArrows()[i];
+                arrow->foreign = true;
+            }
+        }
         for (it = messages_.begin(); it != messages_.end(); ++it) {
             if ((*it)->machine == m) {
                 GraphicsItem * g = (*it);
                 g->setSelected(true);
+                for (int i = 0; i < g->getMessageArrows().size(); ++i) {
+                    g->getMessageArrows().at(i)->foreign = false;
+                }
             }
         }
     }
@@ -653,6 +692,17 @@ void MachineScene::updateTransitionName(Transition * t) {
 
         if (sitem1->transition == t) {
             sitem1->nameChanged();
+        }
+    }
+    this->update();
+}
+
+void MachineScene::updateMessageName(Machine * m) {
+    for (int i = 0; i < messages_.size(); i++) {
+        GraphicsItem * sitem1 = messages_.at(i);
+
+        if (sitem1->machine == m) {
+            sitem1->setName(m->name);
         }
     }
     this->update();
