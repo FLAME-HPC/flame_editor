@@ -897,14 +897,14 @@ void CEMachineScene::edit()
         QString s = itemSelect->getName();
         namePosition = nameList.indexOf(s);
         if(itemSelect->mytype == State || itemSelect->mytype == FinalState)
-            cd->setSelectItem("State name", s);
+            cd->setSelectItem("State neme: ", s);
         if(itemSelect->mytype == Transition){
             cd->setShowList(true);
-            cd->setSelectItem("Transition name", s);
+            cd->setSelectItem("Transition neme: ", s);
         }
         if(itemSelect->mytype == ConditionIf || itemSelect->mytype == ConditionWhile || itemSelect->mytype == ConditionFor){
             cd->setShowList(true);
-            cd->setSelectItem("Condition name", s);
+            cd->setSelectItem("Condition neme: ", s);
         }
         cd->setShowSelectItem(true);
         changed = true;
