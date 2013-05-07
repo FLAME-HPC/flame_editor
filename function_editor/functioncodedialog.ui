@@ -71,7 +71,7 @@
   <customwidget>
    <class>CEAutocompletionTextEdit</class>
    <extends>QTextEdit</extends>
-   <header>function_editor/ceautocompletiontextedit.h</header>
+   <header>./editor/function_editor/ceautocompletiontextedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
