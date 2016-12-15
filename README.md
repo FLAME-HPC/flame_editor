@@ -1,8 +1,7 @@
 FLAME Editor
 ============
-This repository has been migrated from svn to git. 
 
-This branch was created in the orignal svn repository. It has not, therefore, been "branched" from another branch. This means branch merges will not function as expected as there will be no common history.
+This branch, v2, was created in the orignal svn repository. It appears that it was an `svn copy` of the original trunk and so there should be a common history with the git master branch. It is expected, therefore that futures merges etc are in theory manageable. 
 
 LINUX
 -----
